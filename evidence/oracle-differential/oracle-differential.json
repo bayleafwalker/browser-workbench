@@ -1,0 +1,34 @@
+{
+  "capability_differences_ignored": true,
+  "differences": [],
+  "input_integrity": {
+    "baseline_after": "f3194994cd7e097640c94a9938a34353fde4f7f4cf885f970543793405a9089f",
+    "baseline_before": "f3194994cd7e097640c94a9938a34353fde4f7f4cf885f970543793405a9089f",
+    "candidate_after": "ec244fd800d599dc422393d56a154b86438098ac20dd2487ca019c93af702cc7",
+    "candidate_before": "ec244fd800d599dc422393d56a154b86438098ac20dd2487ca019c93af702cc7",
+    "unchanged": true
+  },
+  "oracle_is_not_proof": "The oracle cross-checks observable behaviour. It is not evidence that WebKitGTK is correct, and it never gates the native lane.",
+  "playwright": {
+    "exit_code": 0,
+    "status": "passed"
+  },
+  "runner": "podman",
+  "schema_version": "browser-workbench.oracle-differential/v1",
+  "status": "equivalent",
+  "tolerances": {
+    "_rationale": "The oracle is an external cross-check of observable behaviour, not a second implementation of the runner contract. It evaluates no gates, produces no capability report, and emits no receipts, so those three surfaces are declared tolerable here and nowhere else: they are structurally absent, not behaviourally different. Step identity, method, per-step status and the terminal code are compared strictly — those are what the two lanes must agree on.",
+    "allow_capability_differences": true,
+    "ignore_fields": [
+      "gates"
+    ],
+    "ignore_step_fields": [
+      "verified"
+    ],
+    "step_order": "by_step_id"
+  },
+  "webkitgtk": {
+    "run_id": "parity-webkitgtk",
+    "status": "passed"
+  }
+}

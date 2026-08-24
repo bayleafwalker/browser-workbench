@@ -1,0 +1,11 @@
+{
+  "_rationale": "The oracle is an external cross-check of observable behaviour, not a second implementation of the runner contract. It evaluates no gates, produces no capability report, and emits no receipts, so those three surfaces are declared tolerable here and nowhere else: they are structurally absent, not behaviourally different. Step identity, method, per-step status and the terminal code are compared strictly \u2014 those are what the two lanes must agree on.",
+  "step_order": "by_step_id",
+  "ignore_fields": [
+    "gates"
+  ],
+  "allow_capability_differences": true,
+  "ignore_step_fields": [
+    "verified"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "base_url": "http://127.0.0.1:40461/",
+  "files": {
+    "await.html": "66677bb027750e204d50615533223ae91d10dc43b3e6b40f1338bbc7ced9d76b",
+    "console.html": "2c218062f4444d88de5897ce3dbaf85d6ae140d31ff8ef403910691b09bbf688",
+    "download.bin": "834129448807cc51edcd39a868c268510e968995a073d673fcb4ded2512e34e9",
+    "index.html": "ee453fa8554ab286d98d1d1922ac9a9c2b23f4eb688cad798afd5df7848005c0",
+    "large.html": "a3d6834a392ab4222754ab0fe872109f3ea72c80513a59fa216373684d5a9ce2",
+    "next.html": "380925646eb070ac94c6f0e0fa917360cf0ee05726fd324623b6d148243eca61",
+    "pixel.txt": "b0b4eb05bdcd5eb6d99a86692ca4d7d3cb70391b86487764a94b9e3889b6ea37",
+    "prompts.html": "d719dccc34ae2bd415df0ece69617701749443ba452347062b5e77bd7b3f66ac",
+    "upload.html": "b6b413bd7dcf35e26fdae971152d34e1212fc004337aa9d8188169ad29af498f"
+  },
+  "root": "examples/fixtures/site"
+}

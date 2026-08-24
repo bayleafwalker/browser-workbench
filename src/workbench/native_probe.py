@@ -43,6 +43,70 @@ def _pkg_config(module: str) -> dict[str, Any]:
     return {**result, "module": module}
 
 
+def _is_elf(path: Path) -> bool:
+    try:
+        with path.open("rb") as handle:
+            return handle.read(4) == b"\x7fELF"
+    except OSError:
+        return False
+
+
+def _browser_runtime(node: str, oracle_root: Path) -> dict[str, Any]:
+    """Check that the pinned Playwright WebKit binary can resolve its libraries."""
+    located = subprocess.run(
+        [node, "-e", "import('@playwright/test').then(m => console.log(m.webkit.executablePath()))"],
+        check=False,
+        capture_output=True,
+        text=True,
+        timeout=60,
+        cwd=str(oracle_root),
+    )
+    path = located.stdout.strip().splitlines()[-1] if located.stdout.strip() else ""
+    if not path or not Path(path).is_file():
+        return {
+            "present": False,
+            "reason": "the pinned Playwright WebKit browser is not installed",
+            "executable": path or None,
+        }
+    if not shutil.which("ldd"):
+        return {"present": True, "executable": path, "checked": False}
+    # Playwright reports a shell wrapper as the executable, so checking that
+    # path alone always looks healthy. The binaries it launches are what have
+    # to resolve their libraries.
+    candidates = [Path(path)] if _is_elf(Path(path)) else []
+    candidates.extend(
+        sorted(item for item in Path(path).parent.rglob("MiniBrowser") if _is_elf(item))
+    )
+    if not candidates:
+        return {"present": True, "executable": path, "checked": False}
+    missing: set[str] = set()
+    for candidate in candidates:
+        linked = subprocess.run(
+            ["ldd", str(candidate)], check=False, capture_output=True, text=True, timeout=60
+        )
+        missing.update(
+            line.split("=>")[0].strip()
+            for line in linked.stdout.splitlines()
+            if "not found" in line
+        )
+    missing = sorted(missing)
+    if missing:
+        return {
+            "present": False,
+            "reason": f"the Playwright WebKit browser cannot load: {', '.join(missing[:6])}",
+            "executable": path,
+            "checked_binaries": [str(item) for item in candidates],
+            "missing_libraries": missing,
+        }
+    return {
+        "present": True,
+        "executable": path,
+        "checked": True,
+        "checked_binaries": [str(item) for item in candidates],
+        "missing_libraries": [],
+    }
+
+
 def probe_backend(kind: str) -> dict[str, Any]:
     pins = _pins()
     display = {
@@ -105,15 +169,23 @@ def probe_backend(kind: str) -> dict[str, Any]:
     if kind == "playwright":
         checks["node"] = _command_version(["node", "--version"])
         node = shutil.which("node")
+        oracle_root = Path(__file__).resolve().parents[2] / "oracle" / "playwright"
         if node:
-            probe_script = Path(__file__).resolve().parents[2] / "oracle" / "playwright" / "probe.mjs"
-            checks["playwright"] = _command_version([node, str(probe_script)])
+            checks["playwright"] = _command_version([node, str(oracle_root / "probe.mjs")])
         else:
             checks["playwright"] = {"present": False, "reason": "Node missing"}
         if not checks["node"]["present"]:
             reasons.append("Node.js missing")
         if not checks["playwright"]["present"]:
             reasons.append("@playwright/test missing")
+        elif node:
+            # The package being installed says nothing about whether its
+            # bundled browser can actually start. A browser that cannot load
+            # its shared libraries is a blocked environment, not a failing
+            # oracle, so the prerequisite probe has to see it.
+            checks["playwright_browser"] = _browser_runtime(node, oracle_root)
+            if not checks["playwright_browser"]["present"]:
+                reasons.append(checks["playwright_browser"]["reason"])
 
     return {
         **common,

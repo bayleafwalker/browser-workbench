@@ -106,6 +106,15 @@ def compare_runs(
     ignore_fields = tolerances.get("ignore_fields", [])
     baseline_semantic = deep_remove(_semantic_projection(baseline_data), ignore_fields)
     candidate_semantic = deep_remove(_semantic_projection(candidate_data), ignore_fields)
+    # Some surfaces are structurally absent in an external oracle rather than
+    # behaviourally different: it emits no receipts, so it cannot report
+    # verification. Suppressing such a field must be declared, and the report
+    # states what was suppressed so a suppression can never be invisible.
+    ignore_step_fields = list(tolerances.get("ignore_step_fields", []))
+    for projection in (baseline_semantic, candidate_semantic):
+        for step in projection["steps"]:
+            for field in ignore_step_fields:
+                step.pop(field, None)
     if tolerances.get("step_order") == "by_step_id":
         baseline_semantic["steps"] = sorted(
             baseline_semantic["steps"], key=lambda step: str(step.get("step_id"))
@@ -127,6 +136,11 @@ def compare_runs(
         "baseline": {"digest": baseline_before},
         "candidate": {"digest": candidate_before},
         "tolerances": tolerances,
+        "declared_suppressions": {
+            "fields": list(ignore_fields),
+            "step_fields": ignore_step_fields,
+            "capability_differences": bool(tolerances.get("allow_capability_differences", False)),
+        },
         "differences": differences,
         "capability_differences": capability_differences,
         "input_integrity": {

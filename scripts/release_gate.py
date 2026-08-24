@@ -50,10 +50,14 @@ def main() -> int:
         run("webkitgtk-native-e2e-observation", [python, "scripts/native_e2e.py", "--spec", "examples/native-webkitgtk-slice2.json", "--output", str(EVIDENCE / "native-slice2")], accept={0, 78}),
         run("webkitgtk-native-corpus-12x3-ephemeral", [python, "scripts/native_corpus.py", "--output", str(EVIDENCE / "native-corpus")], accept={0, 78}),
         run("webkitgtk-native-corpus-12x3-persistent", [python, "scripts/native_corpus.py", "--variant", "stable-persistent", "--output", str(EVIDENCE / "native-corpus-persistent")], accept={0, 78}),
+        # A differing oracle is a finding to review, not something to waive:
+        # only `blocked` (no host can run it) is accepted here.
+        run("oracle-differential", [python, "scripts/oracle_differential.py", "--output", str(EVIDENCE / "oracle-differential")], accept={0, 78}),
     ]
     required = checks[:5]
     passed = all(item["status"] == "passed" for item in required)
     native_blocked = [item["name"] for item in checks[5:] if item["exit_code"] == 78]
+    differential = next(item for item in checks if item["name"] == "oracle-differential")
     e2e_checks = [item for item in checks if item["name"].startswith("webkitgtk-native-e2e")]
     corpus_checks = [item for item in checks if item["name"].startswith("webkitgtk-native-corpus")]
     corpus_passed = all(item["exit_code"] == 0 for item in corpus_checks)
@@ -76,6 +80,7 @@ def main() -> int:
         # separately in native_or_oracle_blocked.
         "native_runtime_claim": corpus_passed,
         "native_corpus_claim": corpus_passed,
+        "oracle_differential": differential["status"],
         "native_corpus_variants": {
             item["name"].rsplit("-", 1)[-1]: item["status"] for item in corpus_checks
         },

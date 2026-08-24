@@ -1,0 +1,58 @@
+{
+  "schema_version": "browser-workbench.result/v1",
+  "run_id": "parity-playwright",
+  "status": "passed",
+  "backend": {
+    "kind": "playwright",
+    "variant": "webkit"
+  },
+  "steps": [
+    {
+      "step_id": "create",
+      "method": "session.create",
+      "status": "passed",
+      "result": {
+        "session_id": "oracle-session",
+        "page_id": "oracle-page-1"
+      }
+    },
+    {
+      "step_id": "navigate",
+      "method": "page.navigate",
+      "status": "passed",
+      "result": {
+        "url": "http://127.0.0.1:40461/console.html"
+      }
+    },
+    {
+      "step_id": "await",
+      "method": "page.await",
+      "status": "passed",
+      "result": {
+        "satisfied": true
+      }
+    },
+    {
+      "step_id": "javascript",
+      "method": "page.act",
+      "status": "passed",
+      "result": {
+        "value": "deterministic-fixture-console"
+      }
+    },
+    {
+      "step_id": "observe",
+      "method": "page.observe",
+      "status": "passed",
+      "result": {
+        "url": "http://127.0.0.1:40461/console.html",
+        "title": "Workbench Fixture Console",
+        "html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\">\n<title>Workbench Fixture Console</title>\n</head><body><main>\n  <h1>Workbench Fixture Console</h1>\n  <p id=\"marker\">deterministic-fixture-console</p>\n  <img id=\"pixel\" alt=\"\" src=\"pixel.txt\">\n</main>\n<script>\n  console.log('fixture console record');\n  console.warn('fixture console warning');\n</script>\n</body></html>"
+      }
+    }
+  ],
+  "terminal_reason": {
+    "code": "completed"
+  },
+  "retry_count": 0
+}

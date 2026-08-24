@@ -209,3 +209,52 @@ being reaped mid-run. The gate itself is display-agnostic by design — supplyin
 a display is the caller's job, which is why CI wraps it in `xvfb-run` — but a
 gate that cannot tell "no display" from "the browser misbehaved" is a gate that
 will eventually mislabel a real failure.
+
+## ADR-S5-01: an installed oracle package is not a runnable oracle
+
+**Context.** The pinned `@playwright/test 1.62.1` installs cleanly on this
+host and its WebKit build downloads. The prerequisite probe therefore went
+green — while the browser could not start at all. Playwright's own host check
+tests for Debian package names, which mean nothing on Arch, and the path it
+reports as the executable is a shell wrapper, so a naive library check on that
+path always looks healthy.
+
+The bundled binaries need `libicu*.so.74`, `libflite.so.1`, `libbacktrace.so.0`
+and others. Arch ships ICU 78, and no ICU 74 exists in its official
+repositories.
+
+**Decision.** The oracle probe resolves the real ELF binaries beneath the
+reported executable and reports any unresolved shared library as a blocked
+prerequisite, naming the libraries.
+
+**Consequence.** The oracle lane reports `blocked` with an exact cause instead
+of `passed` on a browser that cannot launch. This is the same class of defect
+as ADR-S4-02: a check that cannot distinguish "the environment cannot run
+this" from "this works" will eventually certify something that does not run.
+
+**Note.** A probe that goes green because a package is present, rather than
+because the thing can execute, is precisely the "source-verified" trap this
+project was built to avoid — this time inside our own gate.
+
+## ADR-S5-02: structurally absent is not behaviourally different
+
+**Context.** The first differential between WebKitGTK and the oracle reported
+one difference: `steps[].verified` was `true` on the native lane and absent on
+the oracle's. The oracle emits no receipts at all, so it cannot report
+verification. That is not the two engines disagreeing.
+
+**Decision.** The comparison contract gains `ignore_step_fields`, and every
+report now carries a `declared_suppressions` block stating which fields, step
+fields, and capability differences were suppressed. The oracle tolerance file
+declares the three surfaces an external oracle structurally lacks: gates, a
+capability report, and receipts.
+
+**Consequence.** The lanes can be compared on what they can both express —
+step identity, method, per-step status, terminal code — while what only one of
+them has is declared rather than silently equalised. The protocol already
+called for reports to compare "declared suppressions"; this implements that.
+
+**Guard.** Suppression is the mechanism by which a comparison quietly stops
+comparing. It is bounded here by being declarative, per-run, and always echoed
+into the report: no suppression can take effect without appearing in the
+evidence that the comparison passed.

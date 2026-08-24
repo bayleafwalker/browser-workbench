@@ -1,4 +1,4 @@
-# Handoff — WebKitGTK native lane, slices 1 to 4
+# Handoff — WebKitGTK native lane, slices 1 to 5
 
 Date: 2026-08-24. Host: Arch Linux, kernel 7.1.9-arch1-2, x86_64.
 
@@ -105,14 +105,57 @@ engine's own `is_ephemeral()` back to the host, which raises
 real HSTS storage, `WebKitCache`, and media-key salts beneath their own
 evidence roots; the ephemeral runs created no profile directory at all.
 
+## Slice 5 — the oracle runs, and the two lanes are compared
+
+The pinned `@playwright/test 1.62.1` installs on this host and its WebKit build
+downloads — and then cannot start. The bundled binaries link against
+Debian-era sonames (`libicu*.so.74`, `libflite.so.1`, `libbacktrace.so.0`);
+this host ships ICU 78 and has no ICU 74 available. Playwright's own host
+check looks for Debian *package names*, and the path it reports as the
+executable is a shell wrapper, so a naive library check on it always looks
+healthy.
+
+**The probe went green on a browser that could not launch.** That is the same
+class of defect this whole project exists to catch, occurring inside our own
+gate (ADR-S5-01). The probe now resolves the real ELF binaries and reports
+unresolved libraries as a blocked prerequisite, naming them.
+
+The oracle then ran for real, in the pinned container image, which is what the
+lane's README means by an enabled oracle host: **Playwright 1.62.1 driving
+WebKit 26.5**.
+
+### The differential
+
+`scripts/oracle_differential.py` executes one declared workflow on both lanes
+against the same loopback fixture and compares them:
+
+```
+status: equivalent      webkitgtk: passed      playwright: passed
+differences: []         declared suppressions: gates, capabilities, verified
+```
+
+The first run was **not** equivalent: it reported `steps[].verified` present on
+the native lane and absent on the oracle's. The oracle emits no receipts, so
+that is a structural absence, not the engines disagreeing. The comparison
+contract now takes `ignore_step_fields`, and every report states the
+suppressions it applied — suppression is how a comparison quietly stops
+comparing, so it is declarative, per-run, and always echoed into the evidence
+(ADR-S5-02).
+
+The release gate accepts only `equivalent` or `blocked` from this check. A
+differing oracle is a finding to review, never waived — and it is still never
+evidence that WebKitGTK is wrong.
+
 ## What is still not true
 
-- The Playwright oracle has never run. It is not installed, and the pinned
-  `@playwright/test` is absent, so the probe is honestly blocked.
+- The oracle differential covers **one** five-step workflow, not the twelve
+  scenario corpus. The oracle runner implements five operations; it has no
+  targets, dialogs, permissions, uploads, downloads, or checkpoints, so a
+  corpus-wide differential would need that runner extended first.
+- The oracle cannot run natively on this host, only in the pinned container.
+  On a Debian host `npx playwright install --with-deps webkit` is enough.
 - ServoGTK has never run. It builds in its own workspace and remains
-  experimental and non-gating.
-- **Wave 2 is not finished.** Its execution requirement is met, but the
-  baseline plan also expects the oracle and the differential work below.
+  experimental and non-gating — Wave 3, not Wave 2.
 - `stable-persistent` is not implemented. `session.create` rejects persistent
   profiles as `capability_unsupported`.
 - The `accessibility` projection is still unwired; the matrix already declares
@@ -197,6 +240,8 @@ Run on this host unless noted. Unabridged.
 | `python3 scripts/native_corpus.py` (12x3, ephemeral) | **passed** — 36/36, deterministic |
 | `python3 scripts/native_corpus.py --variant stable-persistent` (12x3) | **passed** — 36/36, deterministic |
 | `python3 -m workbench.cli corpus` (mock, 12x3) | **passed** — 36/36, digest unchanged at `a8d0c478…` |
+| `node oracle/playwright/probe.mjs --launch` (in the pinned image) | **passed** — Playwright 1.62.1, WebKit 26.5 |
+| `python3 scripts/oracle_differential.py` | **equivalent** — both lanes passed, zero differences |
 
 `cargo test --workspace --all-features` reporting zero tests is not a silent
 pass: neither Rust crate defines a test. The adapter is covered by the Python
@@ -301,18 +346,14 @@ the evidence records observed dimensions alongside declared ones.
 
 ## Next eligible slice
 
-Slice 5: install the pinned `@playwright/test` oracle and run the corpus
-through it with retries off, then produce a real differential report between
-the lanes against the declared partial-order tolerances in
-`examples/tolerances.json`.
+Slice 6: widen the differential from one workflow to the corpus. That means
+extending `oracle/playwright/runner.mjs` beyond its five operations — targets,
+dialogs, permissions, uploads, downloads, checkpoints — so the same scenarios
+can be posed to both lanes. Each addition should be posed as a question the
+oracle can answer, not as a reimplementation of the runner contract.
 
-Matching semantic digests are **not** that report. The digest covers assertion
-outcomes only; a differential report has to compare capabilities, invariants,
-causal relations, terminal states, and artifacts, and it is where a genuine
-mock-versus-engine disagreement would first become visible.
-
-After that, ServoGTK for its declared supported surface only, recording gaps
-as unsupported or as findings rather than as failures.
+Then ServoGTK, for its declared supported surface only, recording gaps as
+unsupported or as findings rather than as failures. That is Wave 3.
 
 Do not raise the release claim past `native_vertical_proof` until those runs
 exist. Wave 2 means real WebKitGTK corpus evidence, and it does not exist yet.

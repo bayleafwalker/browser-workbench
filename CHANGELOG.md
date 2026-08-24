@@ -46,3 +46,12 @@
 - declaring a persistent profile under the ephemeral variant is rejected, so the variant always describes what actually ran;
 - the corpus now runs on `stable-ephemeral` and `stable-persistent`, and the release gate and CI run both;
 - `native_runtime_claim` is now derived from both variants passing the whole denominator, rather than being hardcoded false.
+
+## Unreleased — native slice 5 (the oracle actually runs, and the lanes are compared)
+
+- the Playwright oracle probe now resolves the real ELF binaries beneath the reported executable and reports unresolved shared libraries as a blocked prerequisite, naming them; an installed package is not a runnable oracle;
+- added `scripts/oracle_differential.py`: one declared workflow executed on WebKitGTK and on Playwright/WebKit, compared under declared tolerances, with the pinned container image used automatically where the host cannot launch the bundled browser;
+- added `ignore_step_fields` to the comparison contract, and every comparison report now states the suppressions it applied, so a suppression can never be invisible;
+- added `examples/parity-webkitgtk.json`, `examples/parity-playwright.json`, and `examples/tolerances-oracle.json`;
+- the release gate runs the differential and accepts only equivalent or blocked: a differing oracle is a finding to review, never waived;
+- rewrote the oracle lane README, which documented a run spec that never existed and an install command that fails on any non-Debian host.

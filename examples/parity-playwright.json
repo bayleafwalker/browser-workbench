@@ -1,0 +1,144 @@
+{
+  "schema_version": "browser-workbench.run/v1",
+  "required_capabilities": [
+    "session.create",
+    "page.navigate",
+    "page.await",
+    "page.observe.state",
+    "page.observe.dom",
+    "page.act.javascript"
+  ],
+  "allowed_providers": [
+    "engine",
+    "host",
+    "injected"
+  ],
+  "workflow": [
+    {
+      "step_id": "create",
+      "method": "session.create",
+      "deadline_ms": 60000,
+      "params": {
+        "client": {
+          "id": "parity-client",
+          "kind": "agent"
+        },
+        "profile": {
+          "mode": "ephemeral",
+          "name": "parity"
+        },
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        }
+      }
+    },
+    {
+      "step_id": "navigate",
+      "method": "page.navigate",
+      "deadline_ms": 60000,
+      "params": {
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        },
+        "client_id": "parity-client",
+        "url": "${FIXTURE_BASE_URL}console.html"
+      }
+    },
+    {
+      "step_id": "await",
+      "method": "page.await",
+      "deadline_ms": 60000,
+      "params": {
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        },
+        "conditions": [
+          {
+            "kind": "load_state",
+            "equals": "idle"
+          },
+          {
+            "kind": "title",
+            "equals": "Workbench Fixture Console"
+          }
+        ],
+        "deadline_ms": 30000
+      }
+    },
+    {
+      "step_id": "javascript",
+      "method": "page.act",
+      "deadline_ms": 60000,
+      "params": {
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        },
+        "client_id": "parity-client",
+        "intent": {
+          "kind": "javascript",
+          "value": "document.getElementById('marker').textContent"
+        }
+      }
+    },
+    {
+      "step_id": "observe",
+      "method": "page.observe",
+      "deadline_ms": 60000,
+      "params": {
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        },
+        "projection": [
+          "state",
+          "dom"
+        ],
+        "since_event": 0,
+        "max_bytes": 262144
+      }
+    }
+  ],
+  "gates": [
+    {
+      "id": "contract",
+      "kind": "contract",
+      "required": true
+    },
+    {
+      "id": "capabilities",
+      "kind": "capability",
+      "required": true
+    },
+    {
+      "id": "execution",
+      "kind": "execution",
+      "required": true
+    },
+    {
+      "id": "evidence",
+      "kind": "evidence",
+      "required": true
+    }
+  ],
+  "policy": {
+    "mutation": "forbid",
+    "profile": "ephemeral",
+    "redaction_profile": "default",
+    "single_writer": true
+  },
+  "evidence": {
+    "raw": true,
+    "normalized": true,
+    "max_artifact_bytes": 1048576,
+    "redaction_profile": "default"
+  },
+  "run_id": "parity-playwright",
+  "backend": {
+    "kind": "playwright",
+    "variant": "webkit"
+  }
+}
