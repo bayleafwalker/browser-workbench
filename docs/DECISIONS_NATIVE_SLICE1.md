@@ -163,3 +163,49 @@ raises it in a task strictly before the one that calls `alert()`.
 **Consequence.** Both browser-owned requests reach the host on every run.
 `alert()` blocks the web process until the host decides, so anything requested
 in the same task would never be flushed to the browser process.
+
+## ADR-S4-01: persistence is opt-in, host-located, and read back from the engine
+
+**Context.** Wave 2 requires the corpus on both `stable-ephemeral` and
+`stable-persistent`. WebKitGTK distinguishes the two at the `NetworkSession`:
+`new_ephemeral()` keeps nothing, `new(data_directory, cache_directory)`
+persists.
+
+**Decision.** A persistent session requires a `profile_dir` declared by the
+host, and `session.open` reports the engine's own `is_ephemeral()` back. The
+host raises `integrity_mismatch` if that disagrees with the declared profile.
+Declaring a persistent profile under the `stable-ephemeral` variant is
+`invalid_request`.
+
+**Consequence.** Persistence never lands in the engine's default profile
+location, so a run cannot quietly inherit or pollute state outside its own
+evidence tree. And the run's persistence is confirmed by the engine rather
+than assumed from the request: the persistent corpus writes real HSTS storage,
+cache, and media-key salts under its evidence root, while the ephemeral corpus
+creates no profile directory at all.
+
+**Note.** WB-S001 declares `session.profile.ephemeral` as a required
+capability, so it stays ephemeral under both variants. It is the scenario that
+tests the ephemeral profile itself; the other eleven run under the variant's
+mode.
+
+## ADR-S4-02: an adapter that never starts is blocked, not failed
+
+**Context.** A display died partway through a gate run. The last nine corpus
+runs reported `backend_failed` with "adapter ended unexpectedly", which reads
+as "the browser was driven and something went wrong". Nothing had been driven
+at all: the adapter never opened a display, so it never reached `ready`.
+
+**Decision.** Failure to reach `ready` raises `capability_blocked` carrying the
+adapter's stderr. Failure *after* `ready` stays `backend_failed`.
+
+**Consequence.** The two cases are no longer reported alike. `blocked` says
+the environment prevented execution; `failed` says execution happened and went
+wrong. The runner contract already separates these (exit 78 versus exit 1),
+and the transport now honours that separation at its source.
+
+**Note.** The environment fault that exposed this was a hand-started Xvfb
+being reaped mid-run. The gate itself is display-agnostic by design — supplying
+a display is the caller's job, which is why CI wraps it in `xvfb-run` — but a
+gate that cannot tell "no display" from "the browser misbehaved" is a gate that
+will eventually mislabel a real failure.

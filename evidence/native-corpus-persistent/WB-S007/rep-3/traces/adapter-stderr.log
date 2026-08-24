@@ -1,0 +1,6 @@
+MESA-EGL: warning: DRI3 error: Could not get DRI3 device
+MESA-EGL: warning: Ensure your X server supports DRI3 to get accelerated rendering
+
+** (browser-workbench-webkitgtk-worker:1323518): CRITICAL **: 22:09:03.926: const char *webkit_script_dialog_prompt_get_default_text(WebKitScriptDialog *): assertion 'dialog->type == WEBKIT_SCRIPT_DIALOG_PROMPT' failed
+
+** (browser-workbench-webkitgtk-worker:1323518): CRITICAL **: 22:09:04.176: void webkit_script_dialog_confirm_set_confirmed(WebKitScriptDialog *, gboolean): assertion 'dialog->type == WEBKIT_SCRIPT_DIALOG_CONFIRM || dialog->type == WEBKIT_SCRIPT_DIALOG_BEFORE_UNLOAD_CONFIRM' failed

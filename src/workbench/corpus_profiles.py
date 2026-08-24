@@ -33,6 +33,9 @@ class Profile:
         self._backends.append(backend)
         return backend
 
+    def profile_mode(self) -> str:
+        return "ephemeral"
+
     def open_start_page(self, backend: Any, page_id: str) -> None:
         """Bring the page to a state where targets and scripts are meaningful.
 
@@ -163,6 +166,9 @@ class WebKitGtkProfile(Profile):
         super().__init__()
         self.base_url = base_url
         self.variant = variant
+
+    def profile_mode(self) -> str:
+        return "persistent" if self.variant == "stable-persistent" else "ephemeral"
 
     def make_backend(self, store: ArtifactStore) -> Any:
         from .webkitgtk_backend import WebKitGtkBackend

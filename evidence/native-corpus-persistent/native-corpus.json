@@ -1,0 +1,23 @@
+{
+  "assertion_semantics": {
+    "crash is visible": "a real web process is started and then terminated; a page that never loaded has no process to kill",
+    "fresh target executes": "targets are discovered by injected script because the engine exposes no host-side target API",
+    "network request and response correlate": "WebKitGTK identifies a resource by URI; correlation is by URI, not request_id",
+    "provider class is recorded": "javascript runs through the engine API, so the provider is engine rather than the mock's injected",
+    "virtual clock is deterministic": "no virtual clock on a real engine; asserted as event-driven satisfaction with an advanced event cursor"
+  },
+  "backend": {
+    "kind": "webkitgtk",
+    "variant": "stable-persistent"
+  },
+  "deterministic": true,
+  "failed": 0,
+  "failures": [],
+  "passed": 36,
+  "repetitions": 3,
+  "run_count": 36,
+  "scenario_count": 12,
+  "schema_version": "browser-workbench.native-corpus/v1",
+  "semantic_digest": "a8d0c478fcdca32bc9167425744d3a9c54969c7d9e497fc6a48f388399b8a74f",
+  "status": "passed"
+}

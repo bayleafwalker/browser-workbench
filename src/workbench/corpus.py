@@ -21,13 +21,17 @@ def _error_code(call: Callable[[], Any]) -> str | None:
     return None
 
 
-def _create(backend: Any, writer: str = "writer-a") -> dict[str, Any]:
+def _create(backend: Any, writer: str = "writer-a", profile: Profile | None = None) -> dict[str, Any]:
+    mode = profile.profile_mode() if profile else "ephemeral"
     return backend.session_create(
-        {"client": {"id": writer, "kind": "human"}, "profile": {"mode": "ephemeral", "name": "corpus"}}
+        {"client": {"id": writer, "kind": "human"}, "profile": {"mode": mode, "name": "corpus"}}
     )
 
 
 def _scenario_session_tabs_profiles(backend: Any, store: ArtifactStore, profile: Profile) -> dict[str, bool]:
+    # WB-S001 declares `session.profile.ephemeral` as a required capability:
+    # it tests the ephemeral profile itself, so it stays ephemeral under every
+    # variant. The other scenarios run under the variant's own profile mode.
     created = _create(backend)
     conflict = _error_code(
         lambda: backend.session_create(
@@ -43,7 +47,7 @@ def _scenario_session_tabs_profiles(backend: Any, store: ArtifactStore, profile:
 
 
 def _scenario_bounded_observation(backend: Any, store: ArtifactStore, profile: Profile) -> dict[str, bool]:
-    page_id = _create(backend)["page_id"]
+    page_id = _create(backend, profile=profile)["page_id"]
     backend.page_navigate({"page_id": page_id, "url": profile.url("large"), "client_id": "writer-a"})
     profile.settle(backend, page_id)
     observed = backend.page_observe(
@@ -58,7 +62,7 @@ def _scenario_bounded_observation(backend: Any, store: ArtifactStore, profile: P
 
 
 def _scenario_generation_targets_receipts(backend: Any, store: ArtifactStore, profile: Profile) -> dict[str, bool]:
-    page_id = _create(backend)["page_id"]
+    page_id = _create(backend, profile=profile)["page_id"]
     profile.open_start_page(backend, page_id)
     target, receipt = profile.act_on_fresh_target(backend, page_id)
     profile.advance_generation(backend, page_id)
@@ -77,7 +81,7 @@ def _scenario_generation_targets_receipts(backend: Any, store: ArtifactStore, pr
 
 
 def _scenario_event_driven_await(backend: Any, store: ArtifactStore, profile: Profile) -> dict[str, bool]:
-    page_id = _create(backend)["page_id"]
+    page_id = _create(backend, profile=profile)["page_id"]
     backend.page_navigate({"page_id": page_id, "url": profile.url("await"), "client_id": "writer-a"})
     done = profile.settle(backend, page_id)
     timeout = _error_code(
@@ -93,7 +97,7 @@ def _scenario_event_driven_await(backend: Any, store: ArtifactStore, profile: Pr
 
 
 def _scenario_snapshot_screenshot_javascript(backend: Any, store: ArtifactStore, profile: Profile) -> dict[str, bool]:
-    page_id = _create(backend)["page_id"]
+    page_id = _create(backend, profile=profile)["page_id"]
     profile.open_start_page(backend, page_id)
     before = sha256_bytes(canonical_bytes(backend.pages[page_id]))
     screenshot = backend.page_observe({"page_id": page_id, "projection": "screenshot"})["data"]["screenshot"]
@@ -113,7 +117,7 @@ def _scenario_snapshot_screenshot_javascript(backend: Any, store: ArtifactStore,
 
 
 def _scenario_console_network_evidence(backend: Any, store: ArtifactStore, profile: Profile) -> dict[str, bool]:
-    page_id = _create(backend)["page_id"]
+    page_id = _create(backend, profile=profile)["page_id"]
     backend.page_navigate({"page_id": page_id, "url": profile.url("console"), "client_id": "writer-a"})
     profile.settle(backend, page_id)
     observed = backend.page_observe(
@@ -130,7 +134,7 @@ def _scenario_console_network_evidence(backend: Any, store: ArtifactStore, profi
 
 
 def _scenario_dialog_permission(backend: Any, store: ArtifactStore, profile: Profile) -> dict[str, bool]:
-    page_id = _create(backend)["page_id"]
+    page_id = _create(backend, profile=profile)["page_id"]
     profile.prepare_prompts(backend, page_id)
     observed = backend.page_observe(
         {"page_id": page_id, "projection": ["dialogs", "permissions"], "max_bytes": 32768}
@@ -157,7 +161,7 @@ def _scenario_dialog_permission(backend: Any, store: ArtifactStore, profile: Pro
 
 
 def _scenario_upload_download(backend: Any, store: ArtifactStore, profile: Profile) -> dict[str, bool]:
-    page_id = _create(backend)["page_id"]
+    page_id = _create(backend, profile=profile)["page_id"]
     fixture = fixture_path()
     upload = profile.upload_act(backend, page_id, fixture)
     download = profile.download_act(backend, page_id)
@@ -174,7 +178,7 @@ def _scenario_upload_download(backend: Any, store: ArtifactStore, profile: Profi
 
 
 def _scenario_checkpoint_handover(backend: Any, store: ArtifactStore, profile: Profile) -> dict[str, bool]:
-    page_id = _create(backend)["page_id"]
+    page_id = _create(backend, profile=profile)["page_id"]
     checkpoint = backend.session_checkpoint({"client_id": "writer-a", "release_lease": True})
     old_fenced = _error_code(
         lambda: backend.page_act(
@@ -194,7 +198,7 @@ def _scenario_checkpoint_handover(backend: Any, store: ArtifactStore, profile: P
 
 
 def _scenario_crash_recovery_redacted_export(backend: Any, store: ArtifactStore, profile: Profile) -> dict[str, bool]:
-    page_id = _create(backend)["page_id"]
+    page_id = _create(backend, profile=profile)["page_id"]
     checkpoint = backend.session_checkpoint({"client_id": "writer-a"})
     profile.crash(backend, page_id)
     visible = backend.page_observe({"page_id": page_id, "projection": "state"})["data"]["state"]

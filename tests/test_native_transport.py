@@ -107,6 +107,15 @@ class NativeTransportTest(unittest.TestCase):
             transport.start()
         self.assertEqual(caught.exception.code, "capability_blocked")
 
+    def test_adapter_that_never_starts_is_blocked_not_failed(self) -> None:
+        """No display, no GTK, no build: nothing was attempted, so nothing failed."""
+        dying = 'import sys; sys.stderr.write("Gtk-WARNING **: Failed to open display\n"); sys.exit(1)'
+        transport = AdapterTransport([sys.executable, "-c", dying], cwd=ROOT)
+        with self.assertRaises(WorkbenchError) as caught:
+            transport.start()
+        self.assertEqual(caught.exception.code, "capability_blocked")
+        self.assertIn("Failed to open display", "\n".join(caught.exception.data["stderr_tail"]))
+
     def test_adapter_crash_is_reported_as_backend_failure(self) -> None:
         crashing = 'import sys, json; sys.stdout.write(json.dumps({"v":1,"ordinal":1,"type":"ready","identity":{}})+"\\n"); sys.stdout.flush(); sys.exit(3)'
         transport = AdapterTransport([sys.executable, "-c", crashing], cwd=ROOT)

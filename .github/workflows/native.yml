@@ -16,12 +16,14 @@ jobs:
       - run: xvfb-run -a python scripts/native_e2e.py --output evidence/native-slice1
       # The whole denominator on a real engine: 12 scenarios x 3 repetitions.
       - run: xvfb-run -a python scripts/native_corpus.py --output evidence/native-corpus
+      - run: xvfb-run -a python scripts/native_corpus.py --variant stable-persistent --output evidence/native-corpus-persistent
       - uses: actions/upload-artifact@v4
         with:
           name: native-evidence
           path: |
             evidence/native-slice1
             evidence/native-corpus
+            evidence/native-corpus-persistent
 
   playwright-oracle:
     runs-on: ubuntu-24.04

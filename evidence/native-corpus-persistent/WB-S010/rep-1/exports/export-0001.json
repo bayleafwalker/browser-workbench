@@ -1,0 +1,97 @@
+{
+  "events": [
+    {
+      "causes": [],
+      "event_id": "event-000001",
+      "event_seq": 1,
+      "generation": null,
+      "kind": "adapter.connected",
+      "monotonic_ms": 0,
+      "page_id": null,
+      "payload": {
+        "adapter": "browser-workbench-webkitgtk-worker",
+        "adapter_version": "0.2.0",
+        "display_backend": "GdkX11Display",
+        "engine": "2.52.6",
+        "engine_api": "webkitgtk-6.0",
+        "gtk": "4.22.4",
+        "transport_version": 1
+      },
+      "raw_refs": [],
+      "schema_version": "browser-workbench.event/v1",
+      "session_id": "session-0001",
+      "source": "host"
+    },
+    {
+      "causes": [],
+      "event_id": "event-000002",
+      "event_seq": 2,
+      "generation": 2,
+      "kind": "session.restored",
+      "monotonic_ms": 0,
+      "page_id": "page-1",
+      "payload": {
+        "checkpoint_id": "checkpoint-0001",
+        "generation": 2
+      },
+      "raw_refs": [],
+      "schema_version": "browser-workbench.event/v1",
+      "session_id": "session-0001",
+      "source": "host"
+    },
+    {
+      "causes": [],
+      "event_id": "event-000003",
+      "event_seq": 3,
+      "generation": null,
+      "kind": "session.created",
+      "monotonic_ms": 0,
+      "page_id": null,
+      "payload": {
+        "engine": {
+          "adapter": "browser-workbench-webkitgtk-worker",
+          "adapter_version": "0.2.0",
+          "display_backend": "GdkX11Display",
+          "engine": "2.52.6",
+          "engine_api": "webkitgtk-6.0",
+          "gtk": "4.22.4",
+          "transport_version": 1
+        },
+        "lease_epoch": 2,
+        "profile": {
+          "mode": "ephemeral"
+        },
+        "writer_id": "writer-b"
+      },
+      "raw_refs": [],
+      "schema_version": "browser-workbench.event/v1",
+      "session_id": "session-0001",
+      "source": "host"
+    }
+  ],
+  "metadata": {
+    "authorization": "[REDACTED]",
+    "note": "Bearer [REDACTED]"
+  },
+  "raw": [
+    {
+      "causes": [],
+      "kind": "adapter.ready",
+      "monotonic_ms": 0,
+      "ordinal": 1,
+      "page_id": null,
+      "payload": {
+        "adapter": "browser-workbench-webkitgtk-worker",
+        "adapter_version": "0.2.0",
+        "display_backend": "GdkX11Display",
+        "engine": "2.52.6",
+        "engine_api": "webkitgtk-6.0",
+        "gtk": "4.22.4",
+        "transport_version": 1
+      },
+      "raw_id": "raw-000001",
+      "source": "webkitgtk"
+    }
+  ],
+  "session_id": "session-0001"
+}

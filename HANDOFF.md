@@ -1,4 +1,4 @@
-# Handoff — WebKitGTK native lane, slices 1 to 3
+# Handoff — WebKitGTK native lane, slices 1 to 4
 
 Date: 2026-08-24. Host: Arch Linux, kernel 7.1.9-arch1-2, x86_64.
 
@@ -84,11 +84,35 @@ summary so a native result can never be read as the mock denominator:
 | fresh target executes | targets discovered by injected script; no host-side target API exists |
 | crash is visible | a real web process is started and then killed |
 
+## Slice 4 — persistent profiles, and both variants green
+
+**Wave 2's execution requirement is met: 12 scenarios x 3 repetitions x both
+declared variants, on a real WebKitGTK engine, deterministic.**
+
+| Variant | Result | Profile directories |
+| --- | --- | --- |
+| `stable-ephemeral` | 36/36, deterministic | 0 of 36, as required |
+| `stable-persistent` | 36/36, deterministic | 27 of 36 |
+
+27 rather than 36 is the correct number, not a shortfall: WB-S001 declares
+`session.profile.ephemeral` and so stays ephemeral under both variants, and
+WB-S011 and WB-S012 are comparison scenarios that never open a browser. That
+is 9 runs with no persistent session by design.
+
+Persistence is verified rather than assumed. `session.open` reports the
+engine's own `is_ephemeral()` back to the host, which raises
+`integrity_mismatch` on disagreement (ADR-S4-01). The persistent runs wrote
+real HSTS storage, `WebKitCache`, and media-key salts beneath their own
+evidence roots; the ephemeral runs created no profile directory at all.
+
 ## What is still not true
 
-- `stable-persistent` has never run. The corpus passes on `stable-ephemeral`
-  only, so Wave 2's "both variants" requirement is half met. Persistent
-  profiles are still rejected as `capability_unsupported`.
+- The Playwright oracle has never run. It is not installed, and the pinned
+  `@playwright/test` is absent, so the probe is honestly blocked.
+- ServoGTK has never run. It builds in its own workspace and remains
+  experimental and non-gating.
+- **Wave 2 is not finished.** Its execution requirement is met, but the
+  baseline plan also expects the oracle and the differential work below.
 - `stable-persistent` is not implemented. `session.create` rejects persistent
   profiles as `capability_unsupported`.
 - The `accessibility` projection is still unwired; the matrix already declares
@@ -170,7 +194,8 @@ Run on this host unless noted. Unabridged.
 | `xvfb-run -a python3 scripts/native_e2e.py --spec examples/native-webkitgtk-slice2.json` | **passed** — all 6 steps, all 5 gates, zero deviations |
 | slice 1 e2e repeated twice more | **passed** both times, zero deviations |
 | slice 2 e2e repeated three times | **passed** all three, zero deviations, identical digests |
-| `python3 scripts/native_corpus.py` (12x3) | **passed** — 36/36, deterministic |
+| `python3 scripts/native_corpus.py` (12x3, ephemeral) | **passed** — 36/36, deterministic |
+| `python3 scripts/native_corpus.py --variant stable-persistent` (12x3) | **passed** — 36/36, deterministic |
 | `python3 -m workbench.cli corpus` (mock, 12x3) | **passed** — 36/36, digest unchanged at `a8d0c478…` |
 
 `cargo test --workspace --all-features` reporting zero tests is not a silent
@@ -276,14 +301,18 @@ the evidence records observed dimensions alongside declared ones.
 
 ## Next eligible slice
 
-Slice 4: implement persistent profiles and run the corpus on
-`stable-persistent`. That is the last piece Wave 2 requires, and until it
-exists Wave 2 is not complete however good the ephemeral numbers look.
+Slice 5: install the pinned `@playwright/test` oracle and run the corpus
+through it with retries off, then produce a real differential report between
+the lanes against the declared partial-order tolerances in
+`examples/tolerances.json`.
 
-Then the Playwright oracle (still uninstalled, still blocked), and a real
-differential report between the lanes against declared partial-order
-tolerances. ServoGTK remains experimental and non-gating; its lane now builds
-in its own workspace and does not constrain the gating lane.
+Matching semantic digests are **not** that report. The digest covers assertion
+outcomes only; a differential report has to compare capabilities, invariants,
+causal relations, terminal states, and artifacts, and it is where a genuine
+mock-versus-engine disagreement would first become visible.
+
+After that, ServoGTK for its declared supported surface only, recording gaps
+as unsupported or as findings rather than as failures.
 
 Do not raise the release claim past `native_vertical_proof` until those runs
 exist. Wave 2 means real WebKitGTK corpus evidence, and it does not exist yet.

@@ -1,0 +1,35 @@
+{
+  "assertions": [
+    {
+      "passed": true,
+      "text": "upload uses an allowed fixture"
+    },
+    {
+      "passed": true,
+      "text": "download remains quarantined"
+    },
+    {
+      "passed": true,
+      "text": "artifact hash is recorded"
+    },
+    {
+      "passed": true,
+      "text": "undeclared path is rejected"
+    }
+  ],
+  "backend": {
+    "kind": "webkitgtk",
+    "variant": "stable-persistent"
+  },
+  "deviations": [],
+  "driver": "upload_download",
+  "error": null,
+  "missing_assertions": [],
+  "repetition": 3,
+  "retry_count": 0,
+  "run_id": "WB-S008-r3",
+  "scenario_id": "WB-S008",
+  "schema_version": "browser-workbench.corpus-result/v1",
+  "status": "passed",
+  "unexpected_assertions": []
+}

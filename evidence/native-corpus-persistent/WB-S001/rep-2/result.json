@@ -1,0 +1,35 @@
+{
+  "assertions": [
+    {
+      "passed": true,
+      "text": "profile is ephemeral"
+    },
+    {
+      "passed": true,
+      "text": "one page is active"
+    },
+    {
+      "passed": true,
+      "text": "lease epoch is one"
+    },
+    {
+      "passed": true,
+      "text": "second writer is rejected"
+    }
+  ],
+  "backend": {
+    "kind": "webkitgtk",
+    "variant": "stable-persistent"
+  },
+  "deviations": [],
+  "driver": "session_tabs_profiles",
+  "error": null,
+  "missing_assertions": [],
+  "repetition": 2,
+  "retry_count": 0,
+  "run_id": "WB-S001-r2",
+  "scenario_id": "WB-S001",
+  "schema_version": "browser-workbench.corpus-result/v1",
+  "status": "passed",
+  "unexpected_assertions": []
+}

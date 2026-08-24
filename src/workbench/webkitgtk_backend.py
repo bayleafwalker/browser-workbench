@@ -367,11 +367,15 @@ class WebKitGtkBackend:
         profile = params.get("profile", {"mode": "ephemeral", "name": "default"})
         if profile.get("mode") not in {"ephemeral", "persistent"}:
             raise WorkbenchError("invalid_request", "unknown profile mode")
-        if profile.get("mode") == "persistent":
+        mode = profile.get("mode")
+        if mode == "persistent" and self.variant == "stable-ephemeral":
+            # The variant is the declared identity of the run. A persistent
+            # profile under an ephemeral variant would make the evidence lie
+            # about what was executed.
             raise WorkbenchError(
-                "capability_unsupported",
-                "persistent profiles are not wired in this slice",
-                {"profile": profile},
+                "invalid_request",
+                "a persistent profile contradicts the declared ephemeral variant",
+                {"profile": profile, "variant": self.variant},
             )
         resume = params.get("resume_checkpoint")
         checkpoint: dict[str, Any] | None = None
@@ -386,14 +390,27 @@ class WebKitGtkBackend:
         self.viewport = viewport
         self.quarantine = self.store.root / "downloads"
         self.quarantine.mkdir(parents=True, exist_ok=True)
-        result = self._request(
-            "session.open",
-            {
-                "width": int(viewport.get("width", 1280)),
-                "height": int(viewport.get("height", 800)),
-                "quarantine_dir": str(self.quarantine),
-            },
-        )
+        session_params: dict[str, Any] = {
+            "width": int(viewport.get("width", 1280)),
+            "height": int(viewport.get("height", 800)),
+            "quarantine_dir": str(self.quarantine),
+            "profile_mode": mode,
+        }
+        if mode == "persistent":
+            # Persistence lives where the host says, never in the engine's
+            # default profile location.
+            profile_dir = self.store.root / "profile"
+            profile_dir.mkdir(parents=True, exist_ok=True)
+            session_params["profile_dir"] = str(profile_dir)
+        result = self._request("session.open", session_params)
+        observed_ephemeral = result.get("is_ephemeral")
+        expected_ephemeral = mode != "persistent"
+        if observed_ephemeral is not None and bool(observed_ephemeral) != expected_ephemeral:
+            raise WorkbenchError(
+                "integrity_mismatch",
+                "the engine's session persistence does not match the declared profile",
+                {"declared": mode, "engine_is_ephemeral": observed_ephemeral},
+            )
         page = self._new_page_record(str(result["page_id"]))
 
         if checkpoint:

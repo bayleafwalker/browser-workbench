@@ -76,7 +76,25 @@ class AdapterTransport:
         for reader in self._readers:
             reader.start()
 
-        ready = self._next_frame(READY_TIMEOUT_S)
+        try:
+            ready = self._next_frame(READY_TIMEOUT_S)
+        except WorkbenchError as error:
+            # An adapter that never reaches `ready` never executed anything.
+            # That is a blocked environment — no display, no GTK, a bad build —
+            # not a failed execution, and the two must not be reported alike:
+            # `blocked` says nothing was attempted, `failed` says something was
+            # attempted and went wrong.
+            if error.code in {"backend_failed", "deadline_exceeded"}:
+                raise WorkbenchError(
+                    "capability_blocked",
+                    "the native adapter never became ready",
+                    {
+                        "argv": self.argv,
+                        "detail": error.data.get("detail", error.message),
+                        "stderr_tail": self.stderr_lines[-10:],
+                    },
+                ) from error
+            raise
         if ready.get("type") != "ready":
             raise WorkbenchError(
                 "backend_failed",

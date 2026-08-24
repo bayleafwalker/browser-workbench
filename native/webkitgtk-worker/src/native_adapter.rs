@@ -23,9 +23,9 @@ use serde::Serialize;
 use serde_json::{Value, json};
 use webkit6::prelude::*;
 use webkit6::{
-    Download, FileChooserRequest, LoadEvent, PermissionRequest, ScriptDialog, ScriptDialogType,
-    SnapshotOptions, SnapshotRegion, UserContentInjectedFrames, UserContentManager, UserScript,
-    UserScriptInjectionTime, WebView,
+    Download, FileChooserRequest, LoadEvent, NetworkSession, PermissionRequest, ScriptDialog,
+    ScriptDialogType, SnapshotOptions, SnapshotRegion, UserContentInjectedFrames,
+    UserContentManager, UserScript, UserScriptInjectionTime, WebView,
 };
 
 const TRANSPORT_VERSION: u64 = 1;
@@ -68,6 +68,7 @@ struct AdapterState {
     token_counter: u64,
     viewport: (i32, i32),
     quarantine: Option<String>,
+    session: Option<NetworkSession>,
     downloads_connected: bool,
 }
 
@@ -190,6 +191,7 @@ pub fn run() -> Result<()> {
                 token_counter: 0,
                 viewport: (1280, 800),
                 quarantine: None,
+                session: None,
                 downloads_connected: false,
             });
         });
@@ -368,18 +370,51 @@ fn op_session_open(seq: u64, params: &Value) {
         .get("quarantine_dir")
         .and_then(Value::as_str)
         .map(str::to_string);
+
+    // An ephemeral session keeps nothing on disk. A persistent one is given an
+    // explicit host-declared directory: persistence is always opt-in and always
+    // somewhere the host named, never the engine's default profile location.
+    let persistent = params.get("profile_mode").and_then(Value::as_str) == Some("persistent");
+    let session = if persistent {
+        let Some(data_directory) = params.get("profile_dir").and_then(Value::as_str) else {
+            with_state(|state| {
+                state.reply_error(
+                    seq,
+                    "invalid_request",
+                    "a persistent profile requires a declared profile_dir",
+                    json!({}),
+                );
+            });
+            return;
+        };
+        let cache_directory = format!("{data_directory}/cache");
+        NetworkSession::new(Some(data_directory), Some(&cache_directory))
+    } else {
+        NetworkSession::new_ephemeral()
+    };
     with_state(|state| {
         state.viewport = (width, height);
         state.window = Some(window);
         state.stack = Some(stack);
         state.quarantine = quarantine;
+        state.session = Some(session);
     });
 
     match create_page() {
         Some(page_id) => with_state(|state| {
+            let ephemeral = state
+                .session
+                .as_ref()
+                .map(|session| session.is_ephemeral())
+                .unwrap_or(true);
             state.reply_ok(
                 seq,
-                json!({"page_id": page_id, "viewport": {"width": width, "height": height}}),
+                json!({
+                    "page_id": page_id,
+                    "viewport": {"width": width, "height": height},
+                    // Read back from the engine rather than echoed from the request.
+                    "is_ephemeral": ephemeral,
+                }),
             );
         }),
         None => with_state(|state| {
@@ -422,7 +457,14 @@ fn create_page() -> Option<String> {
         &[],
     ));
 
-    let view = WebView::builder().user_content_manager(&manager).build();
+    let session = with_state(|state| state.session.clone())?;
+    let view = match session {
+        Some(session) => WebView::builder()
+            .user_content_manager(&manager)
+            .network_session(&session)
+            .build(),
+        None => WebView::builder().user_content_manager(&manager).build(),
+    };
     // Headless there is no window manager to honour a default window size, so
     // the declared viewport is expressed as the content view's own size
     // request. Otherwise the engine lays out at GTK's fallback size and every

@@ -48,34 +48,37 @@ def main() -> int:
         # without the adapter built; a mock substitution never is.
         run("webkitgtk-native-e2e", [python, "scripts/native_e2e.py", "--output", str(EVIDENCE / "native-slice1")], accept={0, 78}),
         run("webkitgtk-native-e2e-observation", [python, "scripts/native_e2e.py", "--spec", "examples/native-webkitgtk-slice2.json", "--output", str(EVIDENCE / "native-slice2")], accept={0, 78}),
-        run("webkitgtk-native-corpus-12x3", [python, "scripts/native_corpus.py", "--output", str(EVIDENCE / "native-corpus")], accept={0, 78}),
+        run("webkitgtk-native-corpus-12x3-ephemeral", [python, "scripts/native_corpus.py", "--output", str(EVIDENCE / "native-corpus")], accept={0, 78}),
+        run("webkitgtk-native-corpus-12x3-persistent", [python, "scripts/native_corpus.py", "--variant", "stable-persistent", "--output", str(EVIDENCE / "native-corpus-persistent")], accept={0, 78}),
     ]
     required = checks[:5]
     passed = all(item["status"] == "passed" for item in required)
     native_blocked = [item["name"] for item in checks[5:] if item["exit_code"] == 78]
     e2e_checks = [item for item in checks if item["name"].startswith("webkitgtk-native-e2e")]
-    corpus_check = next(item for item in checks if item["name"] == "webkitgtk-native-corpus-12x3")
+    corpus_checks = [item for item in checks if item["name"].startswith("webkitgtk-native-corpus")]
+    corpus_passed = all(item["exit_code"] == 0 for item in corpus_checks)
     report = {
         "schema_version": "browser-workbench.release-gate/v1",
         "release": "0.2.0-source-checkpoint",
         "status": "passed" if passed else "failed",
-        # The claim tracks what actually ran. A native corpus pass on one
-        # variant is more than source-and-mock, and less than Wave 2: Wave 2
-        # requires stable-ephemeral and stable-persistent, and persistent
-        # profiles are not implemented.
+        # The claim tracks what actually ran: the whole denominator on a real
+        # engine, on both declared variants.
         "claim": (
-            "source-mock-and-native-ephemeral-verified"
-            if corpus_check["exit_code"] == 0
+            "source-mock-and-native-corpus-verified"
+            if corpus_passed
             else "source-and-mock-verified"
         ),
-        # One session through the public protocol on a real engine. This is not
-        # corpus conformance: Wave 2 needs both variants x 12 scenarios x 3.
+        # One session through the public protocol on a real engine.
         "native_vertical_proof": "passed" if all(item["exit_code"] == 0 for item in e2e_checks) else "blocked",
-        "native_runtime_claim": False,
-        # Reserved for full native conformance across both declared variants.
-        # One variant is not both, however green it is.
-        "native_corpus_claim": corpus_check["exit_code"] == 0,
-        "native_corpus_status": corpus_check["status"],
+        # The whole denominator, both declared variants, on a real engine —
+        # the condition the baseline plan sets for a native runtime claim.
+        # It says nothing about the oracle or about Servo, which report
+        # separately in native_or_oracle_blocked.
+        "native_runtime_claim": corpus_passed,
+        "native_corpus_claim": corpus_passed,
+        "native_corpus_variants": {
+            item["name"].rsplit("-", 1)[-1]: item["status"] for item in corpus_checks
+        },
         "native_or_oracle_blocked": native_blocked,
         "checks": checks,
     }

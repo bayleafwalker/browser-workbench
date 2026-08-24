@@ -39,3 +39,10 @@
 - `page.navigate` marks its own request as loading, so a wait for an idle page can no longer be satisfied before the navigation starts;
 - added `quiesce()`: an idle load state is not a quiet engine, and actions drain their immediate effects before the receipt is sealed;
 - `scripts/native_corpus.py` and `workbench corpus --backend webkitgtk` execute the denominator natively; the release gate runs it and reports `native_corpus_claim`.
+
+## Unreleased — native slice 4 (persistent profiles, both variants green)
+
+- implemented persistent profiles as a host-located WebKitGTK `NetworkSession`; the engine's own `is_ephemeral()` is read back and a disagreement is `integrity_mismatch`;
+- declaring a persistent profile under the ephemeral variant is rejected, so the variant always describes what actually ran;
+- the corpus now runs on `stable-ephemeral` and `stable-persistent`, and the release gate and CI run both;
+- `native_runtime_claim` is now derived from both variants passing the whole denominator, rather than being hardcoded false.
