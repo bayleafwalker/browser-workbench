@@ -1,4 +1,4 @@
-# Handoff — native slices 1 and 2 (WebKitGTK)
+# Handoff — WebKitGTK native lane, slices 1 to 3
 
 Date: 2026-08-24. Host: Arch Linux, kernel 7.1.9-arch1-2, x86_64.
 
@@ -43,19 +43,58 @@ Three consecutive runs produced byte-identical DOM digests
 (`9942f784a4570720`), identical console and network counts, and identical PNG
 sizes. That is determinism observed on the native lane, not asserted.
 
+## Slice 3 — the whole denominator on a real engine
+
+**36/36. Twelve scenarios, three repetitions, deterministic, on WebKitGTK
+2.52.6 headless.**
+
+The corpus was frozen but its drivers were not portable: they encoded
+mock-only facts such as a virtual clock reading of exactly 10ms, pseudo
+JavaScript like `set-title:Declared`, and `request_id` correlation no real
+engine uses. Slice 3 split the corpus into frozen drivers plus a `Profile` of
+backend bindings (ADR-S3-01). The scenarios and assertion texts are untouched;
+the mock denominator still produces its original semantic digest.
+
+Native operations wired to get there: tabs, generation-scoped target
+enumeration, pointer and keyboard acts, stale-target rejection, script
+dialogs, permission requests, file-chooser uploads, quarantined downloads,
+checkpoint and resume, and real web-process termination.
+
+### The digests match, and what that does and does not mean
+
+Both corpora report semantic digest
+`a8d0c478fcdca32bc9167425744d3a9c54969c7d9e497fc6a48f388399b8a74f`.
+
+That digest covers scenario id, status, and assertion outcomes. Identical
+digests mean **every assertion resolved the same way on the real engine as on
+the deterministic mock**. They do **not** mean the two produced identical
+evidence, and must never be quoted as if they did: the traces, timings,
+providers, and artifacts differ throughout.
+
+### Where the engine legitimately differs
+
+Declared per assertion in `assertion_semantics`, and carried in the corpus
+summary so a native result can never be read as the mock denominator:
+
+| Assertion | On WebKitGTK |
+| --- | --- |
+| virtual clock is deterministic | no virtual clock; asserted as event-driven satisfaction with an advanced cursor |
+| provider class is recorded | javascript is `engine`, not the mock's `injected` |
+| network request and response correlate | correlated by URI; the engine has no `request_id` |
+| fresh target executes | targets discovered by injected script; no host-side target API exists |
+| crash is visible | a real web process is started and then killed |
+
 ## What is still not true
 
-- The 12-scenario corpus has not run on a native backend. Not once, let alone
-  three times, let alone on both variants. The corpus drivers in `corpus.py`
-  are written against `MockBackend` directly and would need a backend-neutral
-  harness before any native corpus run is possible.
+- `stable-persistent` has never run. The corpus passes on `stable-ephemeral`
+  only, so Wave 2's "both variants" requirement is half met. Persistent
+  profiles are still rejected as `capability_unsupported`.
 - `stable-persistent` is not implemented. `session.create` rejects persistent
   profiles as `capability_unsupported`.
-- Still unwired on the native lane: `page.tabs`, `page.act` pointer and
-  keyboard, target enumeration and stale-target rejection,
-  `session.checkpoint`, `page.termination`, dialog and permission decision
-  tokens, upload and download, and the `accessibility`, `dialogs`,
-  `permissions`, and `downloads` projections.
+- The `accessibility` projection is still unwired; the matrix already declares
+  it `partial`.
+- No differential report has been produced between the mock and native corpora.
+  Matching semantic digests are not a differential report.
 - Playwright oracle and ServoGTK remain unexecuted.
 - **Wave 2 is not complete.** This is one session.
 
@@ -131,6 +170,8 @@ Run on this host unless noted. Unabridged.
 | `xvfb-run -a python3 scripts/native_e2e.py --spec examples/native-webkitgtk-slice2.json` | **passed** — all 6 steps, all 5 gates, zero deviations |
 | slice 1 e2e repeated twice more | **passed** both times, zero deviations |
 | slice 2 e2e repeated three times | **passed** all three, zero deviations, identical digests |
+| `python3 scripts/native_corpus.py` (12x3) | **passed** — 36/36, deterministic |
+| `python3 -m workbench.cli corpus` (mock, 12x3) | **passed** — 36/36, digest unchanged at `a8d0c478…` |
 
 `cargo test --workspace --all-features` reporting zero tests is not a silent
 pass: neither Rust crate defines a test. The adapter is covered by the Python
@@ -235,15 +276,14 @@ the evidence records observed dimensions alongside declared ones.
 
 ## Next eligible slice
 
-Slice 3: target enumeration with generation-scoped identity, `page.act`
-pointer and keyboard, and stale-target rejection — the WB-S003 group, and the
-largest remaining gap between the native lane and the corpus.
+Slice 4: implement persistent profiles and run the corpus on
+`stable-persistent`. That is the last piece Wave 2 requires, and until it
+exists Wave 2 is not complete however good the ephemeral numbers look.
 
-Then, in order: `page.tabs`, dialog and permission decision tokens, upload and
-download, `session.checkpoint` and `page.termination`. Only once those exist
-does a backend-neutral corpus harness become worth building, and only then can
-`stable-ephemeral` run three times per scenario. `stable-persistent` needs a
-profile implementation before it can run at all.
+Then the Playwright oracle (still uninstalled, still blocked), and a real
+differential report between the lanes against declared partial-order
+tolerances. ServoGTK remains experimental and non-gating; its lane now builds
+in its own workspace and does not constrain the gating lane.
 
 Do not raise the release claim past `native_vertical_proof` until those runs
 exist. Wave 2 means real WebKitGTK corpus evidence, and it does not exist yet.

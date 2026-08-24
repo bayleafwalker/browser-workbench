@@ -1,0 +1,35 @@
+{
+  "assertions": [
+    {
+      "passed": true,
+      "text": "screenshot is an artifact"
+    },
+    {
+      "passed": true,
+      "text": "script result is bounded"
+    },
+    {
+      "passed": true,
+      "text": "provider class is recorded"
+    },
+    {
+      "passed": true,
+      "text": "state digest changes only when declared"
+    }
+  ],
+  "backend": {
+    "kind": "webkitgtk",
+    "variant": "stable-ephemeral"
+  },
+  "deviations": [],
+  "driver": "snapshot_screenshot_javascript",
+  "error": null,
+  "missing_assertions": [],
+  "repetition": 1,
+  "retry_count": 0,
+  "run_id": "WB-S005-r1",
+  "scenario_id": "WB-S005",
+  "schema_version": "browser-workbench.corpus-result/v1",
+  "status": "passed",
+  "unexpected_assertions": []
+}

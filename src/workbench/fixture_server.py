@@ -8,7 +8,14 @@ from typing import Any
 from .util import repo_root, sha256_bytes
 
 FIXTURE_ROOT = "examples/fixtures/site"
-CONTENT_TYPES = {".html": "text/html; charset=utf-8", ".txt": "text/plain; charset=utf-8"}
+CONTENT_TYPES = {
+    ".html": "text/html; charset=utf-8",
+    ".txt": "text/plain; charset=utf-8",
+    ".bin": "application/octet-stream",
+}
+# Served as an attachment so the engine starts a real download instead of
+# navigating to the file.
+ATTACHMENT_SUFFIXES = {".bin"}
 
 
 class FixtureServer:
@@ -56,6 +63,10 @@ class FixtureServer:
                 self.send_response(200)
                 self.send_header("Content-Type", CONTENT_TYPES.get(target.suffix, "application/octet-stream"))
                 self.send_header("Content-Length", str(len(body)))
+                if target.suffix in ATTACHMENT_SUFFIXES:
+                    self.send_header(
+                        "Content-Disposition", f'attachment; filename="{target.name}"'
+                    )
                 self.send_header("Cache-Control", "no-store")
                 self.end_headers()
                 self.wfile.write(body)

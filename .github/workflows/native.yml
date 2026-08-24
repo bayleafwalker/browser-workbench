@@ -14,8 +14,14 @@ jobs:
       - run: cargo build -p browser-workbench-webkitgtk-worker --no-default-features --features native
       # A compile gate is not evidence of a session; this executes one.
       - run: xvfb-run -a python scripts/native_e2e.py --output evidence/native-slice1
+      # The whole denominator on a real engine: 12 scenarios x 3 repetitions.
+      - run: xvfb-run -a python scripts/native_corpus.py --output evidence/native-corpus
       - uses: actions/upload-artifact@v4
-        with: {name: native-slice1-evidence, path: evidence/native-slice1}
+        with:
+          name: native-evidence
+          path: |
+            evidence/native-slice1
+            evidence/native-corpus
 
   playwright-oracle:
     runs-on: ubuntu-24.04

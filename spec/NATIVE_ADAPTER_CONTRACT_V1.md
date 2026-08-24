@@ -89,12 +89,33 @@ before it.
 | `op` | Purpose | Reply |
 | --- | --- | --- |
 | `handshake` | version and engine identity | immediate |
-| `session.open` | create the GTK window and hosted content view | immediate |
+| `session.open` | create the window and the first hosted content view | immediate |
+| `page.new` | add a content view to the session | immediate |
+| `page.list` | enumerate live content views | immediate |
+| `page.close` | drop one content view | immediate |
 | `page.navigate` | begin a navigation; acceptance only | immediate |
 | `page.observe` | read engine-owned page state | immediate |
 | `page.evaluate` | evaluate declared JavaScript, return its JSON projection | deferred |
 | `page.snapshot` | capture an engine snapshot as inline PNG bytes | deferred |
+| `page.decide` | resolve one browser-owned request | immediate |
+| `page.terminate` | kill the page's web process | immediate |
 | `shutdown` | orderly teardown | immediate |
+
+### Browser-owned requests
+
+Script dialogs, permission requests, file choosers, and downloads are raised by
+the engine and held open by the adapter until the host decides. The adapter
+emits an event carrying an opaque token and the default decision, and answers
+nothing on its own.
+
+`page.decide` consumes a token exactly once. A second decision on the same
+token is `precondition_failed`, because a decision that could be replayed is
+not a decision. Every default is the refusing one: deny, or cancel.
+
+Downloads are additionally constrained to a host-declared quarantine
+directory supplied at `session.open`. Without it the engine picks its own
+destination and the file escapes the evidence boundary before the host ever
+sees it.
 
 ### Deferred replies
 

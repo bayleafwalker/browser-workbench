@@ -8,6 +8,7 @@ from typing import Any, Callable
 from .compare import compare_runs
 from .errors import WorkbenchError
 from .evidence import ArtifactStore
+from .corpus_profiles import Profile, fixture_path, load_corpus, profile_for
 from .mock_backend import MockBackend
 from .util import canonical_bytes, pretty_json, repo_root, sha256_bytes, sha256_file, tree_digest
 
@@ -20,19 +21,13 @@ def _error_code(call: Callable[[], Any]) -> str | None:
     return None
 
 
-def _create(backend: MockBackend, writer: str = "writer-a") -> dict[str, Any]:
+def _create(backend: Any, writer: str = "writer-a") -> dict[str, Any]:
     return backend.session_create(
         {"client": {"id": writer, "kind": "human"}, "profile": {"mode": "ephemeral", "name": "corpus"}}
     )
 
 
-def _finish_navigation(backend: MockBackend, page_id: str) -> dict[str, Any]:
-    return backend.page_await(
-        {"page_id": page_id, "conditions": [{"kind": "load_state", "equals": "idle"}], "deadline_ms": 50}
-    )
-
-
-def _scenario_session_tabs_profiles(backend: MockBackend, store: ArtifactStore) -> dict[str, bool]:
+def _scenario_session_tabs_profiles(backend: Any, store: ArtifactStore, profile: Profile) -> dict[str, bool]:
     created = _create(backend)
     conflict = _error_code(
         lambda: backend.session_create(
@@ -47,10 +42,10 @@ def _scenario_session_tabs_profiles(backend: MockBackend, store: ArtifactStore) 
     }
 
 
-def _scenario_bounded_observation(backend: MockBackend, store: ArtifactStore) -> dict[str, bool]:
+def _scenario_bounded_observation(backend: Any, store: ArtifactStore, profile: Profile) -> dict[str, bool]:
     page_id = _create(backend)["page_id"]
-    backend.page_navigate({"page_id": page_id, "url": "https://fixture.invalid/large", "client_id": "writer-a"})
-    _finish_navigation(backend, page_id)
+    backend.page_navigate({"page_id": page_id, "url": profile.url("large"), "client_id": "writer-a"})
+    profile.settle(backend, page_id)
     observed = backend.page_observe(
         {"page_id": page_id, "projection": ["state", "dom", "raw-events"], "since_event": 0, "max_bytes": 1024}
     )
@@ -62,15 +57,11 @@ def _scenario_bounded_observation(backend: MockBackend, store: ArtifactStore) ->
     }
 
 
-def _scenario_generation_targets_receipts(backend: MockBackend, store: ArtifactStore) -> dict[str, bool]:
+def _scenario_generation_targets_receipts(backend: Any, store: ArtifactStore, profile: Profile) -> dict[str, bool]:
     page_id = _create(backend)["page_id"]
-    target = backend.page_observe({"page_id": page_id, "projection": "targets"})["data"]["targets"][0]
-    receipt = backend.page_act(
-        {"page_id": page_id, "client_id": "writer-a", "target": target, "intent": {"kind": "click"}}
-    )
-    backend.page_navigate(
-        {"page_id": page_id, "url": "https://fixture.invalid/next", "client_id": "writer-a", "wait": "commit"}
-    )
+    profile.open_start_page(backend, page_id)
+    target, receipt = profile.act_on_fresh_target(backend, page_id)
+    profile.advance_generation(backend, page_id)
     before = backend.backend_invocations
     stale = _error_code(
         lambda: backend.page_act(
@@ -85,10 +76,10 @@ def _scenario_generation_targets_receipts(backend: MockBackend, store: ArtifactS
     }
 
 
-def _scenario_event_driven_await(backend: MockBackend, store: ArtifactStore) -> dict[str, bool]:
+def _scenario_event_driven_await(backend: Any, store: ArtifactStore, profile: Profile) -> dict[str, bool]:
     page_id = _create(backend)["page_id"]
-    backend.page_navigate({"page_id": page_id, "url": "https://fixture.invalid/await", "client_id": "writer-a"})
-    done = _finish_navigation(backend, page_id)
+    backend.page_navigate({"page_id": page_id, "url": profile.url("await"), "client_id": "writer-a"})
+    done = profile.settle(backend, page_id)
     timeout = _error_code(
         lambda: backend.page_await(
             {"page_id": page_id, "conditions": [{"kind": "title", "equals": "Never"}], "deadline_ms": 7}
@@ -96,53 +87,51 @@ def _scenario_event_driven_await(backend: MockBackend, store: ArtifactStore) -> 
     )
     return {
         "scheduled event satisfies condition": done["satisfied"] is True,
-        "virtual clock is deterministic": done["monotonic_ms"] == 10,
+        "virtual clock is deterministic": profile.clock_is_deterministic(done),
         "deadline reports unsatisfied predicates": timeout == "deadline_exceeded",
     }
 
 
-def _scenario_snapshot_screenshot_javascript(backend: MockBackend, store: ArtifactStore) -> dict[str, bool]:
+def _scenario_snapshot_screenshot_javascript(backend: Any, store: ArtifactStore, profile: Profile) -> dict[str, bool]:
     page_id = _create(backend)["page_id"]
+    profile.open_start_page(backend, page_id)
     before = sha256_bytes(canonical_bytes(backend.pages[page_id]))
     screenshot = backend.page_observe({"page_id": page_id, "projection": "screenshot"})["data"]["screenshot"]
     after_screenshot = sha256_bytes(canonical_bytes(backend.pages[page_id]))
     changed = backend.page_act(
-        {"page_id": page_id, "client_id": "writer-a", "intent": {"kind": "javascript", "value": "set-title:Declared"}}
+        {"page_id": page_id, "client_id": "writer-a", "intent": profile.set_title_intent()}
     )
     read = backend.page_act(
-        {"page_id": page_id, "client_id": "writer-a", "intent": {"kind": "javascript", "value": "return-title"}}
+        {"page_id": page_id, "client_id": "writer-a", "intent": profile.read_title_intent()}
     )
     return {
         "screenshot is an artifact": screenshot["media_type"] == "image/png" and screenshot["size_bytes"] > 0,
         "script result is bounded": read["effects"][0]["value"] == "Declared" and len(canonical_bytes(read)) < 4096,
-        "provider class is recorded": changed["provider"] == "injected",
+        "provider class is recorded": changed["provider"] == profile.javascript_provider(),
         "state digest changes only when declared": before == after_screenshot and changed["state_before"] != changed["state_after"],
     }
 
 
-def _scenario_console_network_evidence(backend: MockBackend, store: ArtifactStore) -> dict[str, bool]:
+def _scenario_console_network_evidence(backend: Any, store: ArtifactStore, profile: Profile) -> dict[str, bool]:
     page_id = _create(backend)["page_id"]
-    backend.page_navigate({"page_id": page_id, "url": "https://fixture.invalid/console", "client_id": "writer-a"})
-    _finish_navigation(backend, page_id)
+    backend.page_navigate({"page_id": page_id, "url": profile.url("console"), "client_id": "writer-a"})
+    profile.settle(backend, page_id)
     observed = backend.page_observe(
         {"page_id": page_id, "projection": ["console", "network"], "since_event": 0, "max_bytes": 32768}
     )["data"]
     console = observed["console"]
     network = observed["network"]
-    request_ids = {event["payload"].get("request_id") for event in network if event["kind"] == "network.request"}
-    response_ids = {event["payload"].get("request_id") for event in network if event["kind"] == "network.response"}
     linked = all(event["raw_refs"] for event in console + network)
     return {
         "console record has event identity": bool(console and console[0]["event_id"]),
-        "network request and response correlate": bool(request_ids & response_ids),
+        "network request and response correlate": profile.correlates_requests(network),
         "raw and normalized records are linked": linked,
     }
 
 
-def _scenario_dialog_permission(backend: MockBackend, store: ArtifactStore) -> dict[str, bool]:
+def _scenario_dialog_permission(backend: Any, store: ArtifactStore, profile: Profile) -> dict[str, bool]:
     page_id = _create(backend)["page_id"]
-    backend.page_navigate({"page_id": page_id, "url": "https://fixture.invalid/prompts", "client_id": "writer-a"})
-    _finish_navigation(backend, page_id)
+    profile.prepare_prompts(backend, page_id)
     observed = backend.page_observe(
         {"page_id": page_id, "projection": ["dialogs", "permissions"], "max_bytes": 32768}
     )["data"]
@@ -167,19 +156,13 @@ def _scenario_dialog_permission(backend: MockBackend, store: ArtifactStore) -> d
     }
 
 
-def _scenario_upload_download(backend: MockBackend, store: ArtifactStore) -> dict[str, bool]:
+def _scenario_upload_download(backend: Any, store: ArtifactStore, profile: Profile) -> dict[str, bool]:
     page_id = _create(backend)["page_id"]
-    fixture = repo_root() / "examples" / "fixtures" / "upload.txt"
-    upload = backend.page_act(
-        {"page_id": page_id, "client_id": "writer-a", "intent": {"kind": "upload", "path": str(fixture)}}
-    )
-    download = backend.page_act(
-        {"page_id": page_id, "client_id": "writer-a", "intent": {"kind": "download.accept", "download_id": "fixture"}}
-    )
+    fixture = fixture_path()
+    upload = profile.upload_act(backend, page_id, fixture)
+    download = profile.download_act(backend, page_id)
     rejected = _error_code(
-        lambda: backend.page_act(
-            {"page_id": page_id, "client_id": "writer-a", "intent": {"kind": "upload", "path": str(repo_root() / "README.md")}}
-        )
+        lambda: profile.upload_act(backend, page_id, repo_root() / "README.md")
     )
     download_effect = download["effects"][0]
     return {
@@ -190,7 +173,7 @@ def _scenario_upload_download(backend: MockBackend, store: ArtifactStore) -> dic
     }
 
 
-def _scenario_checkpoint_handover(backend: MockBackend, store: ArtifactStore) -> dict[str, bool]:
+def _scenario_checkpoint_handover(backend: Any, store: ArtifactStore, profile: Profile) -> dict[str, bool]:
     page_id = _create(backend)["page_id"]
     checkpoint = backend.session_checkpoint({"client_id": "writer-a", "release_lease": True})
     old_fenced = _error_code(
@@ -198,7 +181,7 @@ def _scenario_checkpoint_handover(backend: MockBackend, store: ArtifactStore) ->
             {"page_id": page_id, "client_id": "writer-a", "intent": {"kind": "javascript", "value": "return-title"}}
         )
     )
-    successor = MockBackend(store, variant=backend.variant)
+    successor = profile.make_backend(store)
     resumed = successor.session_create(
         {"client": {"id": "writer-b", "kind": "agent"}, "profile": {"mode": "ephemeral"}, "resume_checkpoint": checkpoint["artifact"]}
     )
@@ -210,13 +193,13 @@ def _scenario_checkpoint_handover(backend: MockBackend, store: ArtifactStore) ->
     }
 
 
-def _scenario_crash_recovery_redacted_export(backend: MockBackend, store: ArtifactStore) -> dict[str, bool]:
+def _scenario_crash_recovery_redacted_export(backend: Any, store: ArtifactStore, profile: Profile) -> dict[str, bool]:
     page_id = _create(backend)["page_id"]
     checkpoint = backend.session_checkpoint({"client_id": "writer-a"})
-    backend.page_act({"page_id": page_id, "client_id": "writer-a", "intent": {"kind": "test.crash"}})
+    profile.crash(backend, page_id)
     visible = backend.page_observe({"page_id": page_id, "projection": "state"})["data"]["state"]
     traces = backend.flush_traces()
-    successor = MockBackend(store, variant=backend.variant)
+    successor = profile.make_backend(store)
     resumed = successor.session_create(
         {"client": {"id": "writer-b", "kind": "agent"}, "profile": {"mode": "ephemeral"}, "resume_checkpoint": checkpoint["artifact"]}
     )
@@ -246,7 +229,7 @@ def _comparison_fixture(step_order: list[str] | None = None, *, status: str = "p
     }
 
 
-def _scenario_differential_compare(backend: MockBackend, store: ArtifactStore) -> dict[str, bool]:
+def _scenario_differential_compare(backend: Any, store: ArtifactStore, profile: Profile) -> dict[str, bool]:
     baseline = _comparison_fixture(["a", "b"])
     candidate = _comparison_fixture(["b", "a"])
     candidate["steps"][0]["wall_time_ms"] = 999
@@ -262,7 +245,7 @@ def _scenario_differential_compare(backend: MockBackend, store: ArtifactStore) -
     }
 
 
-def _scenario_candidate_mutation_block(backend: MockBackend, store: ArtifactStore) -> dict[str, bool]:
+def _scenario_candidate_mutation_block(backend: Any, store: ArtifactStore, profile: Profile) -> dict[str, bool]:
     baseline_path = store.root / "inputs" / "baseline" / "result.json"
     candidate_path = store.root / "inputs" / "candidate" / "result.json"
     baseline_path.parent.mkdir(parents=True, exist_ok=True)
@@ -294,7 +277,7 @@ def _scenario_candidate_mutation_block(backend: MockBackend, store: ArtifactStor
     }
 
 
-DRIVERS: dict[str, Callable[[MockBackend, ArtifactStore], dict[str, bool]]] = {
+DRIVERS: dict[str, Callable[[Any, ArtifactStore, Profile], dict[str, bool]]] = {
     "session_tabs_profiles": _scenario_session_tabs_profiles,
     "bounded_observation": _scenario_bounded_observation,
     "generation_targets_receipts": _scenario_generation_targets_receipts,
@@ -310,8 +293,20 @@ DRIVERS: dict[str, Callable[[MockBackend, ArtifactStore], dict[str, bool]]] = {
 }
 
 
-def run_corpus(output_root: Path, repetitions: int | None = None) -> dict[str, Any]:
-    corpus = json.loads((repo_root() / "spec" / "WORKBENCH_CORPUS_V1.json").read_text(encoding="utf-8"))
+def run_corpus(
+    output_root: Path,
+    repetitions: int | None = None,
+    *,
+    profile: Profile | None = None,
+) -> dict[str, Any]:
+    """Execute the frozen denominator against one backend profile.
+
+    The scenarios and their assertion texts are frozen. Only the bindings that
+    reach them are backend-specific, and every such difference is declared in
+    the summary so a native result is never mistaken for the mock denominator.
+    """
+    profile = profile or profile_for("mock")
+    corpus = load_corpus()
     repetitions = repetitions or int(corpus["repetitions"])
     if repetitions < 1:
         raise WorkbenchError("invalid_request", "repetitions must be positive")
@@ -321,17 +316,21 @@ def run_corpus(output_root: Path, repetitions: int | None = None) -> dict[str, A
         for repetition in range(1, repetitions + 1):
             run_id = f"{scenario['id']}-r{repetition}"
             store = ArtifactStore(output_root / scenario["id"] / f"rep-{repetition}", run_id)
-            backend = MockBackend(store, variant="denominator")
             error: dict[str, Any] | None = None
             checks: dict[str, bool] = {}
+            deviations: list[dict[str, Any]] = []
+            backend = None
             try:
-                checks = driver(backend, store)
+                backend = profile.make_backend(store)
+                checks = driver(backend, store, profile)
             except Exception as exception:  # corpus must preserve a diagnostic record
                 if isinstance(exception, WorkbenchError):
                     error = exception.as_dict()
                 else:
                     error = {"code": "internal_invariant", "message": str(exception), "type": type(exception).__name__}
-            backend.flush_traces()
+            deviations = profile.close_all()
+            if backend is not None:
+                backend.flush_traces()
             missing = sorted(set(scenario["assertions"]) - set(checks))
             unexpected = sorted(set(checks) - set(scenario["assertions"]))
             passed = error is None and not missing and not unexpected and all(checks.values())
@@ -346,6 +345,8 @@ def run_corpus(output_root: Path, repetitions: int | None = None) -> dict[str, A
                 "missing_assertions": missing,
                 "unexpected_assertions": unexpected,
                 "error": error,
+                "deviations": deviations,
+                "backend": {"kind": profile.backend_kind, "variant": profile.variant},
                 "retry_count": 0,
             }
             store.write_json("result.json", result, "contract")
@@ -363,6 +364,10 @@ def run_corpus(output_root: Path, repetitions: int | None = None) -> dict[str, A
         "schema_version": "browser-workbench.corpus-summary/v1",
         "corpus_id": corpus["id"],
         "corpus_version": corpus["version"],
+        "backend": {"kind": profile.backend_kind, "variant": profile.variant},
+        # Where this backend legitimately reaches a frozen assertion by other
+        # means than the mock denominator does.
+        "assertion_semantics": profile.semantics(),
         "scenario_count": len(corpus["scenarios"]),
         "repetitions": repetitions,
         "run_count": len(records),

@@ -28,3 +28,14 @@
 - console capture is injected through a user content bridge and is labelled `injected`, never engine truth;
 - the declared viewport is now the content view's size request, with a recorded deviation if an observed snapshot is narrower than declared;
 - inline snapshot evidence is bounded; an oversized capture fails explicitly rather than being downscaled.
+
+## Unreleased — native slice 3 (the full corpus on a real engine)
+
+- split the corpus into frozen drivers and backend `Profile` bindings, so the same twelve scenarios run on the mock and on WebKitGTK;
+- every place a backend reaches a frozen assertion by other means is declared in `assertion_semantics` and travels with the corpus summary;
+- wired the remaining native operations: tabs, generation-scoped target enumeration, pointer and keyboard acts, stale-target rejection, script dialogs, permission requests, file chooser uploads, quarantined downloads, checkpoint and resume, and real web-process termination;
+- browser-owned requests are held open by the adapter until the host decides, with refusing defaults and single-use decision tokens;
+- downloads are confined to a host-declared quarantine directory;
+- `page.navigate` marks its own request as loading, so a wait for an idle page can no longer be satisfied before the navigation starts;
+- added `quiesce()`: an idle load state is not a quiet engine, and actions drain their immediate effects before the receipt is sealed;
+- `scripts/native_corpus.py` and `workbench corpus --backend webkitgtk` execute the denominator natively; the release gate runs it and reports `native_corpus_claim`.

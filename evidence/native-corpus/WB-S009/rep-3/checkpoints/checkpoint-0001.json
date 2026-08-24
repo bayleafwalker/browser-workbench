@@ -1,0 +1,40 @@
+{
+  "approval": null,
+  "backend": {
+    "identity": {
+      "adapter": "browser-workbench-webkitgtk-worker",
+      "adapter_version": "0.2.0",
+      "display_backend": "GdkX11Display",
+      "engine": "2.52.6",
+      "engine_api": "webkitgtk-6.0",
+      "gtk": "4.22.4",
+      "transport_version": 1
+    },
+    "kind": "webkitgtk",
+    "variant": "stable-ephemeral"
+  },
+  "checkpoint_id": "checkpoint-0001",
+  "event_cursor": 2,
+  "lease": {
+    "epoch": 1,
+    "id": "lease-0001",
+    "writer_id": "writer-a"
+  },
+  "parent": null,
+  "schema_version": "browser-workbench.checkpoint/v1",
+  "session_id": "session-0001",
+  "state": {
+    "active_page_id": "page-1",
+    "pages": {
+      "page-1": {
+        "generation": 1,
+        "last_navigation_outcome": null,
+        "lifecycle": "open",
+        "load_state": "idle",
+        "page_id": "page-1",
+        "title": "",
+        "url": "about:blank"
+      }
+    }
+  }
+}

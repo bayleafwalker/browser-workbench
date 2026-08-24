@@ -1,14 +1,16 @@
 //! WebKitGTK adapter process.
 //!
-//! Implements the host side of `spec/NATIVE_ADAPTER_CONTRACT_V1.md`: one
+//! Implements the adapter side of `spec/NATIVE_ADAPTER_CONTRACT_V1.md`: one
 //! ordered, line-delimited JSON channel on stdin/stdout, inside a real GTK
-//! application lifecycle hosting a real content view.
+//! application lifecycle hosting real content views.
 //!
 //! The adapter reports what the engine told it and nothing more. It does not
-//! normalize, coalesce, retry, or invent an event. Those are host concerns.
+//! normalize, coalesce, retry, or invent an event, and it holds no protocol
+//! state of its own: sessions, generations, leases, and evidence all belong to
+//! the host.
 
 use std::cell::RefCell;
-use std::collections::VecDeque;
+use std::collections::{HashMap, VecDeque};
 use std::io::{BufRead, Write};
 use std::sync::Mutex;
 use std::time::Instant;
@@ -21,12 +23,19 @@ use serde::Serialize;
 use serde_json::{Value, json};
 use webkit6::prelude::*;
 use webkit6::{
-    LoadEvent, SnapshotOptions, SnapshotRegion, UserContentInjectedFrames, UserContentManager,
-    UserScript, UserScriptInjectionTime, WebView,
+    Download, FileChooserRequest, LoadEvent, PermissionRequest, ScriptDialog, ScriptDialogType,
+    SnapshotOptions, SnapshotRegion, UserContentInjectedFrames, UserContentManager, UserScript,
+    UserScriptInjectionTime, WebView,
 };
 
 const TRANSPORT_VERSION: u64 = 1;
 const APPLICATION_ID: &str = "app.workbench.browser.WebKitGtkWorker";
+
+/// Maximum base64 payload the adapter will put in one frame.
+///
+/// Evidence is bounded by contract. An oversized snapshot is an explicit
+/// failure, never a silently downscaled or cropped image.
+const MAX_INLINE_EVIDENCE_BYTES: usize = 700 * 1024;
 
 /// Frames pushed by the stdin reader thread and drained on the GTK main thread.
 static INBOX: Mutex<VecDeque<Inbound>> = Mutex::new(VecDeque::new());
@@ -43,13 +52,23 @@ thread_local! {
 struct AdapterState {
     application: gtk::Application,
     window: Option<gtk::ApplicationWindow>,
-    view: Option<WebView>,
+    stack: Option<gtk::Stack>,
+    pages: HashMap<String, WebView>,
+    page_order: Vec<String>,
+    active_page: Option<String>,
+    dialogs: HashMap<String, ScriptDialog>,
+    permissions: HashMap<String, PermissionRequest>,
+    file_choosers: HashMap<String, FileChooserRequest>,
+    downloads: HashMap<String, Download>,
     hold: Option<gio::ApplicationHoldGuard>,
     started: Instant,
     ordinal: u64,
     navigations: u64,
-    page_generation: u64,
-    shutting_down: bool,
+    page_counter: u64,
+    token_counter: u64,
+    viewport: (i32, i32),
+    quarantine: Option<String>,
+    downloads_connected: bool,
 }
 
 impl AdapterState {
@@ -77,11 +96,12 @@ impl AdapterState {
         let _ = handle.flush();
     }
 
-    fn emit_event(&mut self, kind: &str, payload: Value) {
+    fn emit_event(&mut self, page_id: Option<&str>, kind: &str, payload: Value) {
         let monotonic_ms = self.monotonic_ms();
         self.write_frame(json!({
             "type": "event",
             "kind": kind,
+            "page_id": page_id,
             "monotonic_ms": monotonic_ms,
             "payload": payload,
         }));
@@ -98,6 +118,11 @@ impl AdapterState {
             "ok": false,
             "error": {"code": code, "message": message, "details": details},
         }));
+    }
+
+    fn next_token(&mut self, prefix: &str) -> String {
+        self.token_counter += 1;
+        format!("{prefix}-{:04}", self.token_counter)
     }
 }
 
@@ -149,13 +174,23 @@ pub fn run() -> Result<()> {
             *cell.borrow_mut() = Some(AdapterState {
                 application: application.clone(),
                 window: None,
-                view: None,
+                stack: None,
+                pages: HashMap::new(),
+                page_order: Vec::new(),
+                active_page: None,
+                dialogs: HashMap::new(),
+                permissions: HashMap::new(),
+                file_choosers: HashMap::new(),
+                downloads: HashMap::new(),
                 hold: Some(hold),
                 started: Instant::now(),
                 ordinal: 0,
                 navigations: 0,
-                page_generation: 0,
-                shutting_down: false,
+                page_counter: 0,
+                token_counter: 0,
+                viewport: (1280, 800),
+                quarantine: None,
+                downloads_connected: false,
             });
         });
         let identity = serde_json::to_value(identity()).unwrap_or(Value::Null);
@@ -210,10 +245,7 @@ fn drain_inbox() {
             Some(Inbound::Line(line)) => handle_line(&line),
             // The host vanished. Exit rather than linger holding a browser session.
             Some(Inbound::Closed) => {
-                with_state(|state| {
-                    state.shutting_down = true;
-                    teardown(state);
-                });
+                with_state(teardown);
                 return;
             }
             None => return,
@@ -274,14 +306,18 @@ fn dispatch(seq: u64, op: &str, params: &Value) {
             with_state(|state| state.reply_ok(seq, json!({"identity": identity})));
         }
         "session.open" => op_session_open(seq, params),
+        "page.new" => op_page_new(seq),
+        "page.list" => op_page_list(seq),
+        "page.close" => op_page_close(seq, params),
         "page.navigate" => op_page_navigate(seq, params),
-        "page.observe" => op_page_observe(seq),
+        "page.observe" => op_page_observe(seq, params),
         "page.evaluate" => op_page_evaluate(seq, params),
         "page.snapshot" => op_page_snapshot(seq, params),
+        "page.terminate" => op_page_terminate(seq, params),
+        "page.decide" => op_page_decide(seq, params),
         "shutdown" => {
             with_state(|state| {
                 state.reply_ok(seq, json!({"closing": true}));
-                state.shutting_down = true;
                 teardown(state);
             });
         }
@@ -298,12 +334,13 @@ fn dispatch(seq: u64, op: &str, params: &Value) {
     }
 }
 
+// -- page lifecycle -------------------------------------------------------
+
 fn op_session_open(seq: u64, params: &Value) {
     let width = params.get("width").and_then(Value::as_i64).unwrap_or(1280) as i32;
     let height = params.get("height").and_then(Value::as_i64).unwrap_or(800) as i32;
 
-    let already_open = with_state(|state| state.view.is_some()).unwrap_or(false);
-    if already_open {
+    if with_state(|state| state.window.is_some()).unwrap_or(false) {
         with_state(|state| {
             state.reply_error(
                 seq,
@@ -314,28 +351,65 @@ fn op_session_open(seq: u64, params: &Value) {
         });
         return;
     }
-
-    let application = match with_state(|state| state.application.clone()) {
-        Some(application) => application,
-        None => return,
+    let Some(application) = with_state(|state| state.application.clone()) else {
+        return;
     };
 
-    let manager = UserContentManager::new();
-    if !manager.register_script_message_handler("workbench", None) {
-        with_state(|state| {
+    let stack = gtk::Stack::new();
+    let window = gtk::ApplicationWindow::builder()
+        .application(&application)
+        .title("Browser Workbench")
+        .default_width(width)
+        .default_height(height)
+        .build();
+    window.set_child(Some(&stack));
+    window.present();
+    let quarantine = params
+        .get("quarantine_dir")
+        .and_then(Value::as_str)
+        .map(str::to_string);
+    with_state(|state| {
+        state.viewport = (width, height);
+        state.window = Some(window);
+        state.stack = Some(stack);
+        state.quarantine = quarantine;
+    });
+
+    match create_page() {
+        Some(page_id) => with_state(|state| {
+            state.reply_ok(
+                seq,
+                json!({"page_id": page_id, "viewport": {"width": width, "height": height}}),
+            );
+        }),
+        None => with_state(|state| {
             state.reply_error(
                 seq,
                 "backend_failed",
-                "the console bridge handler could not be registered",
+                "page could not be created",
                 json!({}),
-            );
-        });
-        return;
+            )
+        }),
+    };
+}
+
+/// Builds one content view, wires its engine hooks, and puts it on screen.
+fn create_page() -> Option<String> {
+    let (stack, viewport, page_counter) =
+        with_state(|state| (state.stack.clone(), state.viewport, state.page_counter))?;
+    let stack = stack?;
+    let page_id = format!("page-{}", page_counter + 1);
+
+    let manager = UserContentManager::new();
+    if !manager.register_script_message_handler("workbench", None) {
+        return None;
     }
-    manager.connect_script_message_received(Some("workbench"), |_manager, value| {
+    let handler_page = page_id.clone();
+    manager.connect_script_message_received(Some("workbench"), move |_manager, value| {
         // Raw injected payload, reported exactly as the page sent it.
         let text = value.to_json(0).map(|json| json.to_string());
         emit(
+            Some(&handler_page),
             "script-message",
             json!({"handler": "workbench", "json": text}),
         );
@@ -353,33 +427,121 @@ fn op_session_open(seq: u64, params: &Value) {
     // the declared viewport is expressed as the content view's own size
     // request. Otherwise the engine lays out at GTK's fallback size and every
     // snapshot silently disagrees with the run spec.
-    view.set_size_request(width, height);
-    install_engine_hooks(&view);
-    let window = gtk::ApplicationWindow::builder()
-        .application(&application)
-        .title("Browser Workbench")
-        .default_width(width)
-        .default_height(height)
-        .build();
-    // The shell hosts the real content view; it is not a screenshot surface.
-    window.set_child(Some(&view));
-    window.present();
+    view.set_size_request(viewport.0, viewport.1);
+    install_engine_hooks(&view, &page_id);
+    install_download_hooks(&view);
+    stack.add_named(&view, Some(&page_id));
+    stack.set_visible_child(&view);
 
     with_state(|state| {
-        state.page_generation = 1;
-        state.window = Some(window);
-        state.view = Some(view);
-        let generation = state.page_generation;
-        state.reply_ok(
-            seq,
-            json!({
-                "page_id": "page-1",
-                "generation": generation,
-                "viewport": {"width": width, "height": height},
-            }),
-        );
+        state.page_counter += 1;
+        state.pages.insert(page_id.clone(), view);
+        state.page_order.push(page_id.clone());
+        state.active_page = Some(page_id.clone());
     });
+    Some(page_id)
 }
+
+fn op_page_new(seq: u64) {
+    if with_state(|state| state.stack.is_none()).unwrap_or(true) {
+        with_state(|state| {
+            state.reply_error(seq, "backend_rejected", "no session is open", json!({}));
+        });
+        return;
+    }
+    match create_page() {
+        Some(page_id) => {
+            with_state(|state| state.reply_ok(seq, json!({"page_id": page_id})));
+        }
+        None => {
+            with_state(|state| {
+                state.reply_error(
+                    seq,
+                    "backend_failed",
+                    "page could not be created",
+                    json!({}),
+                )
+            });
+        }
+    }
+}
+
+fn op_page_list(seq: u64) {
+    let pages = with_state(|state| {
+        let active = state.active_page.clone();
+        state
+            .page_order
+            .iter()
+            .filter_map(|page_id| {
+                state.pages.get(page_id).map(|view| {
+                    json!({
+                        "page_id": page_id,
+                        "url": view.uri().map(|value| value.to_string()),
+                        "title": view.title().map(|value| value.to_string()),
+                        "active": Some(page_id.clone()) == active,
+                    })
+                })
+            })
+            .collect::<Vec<_>>()
+    })
+    .unwrap_or_default();
+    with_state(|state| state.reply_ok(seq, json!({"pages": pages})));
+}
+
+fn op_page_close(seq: u64, params: &Value) {
+    let Some(page_id) = page_param(seq, params) else {
+        return;
+    };
+    let removed = with_state(|state| {
+        let view = state.pages.remove(&page_id);
+        state.page_order.retain(|item| item != &page_id);
+        if state.active_page.as_deref() == Some(page_id.as_str()) {
+            state.active_page = state.page_order.last().cloned();
+        }
+        (view, state.stack.clone())
+    });
+    match removed {
+        Some((Some(view), Some(stack))) => {
+            stack.remove(&view);
+            with_state(|state| state.reply_ok(seq, json!({"closed": page_id})));
+        }
+        _ => {
+            with_state(|state| {
+                state.reply_error(seq, "page_not_found", "page does not exist", json!({}))
+            });
+        }
+    }
+}
+
+/// Resolves the `page_id` parameter to a live view, replying with an error if
+/// it names nothing.
+fn page_view(seq: u64, params: &Value) -> Option<(String, WebView)> {
+    let page_id = params
+        .get("page_id")
+        .and_then(Value::as_str)
+        .map(str::to_string)
+        .or_else(|| with_state(|state| state.active_page.clone()).flatten())?;
+    match with_state(|state| state.pages.get(&page_id).cloned()).flatten() {
+        Some(view) => Some((page_id, view)),
+        None => {
+            with_state(|state| {
+                state.reply_error(
+                    seq,
+                    "page_not_found",
+                    "page does not exist",
+                    json!({"page_id": page_id}),
+                );
+            });
+            None
+        }
+    }
+}
+
+fn page_param(seq: u64, params: &Value) -> Option<String> {
+    page_view(seq, params).map(|(page_id, _)| page_id)
+}
+
+// -- page operations ------------------------------------------------------
 
 fn op_page_navigate(seq: u64, params: &Value) {
     let url = params
@@ -393,14 +555,8 @@ fn op_page_navigate(seq: u64, params: &Value) {
         });
         return;
     }
-    let view = match with_state(|state| state.view.clone()).flatten() {
-        Some(view) => view,
-        None => {
-            with_state(|state| {
-                state.reply_error(seq, "page_not_found", "no page is open", json!({}));
-            });
-            return;
-        }
+    let Some((_page_id, view)) = page_view(seq, params) else {
+        return;
     };
 
     // Acceptance only. Whether the navigation succeeded is established by the
@@ -419,15 +575,9 @@ fn op_page_navigate(seq: u64, params: &Value) {
     });
 }
 
-fn op_page_observe(seq: u64) {
-    let view = match with_state(|state| state.view.clone()).flatten() {
-        Some(view) => view,
-        None => {
-            with_state(|state| {
-                state.reply_error(seq, "page_not_found", "no page is open", json!({}));
-            });
-            return;
-        }
+fn op_page_observe(seq: u64, params: &Value) {
+    let Some((page_id, view)) = page_view(seq, params) else {
+        return;
     };
     let uri = view.uri().map(|value| value.to_string());
     let title = view.title().map(|value| value.to_string());
@@ -436,12 +586,10 @@ fn op_page_observe(seq: u64) {
     let can_go_back = view.can_go_back();
     let can_go_forward = view.can_go_forward();
     with_state(|state| {
-        let generation = state.page_generation;
         state.reply_ok(
             seq,
             json!({
-                "page_id": "page-1",
-                "generation": generation,
+                "page_id": page_id,
                 "url": uri,
                 "title": title,
                 "is_loading": is_loading,
@@ -453,22 +601,13 @@ fn op_page_observe(seq: u64) {
     });
 }
 
-/// Maximum base64 payload the adapter will put in one frame.
-///
-/// Evidence is bounded by contract. An oversized snapshot is an explicit
-/// failure, never a silently downscaled or cropped image.
-const MAX_INLINE_EVIDENCE_BYTES: usize = 700 * 1024;
-
-fn current_view(seq: u64) -> Option<WebView> {
-    match with_state(|state| state.view.clone()).flatten() {
-        Some(view) => Some(view),
-        None => {
-            with_state(|state| {
-                state.reply_error(seq, "page_not_found", "no page is open", json!({}));
-            });
-            None
-        }
-    }
+fn op_page_terminate(seq: u64, params: &Value) {
+    let Some((_page_id, view)) = page_view(seq, params) else {
+        return;
+    };
+    // A real web process kill, not a simulated lifecycle flag.
+    view.terminate_web_process();
+    with_state(|state| state.reply_ok(seq, json!({"terminated": true})));
 }
 
 /// Evaluate declared JavaScript in the page and return its JSON projection.
@@ -493,7 +632,7 @@ fn op_page_evaluate(seq: u64, params: &Value) {
         });
         return;
     }
-    let Some(view) = current_view(seq) else {
+    let Some((_page_id, view)) = page_view(seq, params) else {
         return;
     };
     let future = view.evaluate_javascript_future(&script, None, None);
@@ -529,7 +668,7 @@ fn op_page_snapshot(seq: u64, params: &Value) {
         .and_then(Value::as_str)
         .unwrap_or("full-document")
         == "full-document";
-    let Some(view) = current_view(seq) else {
+    let Some((_page_id, view)) = page_view(seq, params) else {
         return;
     };
     let region = if full {
@@ -581,15 +720,123 @@ fn op_page_snapshot(seq: u64, params: &Value) {
     });
 }
 
-fn teardown(state: &mut AdapterState) {
-    if let Some(window) = state.window.take() {
-        window.close();
+// -- browser-owned decisions ---------------------------------------------
+
+/// Applies one host decision to a pending browser-owned request.
+///
+/// Dialogs, permissions, file choosers, and downloads are all held open until
+/// the host decides. The adapter never answers on the host's behalf and never
+/// answers the same request twice: the token is consumed on use.
+fn op_page_decide(seq: u64, params: &Value) {
+    let token = params
+        .get("token")
+        .and_then(Value::as_str)
+        .unwrap_or("")
+        .to_string();
+    let decision = params
+        .get("decision")
+        .and_then(Value::as_str)
+        .unwrap_or("")
+        .to_string();
+
+    if let Some(dialog) = with_state(|state| state.dialogs.remove(&token)).flatten() {
+        match decision.as_str() {
+            "accept" => {
+                dialog.confirm_set_confirmed(true);
+                if dialog.dialog_type() == ScriptDialogType::Prompt {
+                    dialog
+                        .prompt_set_text(params.get("value").and_then(Value::as_str).unwrap_or(""));
+                }
+            }
+            _ => dialog.confirm_set_confirmed(false),
+        }
+        dialog.close();
+        with_state(|state| {
+            state.reply_ok(
+                seq,
+                json!({"token": token, "decision": decision, "kind": "dialog"}),
+            );
+        });
+        return;
     }
-    state.view = None;
-    // Dropping the hold guard lets the application loop finish.
-    state.hold = None;
-    state.application.quit();
+
+    if let Some(request) = with_state(|state| state.permissions.remove(&token)).flatten() {
+        if decision == "allow" {
+            request.allow();
+        } else {
+            request.deny();
+        }
+        with_state(|state| {
+            state.reply_ok(
+                seq,
+                json!({"token": token, "decision": decision, "kind": "permission"}),
+            );
+        });
+        return;
+    }
+
+    if let Some(request) = with_state(|state| state.file_choosers.remove(&token)).flatten() {
+        if decision == "select" {
+            let files: Vec<String> = params
+                .get("files")
+                .and_then(Value::as_array)
+                .map(|items| {
+                    items
+                        .iter()
+                        .filter_map(Value::as_str)
+                        .map(str::to_string)
+                        .collect()
+                })
+                .unwrap_or_default();
+            let borrowed: Vec<&str> = files.iter().map(String::as_str).collect();
+            request.select_files(&borrowed);
+            with_state(|state| {
+                state.reply_ok(
+                    seq,
+                    json!({"token": token, "decision": decision, "kind": "file-chooser", "files": files}),
+                );
+            });
+        } else {
+            request.cancel();
+            with_state(|state| {
+                state.reply_ok(
+                    seq,
+                    json!({"token": token, "decision": "cancel", "kind": "file-chooser"}),
+                );
+            });
+        }
+        return;
+    }
+
+    if let Some(download) = with_state(|state| state.downloads.get(&token).cloned()).flatten() {
+        if decision == "cancel" {
+            download.cancel();
+        }
+        with_state(|state| {
+            state.reply_ok(
+                seq,
+                json!({
+                    "token": token,
+                    "decision": decision,
+                    "kind": "download",
+                    "destination": download.destination().map(|value| value.to_string()),
+                }),
+            );
+        });
+        return;
+    }
+
+    with_state(|state| {
+        state.reply_error(
+            seq,
+            "precondition_failed",
+            "decision token is unknown or already consumed",
+            json!({"token": token}),
+        );
+    });
 }
+
+// -- engine hooks ---------------------------------------------------------
 
 /// Injected console bridge.
 ///
@@ -646,9 +893,11 @@ fn base64_encode(data: &[u8]) -> String {
     out
 }
 
-fn install_engine_hooks(view: &WebView) {
-    view.connect_load_changed(|view, phase: LoadEvent| {
+fn install_engine_hooks(view: &WebView, page_id: &str) {
+    let page = page_id.to_string();
+    view.connect_load_changed(move |view, phase: LoadEvent| {
         emit(
+            Some(&page),
             "load-changed",
             json!({
                 "phase": match phase {
@@ -664,8 +913,10 @@ fn install_engine_hooks(view: &WebView) {
             }),
         );
     });
-    view.connect_load_failed(|view, _phase, uri, error| {
+    let page = page_id.to_string();
+    view.connect_load_failed(move |view, _phase, uri, error| {
         emit(
+            Some(&page),
             "load-failed",
             json!({
                 "url": uri,
@@ -675,17 +926,21 @@ fn install_engine_hooks(view: &WebView) {
         );
         false
     });
-    view.connect_resource_load_started(|_view, resource, request| {
+    let page = page_id.to_string();
+    view.connect_resource_load_started(move |_view, resource, request| {
         // Raw request identity is captured before any host-side normalization.
         emit(
+            Some(&page),
             "resource-load-started",
             json!({"url": request.uri().map(|value| value.to_string())}),
         );
         // Response status is only knowable per resource, which is why the
         // capability matrix declares this lane partial rather than exact.
-        resource.connect_response_notify(|resource| {
+        let response_page = page.clone();
+        resource.connect_response_notify(move |resource| {
             let response = resource.response();
             emit(
+                Some(&response_page),
                 "resource-response",
                 json!({
                     "url": resource.uri().map(|value| value.to_string()),
@@ -697,8 +952,10 @@ fn install_engine_hooks(view: &WebView) {
                 }),
             );
         });
-        resource.connect_failed(|resource, error| {
+        let failed_page = page.clone();
+        resource.connect_failed(move |resource, error| {
             emit(
+                Some(&failed_page),
                 "resource-failed",
                 json!({
                     "url": resource.uri().map(|value| value.to_string()),
@@ -707,11 +964,80 @@ fn install_engine_hooks(view: &WebView) {
             );
         });
     });
-    view.connect_script_dialog(|_view, _dialog| false); // host resolves decision tokens
-    view.connect_permission_request(|_view, _request| false); // default deny until declared
-    view.connect_run_file_chooser(|_view, _request| false); // only declared fixture paths
-    view.connect_web_process_terminated(|view, reason| {
+
+    // Browser-owned decisions are held open, never answered by the adapter.
+    let page = page_id.to_string();
+    view.connect_script_dialog(move |_view, dialog| {
+        let token = with_state(|state| {
+            let token = state.next_token("dialog");
+            state.dialogs.insert(token.clone(), dialog.clone());
+            token
+        });
+        let Some(token) = token else {
+            return false;
+        };
         emit(
+            Some(&page),
+            "script-dialog",
+            json!({
+                "token": token,
+                "dialog_type": format!("{:?}", dialog.dialog_type()),
+                "message": dialog.message().map(|value| value.to_string()),
+                "default_text": dialog.prompt_get_default_text().map(|value| value.to_string()),
+                "default_decision": "deny",
+            }),
+        );
+        // Handled: the dialog stays open until the host decides.
+        true
+    });
+    let page = page_id.to_string();
+    view.connect_permission_request(move |_view, request| {
+        let token = with_state(|state| {
+            let token = state.next_token("permission");
+            state.permissions.insert(token.clone(), request.clone());
+            token
+        });
+        let Some(token) = token else {
+            return false;
+        };
+        emit(
+            Some(&page),
+            "permission-request",
+            json!({
+                "token": token,
+                "request_type": request.type_().name(),
+                "default_decision": "deny",
+            }),
+        );
+        true
+    });
+    let page = page_id.to_string();
+    view.connect_run_file_chooser(move |_view, request| {
+        let token = with_state(|state| {
+            let token = state.next_token("filechooser");
+            state.file_choosers.insert(token.clone(), request.clone());
+            token
+        });
+        let Some(token) = token else {
+            return false;
+        };
+        emit(
+            Some(&page),
+            "file-chooser",
+            json!({
+                "token": token,
+                "selects_multiple": request.selects_multiple(),
+                "mime_types": request.mime_types().iter().map(|value| value.to_string()).collect::<Vec<_>>(),
+                "default_decision": "cancel",
+            }),
+        );
+        true
+    });
+
+    let page = page_id.to_string();
+    view.connect_web_process_terminated(move |view, reason| {
+        emit(
+            Some(&page),
             "web-process-terminated",
             json!({
                 "reason": format!("{reason:?}"),
@@ -720,8 +1046,10 @@ fn install_engine_hooks(view: &WebView) {
         );
     });
     view.connect_create(|_view, _action| None); // popup becomes a host-owned tab or is rejected
-    view.connect_title_notify(|view| {
+    let page = page_id.to_string();
+    view.connect_title_notify(move |view| {
         emit(
+            Some(&page),
             "title-changed",
             json!({
                 "title": view.title().map(|value| value.to_string()),
@@ -731,12 +1059,101 @@ fn install_engine_hooks(view: &WebView) {
     });
 }
 
+/// Downloads are session-scoped, so they are wired once per session.
+fn install_download_hooks(view: &WebView) {
+    if with_state(|state| state.downloads_connected).unwrap_or(true) {
+        return;
+    }
+    let Some(session) = view.network_session() else {
+        return;
+    };
+    session.connect_download_started(|_session, download| {
+        let token = with_state(|state| {
+            let token = state.next_token("download");
+            state.downloads.insert(token.clone(), download.clone());
+            token
+        });
+        let Some(token) = token else {
+            return;
+        };
+        emit(
+            None,
+            "download-started",
+            json!({
+                "token": token,
+                "url": download
+                    .request()
+                    .and_then(|request| request.uri())
+                    .map(|value| value.to_string()),
+            }),
+        );
+        // Every download lands in the host-declared quarantine directory.
+        // Without this the engine picks its own destination and the file
+        // escapes the evidence boundary before the host ever sees it.
+        download.connect_decide_destination(move |download, suggested| {
+            let Some(quarantine) = with_state(|state| state.quarantine.clone()).flatten() else {
+                download.cancel();
+                return true;
+            };
+            let name = if suggested.is_empty() {
+                "download.bin"
+            } else {
+                suggested
+            };
+            let destination = format!("{quarantine}/{name}");
+            download.set_allow_overwrite(true);
+            download.set_destination(&destination);
+            emit(
+                None,
+                "download-destination",
+                json!({"suggested": suggested, "destination": destination}),
+            );
+            true
+        });
+        let finished_token = token.clone();
+        download.connect_finished(move |download| {
+            emit(
+                None,
+                "download-finished",
+                json!({
+                    "token": finished_token,
+                    "destination": download.destination().map(|value| value.to_string()),
+                    "received_bytes": download.received_data_length(),
+                }),
+            );
+        });
+        let failed_token = token.clone();
+        download.connect_failed(move |_download, error| {
+            emit(
+                None,
+                "download-failed",
+                json!({"token": failed_token, "error": error.to_string()}),
+            );
+        });
+    });
+    with_state(|state| state.downloads_connected = true);
+}
+
+fn teardown(state: &mut AdapterState) {
+    for (_page_id, view) in state.pages.drain() {
+        view.try_close();
+    }
+    state.page_order.clear();
+    state.active_page = None;
+    if let Some(window) = state.window.take() {
+        window.close();
+    }
+    state.stack = None;
+    // Dropping the hold guard lets the application loop finish.
+    state.hold = None;
+    state.application.quit();
+}
+
 /// Pinned engine surface that is not wired yet.
 ///
-/// `evaluate_javascript_future` and `snapshot_future` are now reachable
-/// through `page.evaluate` and `page.snapshot`; they remain named here because
-/// the source gate asserts the pinned boundary. `reload` and `stop_loading`
-/// are genuinely unwired and must not be described as available.
+/// `reload` and `stop_loading` are genuinely unwired and must not be described
+/// as available; they are named here because the source gate asserts the
+/// pinned boundary.
 #[allow(dead_code)]
 fn declared_operations(view: &WebView) {
     view.reload();
@@ -749,6 +1166,6 @@ fn declared_operations(view: &WebView) {
     });
 }
 
-fn emit(kind: &str, payload: Value) {
-    with_state(|state| state.emit_event(kind, payload));
+fn emit(page_id: Option<&str>, kind: &str, payload: Value) {
+    with_state(|state| state.emit_event(page_id, kind, payload));
 }

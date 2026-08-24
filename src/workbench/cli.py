@@ -35,6 +35,8 @@ def _parser() -> argparse.ArgumentParser:
     corpus = sub.add_parser("corpus", help="execute the frozen workbench denominator")
     corpus.add_argument("--output", type=Path, required=True)
     corpus.add_argument("--repetitions", type=int)
+    corpus.add_argument("--backend", choices=["mock", "webkitgtk"], default="mock")
+    corpus.add_argument("--variant")
     return parser
 
 
@@ -59,7 +61,22 @@ def main(argv: list[str] | None = None) -> int:
             print(pretty_json(report), end="")
             return EXIT.get(report["status"], 1)
         if args.command == "corpus":
-            summary = run_corpus(args.output, args.repetitions)
+            if args.backend == "mock":
+                summary = run_corpus(args.output, args.repetitions)
+            else:
+                # A native corpus needs the fixture site to exist for the
+                # duration of every scenario, not just the first.
+                from .corpus_profiles import profile_for
+                from .fixture_server import FixtureServer
+
+                with FixtureServer() as fixture:
+                    summary = run_corpus(
+                        args.output,
+                        args.repetitions,
+                        profile=profile_for(
+                            args.backend, base_url=fixture.base_url, variant=args.variant
+                        ),
+                    )
             print(pretty_json(summary), end="")
             return EXIT[summary["status"]]
     except WorkbenchError as error:

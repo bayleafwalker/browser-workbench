@@ -31,6 +31,13 @@ EVENT_KINDS = {
     "resource-load-started": "network.request",
     "resource-response": "network.response",
     "resource-failed": "network.failed",
+    "script-dialog": "dialog.opened",
+    "permission-request": "permission.requested",
+    "file-chooser": "file_chooser.opened",
+    "download-started": "download.started",
+    "download-destination": "download.destination",
+    "download-finished": "download.finished",
+    "download-failed": "download.failed",
     "title-changed": "page.title_changed",
     "web-process-terminated": "page.terminated",
 }
@@ -57,9 +64,31 @@ class WebKitGtkBackend:
         "page.await",
         "page.act",
         "session.export",
+        "session.checkpoint",
+        "page.tabs",
     }
-    SUPPORTED_PROJECTIONS = {"state", "raw-events", "dom", "console", "network", "screenshot"}
-    SUPPORTED_INTENTS = {"javascript"}
+    SUPPORTED_PROJECTIONS = {
+        "state",
+        "raw-events",
+        "dom",
+        "console",
+        "network",
+        "screenshot",
+        "targets",
+        "dialogs",
+        "permissions",
+        "downloads",
+    }
+    SUPPORTED_INTENTS = {
+        "javascript",
+        "click",
+        "type",
+        "dialog.resolve",
+        "permission.resolve",
+        "upload",
+        "download.accept",
+        "test.crash",
+    }
 
     def __init__(self, store: ArtifactStore, variant: str = "stable-ephemeral", *, root: Path | None = None) -> None:
         if variant not in {"stable-ephemeral", "stable-persistent", "default"}:
@@ -72,7 +101,16 @@ class WebKitGtkBackend:
         self.transport: AdapterTransport | None = None
         self.identity: dict[str, Any] = {}
         self.page: dict[str, Any] | None = None
+        self.pages: dict[str, dict[str, Any]] = {}
+        self.active_page_id: str | None = None
         self.viewport: dict[str, Any] = {}
+        self.dialogs: dict[str, dict[str, Any]] = {}
+        self.permissions: dict[str, dict[str, Any]] = {}
+        self.file_choosers: dict[str, dict[str, Any]] = {}
+        self.downloads: dict[str, dict[str, Any]] = {}
+        self.checkpoint_parent: str | None = None
+        self.quarantine: Path | None = None
+        self._checkpoint_counter = 0
         self.writer_id: str | None = None
         self.lease_epoch = 0
         self.lease_id: str | None = None
@@ -130,14 +168,13 @@ class WebKitGtkBackend:
         if monotonic > self.log.monotonic_ms:
             self.log.advance(monotonic - self.log.monotonic_ms)
 
-        raw_id = self.log.capture_raw(
-            kind,
-            copy.deepcopy(payload),
-            page_id=self.page and self.page["page_id"],
-        )
+        page_id = frame.get("page_id") or (self.page and self.page["page_id"])
+        raw_id = self.log.capture_raw(kind, copy.deepcopy(payload), page_id=page_id)
         if kind == "script-message":
             self._ingest_script_message(payload, raw_id)
             return
+
+        self._register_pending(kind, payload)
 
         lookup = kind
         if kind == "load-changed":
@@ -148,19 +185,70 @@ class WebKitGtkBackend:
             self._deviations.append({"kind": "unmapped-engine-event", "raw_kind": lookup})
             return
 
-        self._apply(lookup, payload)
+        page = self.pages.get(page_id) if page_id else None
+        self._apply(lookup, payload, page)
         self.log.emit(
             normalized_kind,
             copy.deepcopy(payload),
-            page_id=self.page and self.page["page_id"],
-            generation=self.page and self.page["generation"],
+            page_id=page_id,
+            generation=page and page["generation"],
             source="engine",
             raw_refs=[raw_id],
         )
 
-    def _apply(self, lookup: str, payload: dict[str, Any]) -> None:
+    def _register_pending(self, kind: str, payload: dict[str, Any]) -> None:
+        """Record a browser-owned request that is now waiting on the host.
+
+        The engine holds each of these open until a decision is delivered, so
+        the host has to know the token exists before it can decide anything.
+        """
+        token = payload.get("token")
+        if not token:
+            return
+        if kind == "script-dialog":
+            self.dialogs[token] = {
+                "token": token,
+                "kind": "dialog",
+                "dialog_type": payload.get("dialog_type"),
+                "message": payload.get("message"),
+                "status": "pending",
+                "default": "deny",
+            }
+        elif kind == "permission-request":
+            self.permissions[token] = {
+                "token": token,
+                "kind": payload.get("request_type"),
+                "status": "pending",
+                "default": "deny",
+            }
+        elif kind == "file-chooser":
+            self.file_choosers[token] = {
+                "token": token,
+                "selects_multiple": payload.get("selects_multiple"),
+                "status": "pending",
+                "default": "cancel",
+            }
+        elif kind == "download-started":
+            self.downloads[token] = {
+                "token": token,
+                "download_id": token,
+                "url": payload.get("url"),
+                "status": "pending",
+                "destination": None,
+            }
+        elif kind == "download-finished" and token in self.downloads:
+            self.downloads[token].update(
+                {
+                    "status": "completed",
+                    "destination": payload.get("destination"),
+                    "received_bytes": payload.get("received_bytes"),
+                }
+            )
+        elif kind == "download-failed" and token in self.downloads:
+            self.downloads[token].update({"status": "failed", "error": payload.get("error")})
+
+    def _apply(self, lookup: str, payload: dict[str, Any], page: dict[str, Any] | None) -> None:
         """Fold an engine callback into the host's page projection."""
-        page = self.page
         if page is None:
             return
         if lookup == "load-changed:started":
@@ -214,7 +302,11 @@ class WebKitGtkBackend:
 
     def _evaluate(self, script: str, *, deadline_ms: int = 30000) -> Any:
         """Run declared JavaScript and decode the engine's JSON projection."""
-        result = self._request("page.evaluate", {"script": script}, deadline_ms=deadline_ms)
+        result = self._request(
+            "page.evaluate",
+            {"script": script, "page_id": self.active_page_id},
+            deadline_ms=deadline_ms,
+        )
         raw = result.get("json")
         if raw is None:
             return None
@@ -239,10 +331,27 @@ class WebKitGtkBackend:
                 {"holder": self.writer_id, "client": client_id, "lease_epoch": self.lease_epoch},
             )
 
-    def _active_page(self, page_id: str) -> dict[str, Any]:
-        if self.page is None or page_id != self.page["page_id"]:
+    def _active_page(self, page_id: str | None = None) -> dict[str, Any]:
+        page_id = page_id or self.active_page_id
+        page = self.pages.get(page_id) if page_id else None
+        if page is None:
             raise WorkbenchError("page_not_found", "page does not exist", {"page_id": page_id})
-        return self.page
+        return page
+
+    def _new_page_record(self, page_id: str, generation: int = 1) -> dict[str, Any]:
+        page = {
+            "page_id": page_id,
+            "generation": generation,
+            "lifecycle": "open",
+            "url": "about:blank",
+            "title": "",
+            "load_state": "idle",
+            "last_navigation_outcome": None,
+        }
+        self.pages[page_id] = page
+        self.active_page_id = page_id
+        self.page = page
+        return page
 
     # -- protocol operations ----------------------------------------------
 
@@ -264,29 +373,39 @@ class WebKitGtkBackend:
                 "persistent profiles are not wired in this slice",
                 {"profile": profile},
             )
-        if params.get("resume_checkpoint"):
-            raise WorkbenchError(
-                "capability_unsupported",
-                "checkpoint resume is not wired in this slice",
-            )
+        resume = params.get("resume_checkpoint")
+        checkpoint: dict[str, Any] | None = None
+        if resume:
+            if not isinstance(resume, dict):
+                raise WorkbenchError(
+                    "invalid_request", "resume_checkpoint must be an artifact descriptor"
+                )
+            checkpoint = self.store.read_json_ref(resume)
 
         viewport = params.get("viewport", {"width": 1280, "height": 800})
         self.viewport = viewport
+        self.quarantine = self.store.root / "downloads"
+        self.quarantine.mkdir(parents=True, exist_ok=True)
         result = self._request(
             "session.open",
-            {"width": int(viewport.get("width", 1280)), "height": int(viewport.get("height", 800))},
+            {
+                "width": int(viewport.get("width", 1280)),
+                "height": int(viewport.get("height", 800)),
+                "quarantine_dir": str(self.quarantine),
+            },
         )
-        self.page = {
-            "page_id": str(result["page_id"]),
-            "generation": int(result["generation"]),
-            "lifecycle": "open",
-            "url": "about:blank",
-            "title": "",
-            "load_state": "idle",
-            "last_navigation_outcome": None,
-        }
+        page = self._new_page_record(str(result["page_id"]))
+
+        if checkpoint:
+            # Restoring is a real navigation when the checkpoint held one, so
+            # the successor observes the engine reaching that state rather than
+            # being told it is already there.
+            self._restore(checkpoint, page)
+            self.lease_epoch = int(checkpoint["lease"]["epoch"]) + 1
+            self.checkpoint_parent = checkpoint["checkpoint_id"]
+        else:
+            self.lease_epoch = 1
         self.writer_id = client_id
-        self.lease_epoch = 1
         self.lease_id = f"lease-{self.lease_epoch:04d}"
         event = self.log.emit(
             "session.created",
@@ -309,19 +428,124 @@ class WebKitGtkBackend:
                 "mode": "single-writer",
             },
             "backend": {"kind": "webkitgtk", "variant": self.variant, "identity": self.identity},
-            "resumed_from": None,
+            "resumed_from": self.checkpoint_parent,
             "event_id": event["event_id"],
         }
 
-    def page_navigate(self, params: dict[str, Any]) -> dict[str, Any]:
+    def _restore(self, checkpoint: dict[str, Any], page: dict[str, Any]) -> None:
+        """Bring a fresh session up to a checkpoint's canonical page state."""
+        saved_pages: dict[str, Any] = checkpoint["state"]["pages"]
+        saved = saved_pages.get(checkpoint["state"]["active_page_id"]) or next(
+            iter(saved_pages.values())
+        )
+        url = saved.get("url") or "about:blank"
+        if url != "about:blank":
+            self.page_navigate({"page_id": page["page_id"], "client_id": None, "url": url})
+            self.page_await(
+                {
+                    "page_id": page["page_id"],
+                    "conditions": [{"kind": "load_state", "equals": "idle"}],
+                    "deadline_ms": 30000,
+                }
+            )
+        # A restored page is a new generation of the same page object.
+        page["generation"] = int(saved.get("generation", 1)) + 1
+        page["title"] = saved.get("title", page["title"])
+        page["lifecycle"] = "open"
+        page["load_state"] = "idle"
+        self.log.emit(
+            "session.restored",
+            {"checkpoint_id": checkpoint["checkpoint_id"], "generation": page["generation"]},
+            page_id=page["page_id"],
+            generation=page["generation"],
+            source="host",
+        )
+
+    def session_checkpoint(self, params: dict[str, Any]) -> dict[str, Any]:
         self._require_writer(params.get("client_id"))
-        page = self._active_page(params["page_id"])
+        self._checkpoint_counter += 1
+        checkpoint_id = f"checkpoint-{self._checkpoint_counter:04d}"
+        checkpoint = {
+            "schema_version": "browser-workbench.checkpoint/v1",
+            "checkpoint_id": checkpoint_id,
+            "session_id": self.session_id,
+            "parent": self.checkpoint_parent,
+            "event_cursor": self.log.cursor,
+            "state": {
+                "active_page_id": self.active_page_id,
+                "pages": copy.deepcopy(self.pages),
+            },
+            "lease": {"id": self.lease_id, "epoch": self.lease_epoch, "writer_id": self.writer_id},
+            "backend": {"kind": "webkitgtk", "variant": self.variant, "identity": self.identity},
+            # A checkpoint records state. It is not an approval token.
+            "approval": None,
+        }
+        artifact = self.store.write_json(
+            f"checkpoints/{checkpoint_id}.json", checkpoint, "normalized"
+        )
+        released = bool(params.get("release_lease", False))
+        if released:
+            prior_writer = self.writer_id
+            self.writer_id = None
+            self.lease_id = None
+            self.log.emit(
+                "session.handover_ready",
+                {
+                    "checkpoint_id": checkpoint_id,
+                    "prior_writer": prior_writer,
+                    "lease_epoch": self.lease_epoch,
+                },
+                source="host",
+            )
+        return {
+            "checkpoint_id": checkpoint_id,
+            "artifact": artifact,
+            "released_lease": released,
+            "approval": None,
+        }
+
+    def page_tabs(self, params: dict[str, Any]) -> dict[str, Any]:
+        """Open, list, or close host-owned tabs."""
+        action = params.get("action", "list")
+        if action == "list":
+            return {"pages": self._request("page.list", {})["pages"], "count": len(self.pages)}
+        self._require_writer(params.get("client_id"))
+        if action == "new":
+            result = self._request("page.new", {})
+            page = self._new_page_record(str(result["page_id"]))
+            self.log.emit(
+                "page.opened", {"page_id": page["page_id"]}, page_id=page["page_id"], source="host"
+            )
+            return {"page_id": page["page_id"], "count": len(self.pages)}
+        if action == "close":
+            page = self._active_page(params.get("page_id"))
+            self._request("page.close", {"page_id": page["page_id"]})
+            self.pages.pop(page["page_id"], None)
+            self.active_page_id = next(iter(self.pages), None)
+            self.page = self.pages.get(self.active_page_id) if self.active_page_id else None
+            return {"closed": page["page_id"], "count": len(self.pages)}
+        raise WorkbenchError("invalid_request", "unknown tab action", {"action": action})
+
+    def page_navigate(self, params: dict[str, Any]) -> dict[str, Any]:
+        if params.get("client_id") is not None or self.writer_id:
+            self._require_writer(params.get("client_id"))
+        page = self._active_page(params.get("page_id"))
         if page["lifecycle"] != "open":
             raise WorkbenchError("backend_rejected", "page is not open")
         url = params["url"]
         before = sha256_bytes(canonical_bytes(page))
         cursor = self.log.cursor
-        result = self._request("page.navigate", {"url": url})
+        # The host marks its own request before issuing it. Without this a wait
+        # for an idle page can be satisfied by the idle state the page was
+        # already in, before the engine has even started the navigation. The
+        # engine's events still decide when it becomes idle again.
+        page["load_state"] = "loading"
+        page["last_navigation_outcome"] = None
+        try:
+            result = self._request("page.navigate", {"page_id": page["page_id"], "url": url})
+        except WorkbenchError:
+            page["load_state"] = "idle"
+            raise
         caused = [event["event_id"] for event in self.log.since(cursor)]
         return {
             "accepted": bool(result.get("accepted")),
@@ -340,7 +564,7 @@ class WebKitGtkBackend:
         events the conditions are judged against are the same ones the evidence
         keeps.
         """
-        page = self._active_page(params["page_id"])
+        page = self._active_page(params.get("page_id"))
         conditions = params.get("conditions", [])
         if not conditions:
             raise WorkbenchError("invalid_request", "await requires at least one condition")
@@ -383,8 +607,41 @@ class WebKitGtkBackend:
             return any(event["kind"] == expected for event in self.log.events)
         raise WorkbenchError("invalid_request", f"unknown await condition: {kind}")
 
+    def await_pending(self, *, dialogs: int = 0, permissions: int = 0, deadline_ms: int = 15000) -> None:
+        """Wait for the engine to raise the browser-owned requests we expect.
+
+        A prompt exists when the engine says so, not when the page's script
+        claims to have asked for one.
+        """
+        deadline = time.monotonic() + deadline_ms / 1000.0
+        while time.monotonic() < deadline:
+            if len(self.dialogs) >= dialogs and len(self.permissions) >= permissions:
+                return
+            if self.transport is None:
+                break
+            self.transport.pump_events(timeout_ms=AWAIT_POLL_MS, on_event=self._ingest)
+        raise WorkbenchError(
+            "deadline_exceeded",
+            "the engine did not raise the expected browser-owned requests",
+            {
+                "expected": {"dialogs": dialogs, "permissions": permissions},
+                "observed": {"dialogs": len(self.dialogs), "permissions": len(self.permissions)},
+            },
+        )
+
+    def await_download(self, *, deadline_ms: int = 30000) -> str:
+        deadline = time.monotonic() + deadline_ms / 1000.0
+        while time.monotonic() < deadline:
+            if self.downloads:
+                return sorted(self.downloads)[0]
+            if self.transport is None:
+                break
+            self.transport.pump_events(timeout_ms=AWAIT_POLL_MS, on_event=self._ingest)
+        raise WorkbenchError("deadline_exceeded", "the engine never started a download")
+
+
     def page_observe(self, params: dict[str, Any]) -> dict[str, Any]:
-        page = self._active_page(params["page_id"])
+        page = self._active_page(params.get("page_id"))
         projections = params.get("projection", ["state"])
         if isinstance(projections, str):
             projections = [projections]
@@ -422,8 +679,16 @@ class WebKitGtkBackend:
             ]
         if "screenshot" in projections:
             data["screenshot"] = self._screenshot(page)
+        if "targets" in projections:
+            data["targets"] = self._targets(page)
+        if "dialogs" in projections:
+            data["dialogs"] = list(copy.deepcopy(self.dialogs).values())
+        if "permissions" in projections:
+            data["permissions"] = list(copy.deepcopy(self.permissions).values())
+        if "downloads" in projections:
+            data["downloads"] = list(copy.deepcopy(self.downloads).values())
         if "state" in projections:
-            engine = self._request("page.observe", {})
+            engine = self._request("page.observe", {"page_id": page["page_id"]})
             # Engine truth wins over the folded projection; a divergence is a finding.
             page["url"] = engine.get("url") or page["url"]
             page["title"] = engine.get("title") or page["title"]
@@ -465,6 +730,13 @@ class WebKitGtkBackend:
                 omitted[name] = 1
         response.update({"lossy": True, "omitted": omitted, "raw_ref": raw["artifact_ref"], "data": compact})
         if json_size(response) > max_bytes:
+            # Last resort: keep the mandatory envelope and say what was dropped.
+            # The full observation is already retained as a raw artifact.
+            response["data"] = {
+                "state": {"page_id": page["page_id"], "generation": page["generation"]}
+            }
+            response["omitted"] = {name: 1 for name in projections}
+        if json_size(response) > max_bytes:
             raise WorkbenchError(
                 "invalid_request",
                 "max_bytes cannot hold the mandatory observation envelope",
@@ -472,8 +744,78 @@ class WebKitGtkBackend:
             )
         return response
 
+    # Generation-scoped target enumeration. WebKitGTK exposes no accessibility
+    # target API to the host, so targets are discovered by injected script and
+    # declared `provider: injected` accordingly.
+    TARGET_SCRIPT = """
+(() => {
+  const selector = 'a[href], button, input, select, textarea, [contenteditable="true"]';
+  return Array.from(document.querySelectorAll(selector)).map((element, index) => {
+    const id = 'target-' + (index + 1);
+    element.setAttribute('data-wb-target', id);
+    const tag = element.tagName.toLowerCase();
+    const type = (element.getAttribute('type') || '').toLowerCase();
+    const role = element.getAttribute('role')
+      || (tag === 'a' ? 'link'
+      : tag === 'button' ? 'button'
+      : (tag === 'input' && type === 'file') ? 'file'
+      : (tag === 'input' || tag === 'textarea') ? 'textbox'
+      : tag);
+    const name = (element.getAttribute('aria-label') || element.textContent
+      || element.value || element.id || '').trim().slice(0, 80);
+    return {
+      target_id: id,
+      role: role,
+      name: name,
+      actions: role === 'textbox' ? ['type', 'click'] : ['click'],
+    };
+  });
+})()
+"""
+
+    def _targets(self, page: dict[str, Any]) -> list[dict[str, Any]]:
+        found = self._evaluate(self.TARGET_SCRIPT)
+        if not isinstance(found, list):
+            raise WorkbenchError(
+                "backend_rejected",
+                "target enumeration did not return a list",
+                {"observed_type": type(found).__name__},
+            )
+        # The host stamps the generation: a target is only valid for the
+        # document it was read from.
+        return [{**item, "generation": page["generation"]} for item in found]
+
+    def _check_target(
+        self, page: dict[str, Any], target: dict[str, Any] | None, action: str
+    ) -> dict[str, Any]:
+        if not target:
+            raise WorkbenchError("invalid_request", f"{action} requires a target")
+        if int(target.get("generation", -1)) != page["generation"]:
+            # Rejected before the backend is invoked at all: a stale target
+            # must never reach the engine.
+            raise WorkbenchError(
+                "stale_target",
+                "target belongs to an earlier generation",
+                {
+                    "target_id": target.get("target_id"),
+                    "target_generation": target.get("generation"),
+                    "page_generation": page["generation"],
+                },
+            )
+        if action not in target.get("actions", []):
+            raise WorkbenchError(
+                "capability_unsupported",
+                "target does not declare this action",
+                {"target_id": target.get("target_id"), "action": action},
+            )
+        return target
+
     def _screenshot(self, page: dict[str, Any]) -> dict[str, Any]:
-        result = self._request("page.snapshot", {"region": "full-document"}, deadline_ms=60000)
+        result = self._request(
+            "page.snapshot",
+            {"region": "full-document", "page_id": page["page_id"]},
+            deadline_ms=60000,
+        )
         png = base64.b64decode(result["png_base64"])
         if len(png) != int(result.get("bytes", len(png))):
             raise WorkbenchError(
@@ -510,25 +852,59 @@ class WebKitGtkBackend:
             "provider": "engine",
         }
 
+    CLICK_SCRIPT = """
+(() => {
+  const element = document.querySelector('[data-wb-target="%s"]');
+  if (!element) { return {ok: false, reason: 'target is no longer in the document'}; }
+  element.click();
+  return {ok: true, tag: element.tagName.toLowerCase()};
+})()
+"""
+
+    TYPE_SCRIPT = """
+(() => {
+  const element = document.querySelector('[data-wb-target="%s"]');
+  if (!element) { return {ok: false, reason: 'target is no longer in the document'}; }
+  element.focus();
+  element.value = %s;
+  element.dispatchEvent(new Event('input', {bubbles: true}));
+  element.dispatchEvent(new Event('change', {bubbles: true}));
+  return {ok: true, value: element.value};
+})()
+"""
+
     def page_act(self, params: dict[str, Any]) -> dict[str, Any]:
-        """Execute one declared intent. Only the wired intent families run."""
+        """Execute one declared intent, exactly once, with a causal receipt."""
         self._require_writer(params.get("client_id"))
-        page = self._active_page(params["page_id"])
+        page = self._active_page(params.get("page_id"))
         intent = params.get("intent") or {}
         kind = intent.get("kind")
         if kind not in self.SUPPORTED_INTENTS:
             raise WorkbenchError(
                 "capability_unsupported",
-                "intent family is not wired in this slice",
+                "intent family is not wired on this backend",
                 {"intent": kind, "supported": sorted(self.SUPPORTED_INTENTS)},
             )
         self._check_preconditions(page, params.get("preconditions") or {})
 
+        # Everything above this line runs before the backend is invoked, so a
+        # rejected precondition or stale target never reaches the engine.
+        handlers = {
+            "javascript": self._act_javascript,
+            "click": self._act_click,
+            "type": self._act_type,
+            "dialog.resolve": self._act_dialog,
+            "permission.resolve": self._act_permission,
+            "upload": self._act_upload,
+            "download.accept": self._act_download,
+            "test.crash": self._act_crash,
+        }
         self._action_counter += 1
         action_id = f"action-{self._action_counter:04d}"
         before = sha256_bytes(canonical_bytes(page))
         cursor = self.log.cursor
-        value = self._evaluate(str(intent.get("value") or ""))
+        provider, effects = handlers[str(kind)](page, params, intent)
+        self._drain_effects()
         caused = [event["event_id"] for event in self.log.since(cursor)]
 
         self._receipt_counter += 1
@@ -538,15 +914,236 @@ class WebKitGtkBackend:
             "attempted": True,
             "accepted": True,
             "executed": True,
-            # Verified means the engine returned a value or an effect was
-            # observed, not merely that the call did not raise.
-            "verified": value is not None or bool(caused),
-            "provider": "engine",
+            # Verified means an effect or a causal event was actually observed,
+            # not merely that the call did not raise.
+            "verified": bool(caused) or bool(effects),
+            "provider": provider,
             "caused_event_ids": caused,
-            "effects": [{"kind": "javascript.result", "value": value}],
+            "effects": effects,
             "state_before": before,
             "state_after": sha256_bytes(canonical_bytes(page)),
         }
+
+    def _act_javascript(
+        self, page: dict[str, Any], params: dict[str, Any], intent: dict[str, Any]
+    ) -> tuple[str, list[dict[str, Any]]]:
+        value = self._evaluate(str(intent.get("value") or ""))
+        return "engine", [{"kind": "javascript.result", "value": value}]
+
+    def _act_click(
+        self, page: dict[str, Any], params: dict[str, Any], intent: dict[str, Any]
+    ) -> tuple[str, list[dict[str, Any]]]:
+        target = self._check_target(page, params.get("target"), "click")
+        result = self._evaluate(self.CLICK_SCRIPT % target["target_id"])
+        if not isinstance(result, dict) or not result.get("ok"):
+            raise WorkbenchError(
+                "backend_rejected",
+                "click did not reach a live element",
+                {"target_id": target["target_id"], "detail": (result or {}).get("reason")},
+            )
+        # Injected, not engine: synthesized DOM activation, not a real pointer.
+        return "injected", [{"kind": "click", "target_id": target["target_id"]}]
+
+    def _act_type(
+        self, page: dict[str, Any], params: dict[str, Any], intent: dict[str, Any]
+    ) -> tuple[str, list[dict[str, Any]]]:
+        target = self._check_target(page, params.get("target"), "type")
+        text = json.dumps(str(intent.get("value") or ""))
+        result = self._evaluate(self.TYPE_SCRIPT % (target["target_id"], text))
+        if not isinstance(result, dict) or not result.get("ok"):
+            raise WorkbenchError(
+                "backend_rejected",
+                "type did not reach a live element",
+                {"target_id": target["target_id"], "detail": (result or {}).get("reason")},
+            )
+        return "injected", [
+            {"kind": "type", "target_id": target["target_id"], "value": result.get("value")}
+        ]
+
+    def _decide(self, registry: dict[str, dict[str, Any]], intent: dict[str, Any], allowed: set[str]) -> dict[str, Any]:
+        """Resolve one browser-owned request. A token is consumed exactly once."""
+        token = intent.get("decision_token")
+        record = registry.get(str(token))
+        if record is None or record.get("status") != "pending":
+            raise WorkbenchError(
+                "precondition_failed",
+                "decision token is unknown or already resolved",
+                {"decision_token": token},
+            )
+        decision = str(intent.get("decision") or record["default"])
+        if decision not in allowed:
+            raise WorkbenchError(
+                "invalid_request", "unknown decision", {"decision": decision}
+            )
+        return {"token": str(token), "record": record, "decision": decision}
+
+    def _act_dialog(
+        self, page: dict[str, Any], params: dict[str, Any], intent: dict[str, Any]
+    ) -> tuple[str, list[dict[str, Any]]]:
+        chosen = self._decide(self.dialogs, intent, {"accept", "dismiss"})
+        self._request(
+            "page.decide",
+            {
+                "token": chosen["token"],
+                "decision": "accept" if chosen["decision"] == "accept" else "dismiss",
+                "value": intent.get("value", ""),
+            },
+        )
+        chosen["record"].update({"status": "resolved", "decision": chosen["decision"]})
+        self.log.emit(
+            "dialog.resolved",
+            {"token": chosen["token"], "decision": chosen["decision"]},
+            page_id=page["page_id"],
+            generation=page["generation"],
+            source="host",
+        )
+        return "engine", [{"kind": "dialog.decision", "decision": chosen["decision"], "token": chosen["token"]}]
+
+    def _act_permission(
+        self, page: dict[str, Any], params: dict[str, Any], intent: dict[str, Any]
+    ) -> tuple[str, list[dict[str, Any]]]:
+        chosen = self._decide(self.permissions, intent, {"allow", "deny"})
+        self._request("page.decide", {"token": chosen["token"], "decision": chosen["decision"]})
+        chosen["record"].update({"status": "resolved", "decision": chosen["decision"]})
+        self.log.emit(
+            "permission.resolved",
+            {"token": chosen["token"], "decision": chosen["decision"]},
+            page_id=page["page_id"],
+            generation=page["generation"],
+            source="host",
+        )
+        return "engine", [
+            {"kind": "permission.decision", "decision": chosen["decision"], "token": chosen["token"]}
+        ]
+
+    def _act_upload(
+        self, page: dict[str, Any], params: dict[str, Any], intent: dict[str, Any]
+    ) -> tuple[str, list[dict[str, Any]]]:
+        path = Path(str(intent.get("path", ""))).resolve()
+        allowed_root = (self.root / "examples" / "fixtures").resolve()
+        # The declared fixture tree is the whole allowlist. Anything else is
+        # refused before the file chooser is ever opened.
+        if allowed_root not in path.parents or not path.is_file():
+            raise WorkbenchError(
+                "precondition_failed",
+                "upload path is outside the declared fixture tree",
+                {"path": str(path), "allowed_root": str(allowed_root)},
+            )
+        target = self._check_target(page, params.get("target"), "click")
+        pending_before = set(self.file_choosers)
+        self._evaluate(self.CLICK_SCRIPT % target["target_id"])
+        token = self._await_token(self.file_choosers, pending_before, "file chooser")
+        self._request(
+            "page.decide", {"token": token, "decision": "select", "files": [str(path)]}
+        )
+        self.file_choosers[token].update({"status": "resolved", "path": str(path)})
+        chosen = self._evaluate(
+            "(() => { const element = document.querySelector('[data-wb-target=\"%s\"]');"
+            " return element && element.files && element.files.length"
+            " ? element.files[0].name : null; })()" % target["target_id"]
+        )
+        return "engine", [
+            {
+                "kind": "upload",
+                "path": str(path),
+                "file_name": chosen,
+                "sha256": sha256_bytes(path.read_bytes()),
+            }
+        ]
+
+    def _act_download(
+        self, page: dict[str, Any], params: dict[str, Any], intent: dict[str, Any]
+    ) -> tuple[str, list[dict[str, Any]]]:
+        token = str(intent.get("download_id") or "")
+        record = self.downloads.get(token)
+        if record is None:
+            raise WorkbenchError(
+                "precondition_failed", "unknown download", {"download_id": token}
+            )
+        deadline = time.monotonic() + 30.0
+        while record.get("status") == "pending" and time.monotonic() < deadline:
+            if self.transport is None:
+                break
+            self.transport.pump_events(timeout_ms=AWAIT_POLL_MS, on_event=self._ingest)
+        if record.get("status") != "completed":
+            raise WorkbenchError(
+                "backend_failed",
+                "download did not complete",
+                {"download_id": token, "status": record.get("status")},
+            )
+        destination = Path(str(record["destination"]))
+        payload = destination.read_bytes()
+        artifact = self.store.write_bytes(
+            f"downloads/{destination.name}", payload, "raw", media_type="application/octet-stream"
+        )
+        # Quarantined: captured as evidence, never opened, executed, or moved
+        # anywhere the run could act on it.
+        record.update({"status": "quarantined", "artifact_ref": artifact["artifact_ref"]})
+        return "engine", [
+            {
+                "kind": "download",
+                "download_id": token,
+                "status": "quarantined",
+                "artifact_ref": artifact["artifact_ref"],
+                "bytes": len(payload),
+            }
+        ]
+
+    def _act_crash(
+        self, page: dict[str, Any], params: dict[str, Any], intent: dict[str, Any]
+    ) -> tuple[str, list[dict[str, Any]]]:
+        self._request("page.terminate", {"page_id": page["page_id"]})
+        deadline = time.monotonic() + 15.0
+        while page["lifecycle"] != "terminated" and time.monotonic() < deadline:
+            if self.transport is None:
+                break
+            self.transport.pump_events(timeout_ms=AWAIT_POLL_MS, on_event=self._ingest)
+        if page["lifecycle"] != "terminated":
+            raise WorkbenchError(
+                "backend_failed", "web process did not report termination", {"page": page["page_id"]}
+            )
+        return "engine", [{"kind": "page.terminated", "page_id": page["page_id"]}]
+
+    def quiesce(self, *, quiet_ms: int = 250, max_ms: int = 4000) -> None:
+        """Consume events until the engine goes quiet.
+
+        A page is settled when the engine has stopped talking about it. Waiting
+        only for the load state leaves late events — a title notification
+        arrives after the load finishes — to land during whatever the caller
+        does next and mutate state it believed was stable.
+        """
+        self._drain_effects(quiet_ms=quiet_ms, max_ms=max_ms)
+
+    def _drain_effects(self, *, quiet_ms: int = 250, max_ms: int = 4000) -> None:
+        """Collect the engine's immediate reaction to an action before sealing
+        the receipt.
+
+        A click that navigates produces its events after the script call
+        returns. Without this the receipt would claim no observed effect for an
+        action that plainly had one. This observes; it never re-issues the
+        action.
+        """
+        deadline = time.monotonic() + max_ms / 1000.0
+        while time.monotonic() < deadline:
+            if self.transport is None:
+                return
+            if not self.transport.pump_events(timeout_ms=quiet_ms, on_event=self._ingest):
+                return
+
+
+    def _await_token(
+        self, registry: dict[str, dict[str, Any]], before: set[str], what: str
+    ) -> str:
+        """Wait for the engine to raise a new browser-owned request."""
+        deadline = time.monotonic() + 15.0
+        while time.monotonic() < deadline:
+            fresh = set(registry) - before
+            if fresh:
+                return sorted(fresh)[0]
+            if self.transport is None:
+                break
+            self.transport.pump_events(timeout_ms=AWAIT_POLL_MS, on_event=self._ingest)
+        raise WorkbenchError("deadline_exceeded", f"the engine never raised a {what}")
 
     def _check_preconditions(self, page: dict[str, Any], preconditions: dict[str, Any]) -> None:
         for field in ("url", "title", "generation"):
@@ -607,6 +1204,8 @@ class WebKitGtkBackend:
             "page.observe": self.page_observe,
             "page.await": self.page_await,
             "page.act": self.page_act,
+            "session.checkpoint": self.session_checkpoint,
+            "page.tabs": self.page_tabs,
             "session.export": self.session_export,
         }
         operation = operations.get(method)

@@ -1,0 +1,45 @@
+{
+  "artifacts": [
+    {
+      "media_type": "application/json",
+      "path": "result.json",
+      "sha256": "0aad57d76f1142cc0dbc6a08e2279db8491675c0395d0449b0397c2b8250d116",
+      "size_bytes": 717,
+      "source_refs": [],
+      "surface": "contract"
+    },
+    {
+      "media_type": "text/plain",
+      "path": "traces/adapter-stderr.log",
+      "sha256": "6f8ea77e03179cbff9a9f90821aa839d7bd9f95564a2e9ffe80da21fc5748fc1",
+      "size_bytes": 644,
+      "source_refs": [],
+      "surface": "raw"
+    },
+    {
+      "media_type": "application/x-ndjson",
+      "path": "traces/normalized.ndjson",
+      "sha256": "3a309b1fd865ae72e250a6a9236e863cf003ab7c5f4ada56caa4f28ccb8478c9",
+      "size_bytes": 5077,
+      "source_refs": [],
+      "surface": "normalized"
+    },
+    {
+      "media_type": "application/x-ndjson",
+      "path": "traces/raw.ndjson",
+      "sha256": "66ee6bcb9eb3cc7598d97940eac9c892a50d4d8893779e943adaeea8c5dc53f2",
+      "size_bytes": 2378,
+      "source_refs": [],
+      "surface": "raw"
+    }
+  ],
+  "complete": true,
+  "created_at": "2026-08-24T19:04:40+00:00",
+  "redaction": {
+    "count": 0,
+    "rule_ids": []
+  },
+  "root_digest": "22d9d38c88a3a419e087087ade803575ebb428efe65f997c24716e4833324a5b",
+  "run_id": "WB-S007-r3",
+  "schema_version": "browser-workbench.evidence-manifest/v1"
+}

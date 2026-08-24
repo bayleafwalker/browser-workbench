@@ -1,0 +1,23 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Workbench Fixture Prompts</title>
+<main>
+  <h1>Workbench Fixture Prompts</h1>
+  <p id="marker">deterministic-fixture-prompts</p>
+</main>
+<script>
+  // The two prompts are raised in separate tasks, permission first.
+  // alert() blocks this thread until the host decides, so a permission request
+  // issued in the same task would never reach the browser process.
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      // Geolocation, not notifications: requestPermission() needs transient
+      // user activation, which a page load does not have, so it would resolve
+      // denied without ever asking the browser.
+      try {
+        navigator.geolocation.getCurrentPosition(() => {}, () => {});
+      } catch (error) { /* bridge reports it */ }
+    }, 0);
+    setTimeout(() => { alert('fixture dialog'); }, 50);
+  });
+</script>

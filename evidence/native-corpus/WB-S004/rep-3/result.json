@@ -1,0 +1,31 @@
+{
+  "assertions": [
+    {
+      "passed": true,
+      "text": "scheduled event satisfies condition"
+    },
+    {
+      "passed": true,
+      "text": "virtual clock is deterministic"
+    },
+    {
+      "passed": true,
+      "text": "deadline reports unsatisfied predicates"
+    }
+  ],
+  "backend": {
+    "kind": "webkitgtk",
+    "variant": "stable-ephemeral"
+  },
+  "deviations": [],
+  "driver": "event_driven_await",
+  "error": null,
+  "missing_assertions": [],
+  "repetition": 3,
+  "retry_count": 0,
+  "run_id": "WB-S004-r3",
+  "scenario_id": "WB-S004",
+  "schema_version": "browser-workbench.corpus-result/v1",
+  "status": "passed",
+  "unexpected_assertions": []
+}

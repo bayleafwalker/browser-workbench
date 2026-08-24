@@ -95,3 +95,71 @@ observed snapshot is narrower than declared.
 stop matching the evidence says so instead of quietly disagreeing with the run
 spec. A full-document snapshot may still be taller than the viewport; that is
 legitimate and is not flagged.
+
+## ADR-S3-01: the corpus is frozen; the bindings are not
+
+**Context.** The twelve scenarios and their assertion texts are the frozen
+denominator. The drivers that reached them were written against `MockBackend`
+and encoded mock-only facts: a virtual clock reading of exactly 10ms, pseudo
+JavaScript like `set-title:Declared`, and `request_id` correlation that a real
+engine does not use.
+
+**Decision.** Split the corpus into frozen drivers and a `Profile` of
+backend-specific bindings. Every place a backend legitimately reaches a frozen
+assertion by other means is declared in `assertion_semantics`, which travels
+in the corpus summary.
+
+**Consequence.** One set of scenarios runs on both backends, and a native
+corpus result can never be silently read as the mock denominator: the summary
+states, per assertion, where the two differ. The mock denominator is unchanged
+and still produces semantic digest
+`a8d0c478fcdca32bc9167425744d3a9c54969c7d9e497fc6a48f388399b8a74f`.
+
+**Alternative rejected.** Rewriting the assertions to suit the engine. That
+edits the denominator to fit the result, which is the one thing a denominator
+exists to prevent.
+
+## ADR-S3-02: the host marks its own navigation request
+
+**Context.** `page.await` on `load_state == idle` returned immediately, because
+the page *was* idle: the engine had not yet started the navigation the host had
+just requested. Four scenarios silently ran against `about:blank` while
+believing they were on the fixture.
+
+**Decision.** `page.navigate` sets `load_state` to `loading` when it issues the
+request, and only the engine's own events move it back to idle.
+
+**Consequence.** A wait for an idle page now means "the navigation I asked for
+has finished" instead of "nothing has started yet". The host projects its own
+request, which it knows about; it still never projects an engine outcome.
+
+## ADR-S3-03: an idle load state is not a quiet engine
+
+**Context.** WebKitGTK delivers `title-changed` *after* `load-changed:finished`.
+Code that settled on the load state alone left that event to land during the
+next operation and mutate state the caller believed was stable — which showed
+up as a screenshot appearing to change page state.
+
+**Decision.** Add `quiesce()`: consume events until the engine goes quiet, and
+use it after settling a navigation. Actions likewise drain their immediate
+effects before the receipt is sealed.
+
+**Consequence.** A receipt reports the effects the action actually had — a
+click that navigates names its navigation events — instead of reporting none
+because the engine had not spoken yet. This observes; it never re-issues an
+action, so it is not a retry.
+
+## ADR-S3-04: permission prompts need an API that a page load can reach
+
+**Context.** The prompts fixture used `Notification.requestPermission()`, which
+requires transient user activation. A page load has none, so it resolved denied
+without ever asking the browser, and no permission request reached the host.
+It worked under `evaluate_javascript` only because API-evaluated script carries
+a user gesture.
+
+**Decision.** The fixture requests geolocation, which needs no activation, and
+raises it in a task strictly before the one that calls `alert()`.
+
+**Consequence.** Both browser-owned requests reach the host on every run.
+`alert()` blocks the web process until the host decides, so anything requested
+in the same task would never be flushed to the browser process.

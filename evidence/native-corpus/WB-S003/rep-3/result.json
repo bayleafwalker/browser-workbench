@@ -1,0 +1,35 @@
+{
+  "assertions": [
+    {
+      "passed": true,
+      "text": "fresh target executes"
+    },
+    {
+      "passed": true,
+      "text": "receipt names causal events"
+    },
+    {
+      "passed": true,
+      "text": "navigation increments generation"
+    },
+    {
+      "passed": true,
+      "text": "stale target fails before backend invocation"
+    }
+  ],
+  "backend": {
+    "kind": "webkitgtk",
+    "variant": "stable-ephemeral"
+  },
+  "deviations": [],
+  "driver": "generation_targets_receipts",
+  "error": null,
+  "missing_assertions": [],
+  "repetition": 3,
+  "retry_count": 0,
+  "run_id": "WB-S003-r3",
+  "scenario_id": "WB-S003",
+  "schema_version": "browser-workbench.corpus-result/v1",
+  "status": "passed",
+  "unexpected_assertions": []
+}

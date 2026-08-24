@@ -1,0 +1,35 @@
+{
+  "assertions": [
+    {
+      "passed": true,
+      "text": "partial order is accepted"
+    },
+    {
+      "passed": true,
+      "text": "wall time is ignored only when declared"
+    },
+    {
+      "passed": true,
+      "text": "capability difference is visible"
+    },
+    {
+      "passed": true,
+      "text": "semantic mismatch fails"
+    }
+  ],
+  "backend": {
+    "kind": "webkitgtk",
+    "variant": "stable-ephemeral"
+  },
+  "deviations": [],
+  "driver": "differential_compare",
+  "error": null,
+  "missing_assertions": [],
+  "repetition": 3,
+  "retry_count": 0,
+  "run_id": "WB-S011-r3",
+  "scenario_id": "WB-S011",
+  "schema_version": "browser-workbench.corpus-result/v1",
+  "status": "passed",
+  "unexpected_assertions": []
+}
