@@ -1,0 +1,10 @@
+{
+  "base_url": "http://127.0.0.1:35739/",
+  "files": {
+    "console.html": "2c218062f4444d88de5897ce3dbaf85d6ae140d31ff8ef403910691b09bbf688",
+    "index.html": "ee453fa8554ab286d98d1d1922ac9a9c2b23f4eb688cad798afd5df7848005c0",
+    "next.html": "380925646eb070ac94c6f0e0fa917360cf0ee05726fd324623b6d148243eca61",
+    "pixel.txt": "b0b4eb05bdcd5eb6d99a86692ca4d7d3cb70391b86487764a94b9e3889b6ea37"
+  },
+  "root": "examples/fixtures/site"
+}

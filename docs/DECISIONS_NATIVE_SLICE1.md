@@ -65,3 +65,33 @@ higher level keeps the build usable on GTK older than this host's 4.22.
 see. They are the first concrete evidence for the handoff's central claim: a
 compile-only gate is not sufficient, and "source-verified" is a genuinely
 weaker statement than it sounds.
+
+## ADR-S2-01: console capture is injected, and says so
+
+**Context.** WebKitGTK 6 exposes no console signal. Console messages can only
+be captured by injecting a script that wraps `console.*` and posts through a
+user content handler.
+
+**Decision.** Inject the bridge, and normalize its messages with
+`source: injected` rather than `engine`.
+
+**Consequence.** The capability matrix already declared this lane
+`provider: injected, semantics: normalized`, and the evidence now matches that
+declaration event by event. A page can observe, wrap, or defeat this bridge —
+which is exactly why it must never be reported as engine truth.
+
+## ADR-S2-02: the declared viewport is a size request, not a window hint
+
+**Context.** The first observation run produced a 640x480 snapshot from a run
+spec declaring a 1024x768 viewport. Headless there is no window manager, so
+`default_width`/`default_height` — which are hints to a WM — were ignored and
+the engine laid out at GTK's fallback size.
+
+**Decision.** Express the declared viewport as the content view's own size
+request, and record a `viewport-width-divergence` deviation whenever an
+observed snapshot is narrower than declared.
+
+**Consequence.** Snapshots now match the declared viewport, and if they ever
+stop matching the evidence says so instead of quietly disagreeing with the run
+spec. A full-document snapshot may still be taller than the viewport; that is
+legitimate and is not flagged.

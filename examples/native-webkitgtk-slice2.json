@@ -1,0 +1,87 @@
+{
+  "schema_version": "browser-workbench.run/v1",
+  "run_id": "native-webkitgtk-slice2",
+  "backend": {"kind": "webkitgtk", "variant": "stable-ephemeral"},
+  "required_capabilities": [
+    "session.create", "page.navigate", "page.await",
+    "page.observe.state", "page.observe.dom", "page.observe.screenshot",
+    "page.act.javascript", "session.export"
+  ],
+  "allowed_providers": ["engine", "host", "injected"],
+  "workflow": [
+    {
+      "step_id": "create",
+      "method": "session.create",
+      "deadline_ms": 60000,
+      "params": {
+        "client": {"id": "slice2-client", "kind": "agent"},
+        "profile": {"mode": "ephemeral", "name": "slice2"},
+        "viewport": {"width": 1024, "height": 768}
+      }
+    },
+    {
+      "step_id": "navigate",
+      "method": "page.navigate",
+      "deadline_ms": 60000,
+      "params": {
+        "page_id": {"$step": "create", "path": "page_id"},
+        "client_id": "slice2-client",
+        "url": "${FIXTURE_BASE_URL}console.html"
+      },
+      "expect": {"path": "accepted", "equals": true}
+    },
+    {
+      "step_id": "await",
+      "method": "page.await",
+      "deadline_ms": 60000,
+      "params": {
+        "page_id": {"$step": "create", "path": "page_id"},
+        "conditions": [
+          {"kind": "load_state", "equals": "idle"},
+          {"kind": "title", "equals": "Workbench Fixture Console"}
+        ],
+        "deadline_ms": 30000
+      },
+      "expect": {"path": "satisfied", "equals": true}
+    },
+    {
+      "step_id": "javascript",
+      "method": "page.act",
+      "deadline_ms": 60000,
+      "params": {
+        "page_id": {"$step": "create", "path": "page_id"},
+        "client_id": "slice2-client",
+        "intent": {"kind": "javascript", "value": "document.getElementById('marker').textContent"},
+        "preconditions": {"title": "Workbench Fixture Console"}
+      },
+      "expect": {"path": "effects.0.value", "equals": "deterministic-fixture-console"}
+    },
+    {
+      "step_id": "observe",
+      "method": "page.observe",
+      "deadline_ms": 60000,
+      "params": {
+        "page_id": {"$step": "create", "path": "page_id"},
+        "projection": ["state", "dom", "console", "network", "screenshot"],
+        "since_event": 0,
+        "max_bytes": 262144
+      },
+      "expect": {"path": "lossy", "equals": false}
+    },
+    {
+      "step_id": "export",
+      "method": "session.export",
+      "deadline_ms": 60000,
+      "params": {"include_raw": true, "metadata": {"purpose": "native-slice-2"}, "max_bytes": 1048576}
+    }
+  ],
+  "gates": [
+    {"id": "contract", "kind": "contract", "required": true},
+    {"id": "capabilities", "kind": "capability", "required": true},
+    {"id": "execution", "kind": "execution", "required": true},
+    {"id": "evidence", "kind": "evidence", "required": true},
+    {"id": "native", "kind": "native", "required": true}
+  ],
+  "policy": {"mutation": "forbid", "profile": "ephemeral", "redaction_profile": "default", "single_writer": true},
+  "evidence": {"raw": true, "normalized": true, "max_artifact_bytes": 1048576, "redaction_profile": "default"}
+}

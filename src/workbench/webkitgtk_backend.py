@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import base64
 import copy
 import json
 import time
@@ -28,6 +29,8 @@ EVENT_KINDS = {
     "load-changed:finished": "navigation.finished",
     "load-failed": "navigation.failed",
     "resource-load-started": "network.request",
+    "resource-response": "network.response",
+    "resource-failed": "network.failed",
     "title-changed": "page.title_changed",
     "web-process-terminated": "page.terminated",
 }
@@ -47,8 +50,16 @@ class WebKitGtkBackend:
     failure this project exists to avoid.
     """
 
-    SUPPORTED_METHODS = {"session.create", "page.navigate", "page.observe", "page.await", "session.export"}
-    SUPPORTED_PROJECTIONS = {"state", "raw-events"}
+    SUPPORTED_METHODS = {
+        "session.create",
+        "page.navigate",
+        "page.observe",
+        "page.await",
+        "page.act",
+        "session.export",
+    }
+    SUPPORTED_PROJECTIONS = {"state", "raw-events", "dom", "console", "network", "screenshot"}
+    SUPPORTED_INTENTS = {"javascript"}
 
     def __init__(self, store: ArtifactStore, variant: str = "stable-ephemeral", *, root: Path | None = None) -> None:
         if variant not in {"stable-ephemeral", "stable-persistent", "default"}:
@@ -61,11 +72,15 @@ class WebKitGtkBackend:
         self.transport: AdapterTransport | None = None
         self.identity: dict[str, Any] = {}
         self.page: dict[str, Any] | None = None
+        self.viewport: dict[str, Any] = {}
         self.writer_id: str | None = None
         self.lease_epoch = 0
         self.lease_id: str | None = None
         self.backend_invocations = 0
         self._observation_counter = 0
+        self._receipt_counter = 0
+        self._action_counter = 0
+        self._screenshot_counter = 0
         self._export_counter = 0
         self._deviations: list[dict[str, Any]] = []
 
@@ -120,6 +135,10 @@ class WebKitGtkBackend:
             copy.deepcopy(payload),
             page_id=self.page and self.page["page_id"],
         )
+        if kind == "script-message":
+            self._ingest_script_message(payload, raw_id)
+            return
+
         lookup = kind
         if kind == "load-changed":
             lookup = f"load-changed:{payload.get('phase', 'unknown')}"
@@ -164,6 +183,45 @@ class WebKitGtkBackend:
         elif lookup == "web-process-terminated":
             page["lifecycle"] = "terminated"
             page["load_state"] = "idle"
+
+    def _ingest_script_message(self, payload: dict[str, Any], raw_id: str) -> None:
+        """Normalize one injected bridge message.
+
+        The bridge posts a JSON string, so the engine hands back a JSON-encoded
+        string: decode twice, and treat anything unparseable as a deviation
+        rather than guessing at its shape.
+        """
+        decoded: Any = payload.get("json")
+        for _ in range(2):
+            if not isinstance(decoded, str):
+                break
+            try:
+                decoded = json.loads(decoded)
+            except json.JSONDecodeError:
+                break
+        if not isinstance(decoded, dict) or decoded.get("kind") != "console":
+            self._deviations.append({"kind": "unparsed-script-message", "raw_id": raw_id})
+            return
+        self.log.emit(
+            "console.message",
+            {"level": decoded.get("level"), "text": decoded.get("text")},
+            page_id=self.page and self.page["page_id"],
+            generation=self.page and self.page["generation"],
+            # Injected, not engine: a page can see and defeat this bridge.
+            source="injected",
+            raw_refs=[raw_id],
+        )
+
+    def _evaluate(self, script: str, *, deadline_ms: int = 30000) -> Any:
+        """Run declared JavaScript and decode the engine's JSON projection."""
+        result = self._request("page.evaluate", {"script": script}, deadline_ms=deadline_ms)
+        raw = result.get("json")
+        if raw is None:
+            return None
+        try:
+            return json.loads(raw)
+        except (json.JSONDecodeError, TypeError):
+            return raw
 
     def _request(self, op: str, params: dict[str, Any], *, deadline_ms: int = 30000) -> dict[str, Any]:
         if self.transport is None:
@@ -213,6 +271,7 @@ class WebKitGtkBackend:
             )
 
         viewport = params.get("viewport", {"width": 1280, "height": 800})
+        self.viewport = viewport
         result = self._request(
             "session.open",
             {"width": int(viewport.get("width", 1280)), "height": int(viewport.get("height", 800))},
@@ -342,6 +401,27 @@ class WebKitGtkBackend:
             raise WorkbenchError("invalid_request", "max_bytes must be at least 512")
 
         data: dict[str, Any] = {}
+        if "dom" in projections:
+            html = self._evaluate("document.documentElement.outerHTML")
+            if not isinstance(html, str):
+                raise WorkbenchError(
+                    "backend_rejected",
+                    "the page did not return serialized DOM",
+                    {"observed_type": type(html).__name__},
+                )
+            data["dom"] = {"html": html, "sha256": sha256_bytes(html.encode())}
+        if "console" in projections:
+            data["console"] = [
+                event for event in self.log.since(since_event) if event["kind"] == "console.message"
+            ]
+        if "network" in projections:
+            data["network"] = [
+                event
+                for event in self.log.since(since_event)
+                if event["kind"].startswith("network.")
+            ]
+        if "screenshot" in projections:
+            data["screenshot"] = self._screenshot(page)
         if "state" in projections:
             engine = self._request("page.observe", {})
             # Engine truth wins over the folded projection; a divergence is a finding.
@@ -392,6 +472,91 @@ class WebKitGtkBackend:
             )
         return response
 
+    def _screenshot(self, page: dict[str, Any]) -> dict[str, Any]:
+        result = self._request("page.snapshot", {"region": "full-document"}, deadline_ms=60000)
+        png = base64.b64decode(result["png_base64"])
+        if len(png) != int(result.get("bytes", len(png))):
+            raise WorkbenchError(
+                "integrity_mismatch",
+                "snapshot byte count does not match the decoded image",
+                {"declared": result.get("bytes"), "decoded": len(png)},
+            )
+        self._screenshot_counter += 1
+        descriptor = self.store.write_bytes(
+            f"screenshots/{page['page_id']}-g{page['generation']}-{self._screenshot_counter:02d}.png",
+            png,
+            "raw",
+            media_type="image/png",
+        )
+        # A full-document snapshot may legitimately be taller than the
+        # viewport, but a narrower one means the engine never laid out at the
+        # declared width. That is recorded, not quietly accepted.
+        declared_width = self.viewport.get("width")
+        observed_width = result.get("width")
+        if declared_width and observed_width and observed_width != declared_width:
+            self._deviations.append(
+                {
+                    "kind": "viewport-width-divergence",
+                    "declared": declared_width,
+                    "observed": observed_width,
+                }
+            )
+        return {
+            **descriptor,
+            "width": observed_width,
+            "height": result.get("height"),
+            "declared_viewport": copy.deepcopy(self.viewport),
+            "region": result.get("region"),
+            "provider": "engine",
+        }
+
+    def page_act(self, params: dict[str, Any]) -> dict[str, Any]:
+        """Execute one declared intent. Only the wired intent families run."""
+        self._require_writer(params.get("client_id"))
+        page = self._active_page(params["page_id"])
+        intent = params.get("intent") or {}
+        kind = intent.get("kind")
+        if kind not in self.SUPPORTED_INTENTS:
+            raise WorkbenchError(
+                "capability_unsupported",
+                "intent family is not wired in this slice",
+                {"intent": kind, "supported": sorted(self.SUPPORTED_INTENTS)},
+            )
+        self._check_preconditions(page, params.get("preconditions") or {})
+
+        self._action_counter += 1
+        action_id = f"action-{self._action_counter:04d}"
+        before = sha256_bytes(canonical_bytes(page))
+        cursor = self.log.cursor
+        value = self._evaluate(str(intent.get("value") or ""))
+        caused = [event["event_id"] for event in self.log.since(cursor)]
+
+        self._receipt_counter += 1
+        return {
+            "receipt_id": f"receipt-{self._receipt_counter:04d}",
+            "action_id": action_id,
+            "attempted": True,
+            "accepted": True,
+            "executed": True,
+            # Verified means the engine returned a value or an effect was
+            # observed, not merely that the call did not raise.
+            "verified": value is not None or bool(caused),
+            "provider": "engine",
+            "caused_event_ids": caused,
+            "effects": [{"kind": "javascript.result", "value": value}],
+            "state_before": before,
+            "state_after": sha256_bytes(canonical_bytes(page)),
+        }
+
+    def _check_preconditions(self, page: dict[str, Any], preconditions: dict[str, Any]) -> None:
+        for field in ("url", "title", "generation"):
+            if field in preconditions and page[field] != preconditions[field]:
+                raise WorkbenchError(
+                    "precondition_failed",
+                    f"page {field} does not match",
+                    {"field": field, "expected": preconditions[field], "observed": page[field]},
+                )
+
     def session_export(self, params: dict[str, Any]) -> dict[str, Any]:
         self._export_counter += 1
         since_event = int(params.get("since_event", 0))
@@ -441,6 +606,7 @@ class WebKitGtkBackend:
             "page.navigate": self.page_navigate,
             "page.observe": self.page_observe,
             "page.await": self.page_await,
+            "page.act": self.page_act,
             "session.export": self.session_export,
         }
         operation = operations.get(method)

@@ -1,0 +1,711 @@
+{
+  "artifacts": [
+    {
+      "media_type": "application/json",
+      "path": "contract/run-spec.json",
+      "sha256": "bdfbe6a2bdaa63a49e9c35eb82223ad1c5972a62047bfa8dd227aed57c4e38ea",
+      "size_bytes": 3859,
+      "source_refs": [],
+      "surface": "contract"
+    },
+    {
+      "media_type": "application/json",
+      "path": "diagnostics/adapter-identity.json",
+      "sha256": "c1da7be15b3a9974fb4ef91578e4ac4ba1038d7448990d0c8b09a2f1513db11c",
+      "size_bytes": 222,
+      "source_refs": [],
+      "surface": "diagnostic"
+    },
+    {
+      "media_type": "application/json",
+      "path": "diagnostics/capabilities.json",
+      "sha256": "20a7d247be83c208b57aeb9c43c7e63347ac76ad6b2c199e28f25c0ac40d57eb",
+      "size_bytes": 6404,
+      "source_refs": [],
+      "surface": "diagnostic"
+    },
+    {
+      "media_type": "application/json",
+      "path": "exports/export-0001.json",
+      "sha256": "c4048e8489371ac9dcc20344ff17c18fdb18f84e79ccbc13fd2536c095a03f94",
+      "size_bytes": 10376,
+      "source_refs": [],
+      "surface": "redacted"
+    },
+    {
+      "media_type": "image/png",
+      "path": "screenshots/page-1-g2-01.png",
+      "sha256": "b5b070be2115a01442f8ff5969a24a1e463606dae80aa2162e51724f659caf44",
+      "size_bytes": 16209,
+      "source_refs": [],
+      "surface": "raw"
+    },
+    {
+      "media_type": "text/plain",
+      "path": "traces/adapter-stderr.log",
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4",
+      "size_bytes": 140,
+      "source_refs": [],
+      "surface": "raw"
+    },
+    {
+      "media_type": "application/x-ndjson",
+      "path": "traces/normalized.ndjson",
+      "sha256": "dccd229f04450ea0d05b464f59b65969e223bfab90f99674a9a79d050e8ab4fe",
+      "size_bytes": 5029,
+      "source_refs": [],
+      "surface": "normalized"
+    },
+    {
+      "media_type": "application/x-ndjson",
+      "path": "traces/raw.ndjson",
+      "sha256": "3659c0f3b3f826ba2efb539dedd8d5cc44babe2682d2ed510ff2b5c58b40fa72",
+      "size_bytes": 2897,
+      "source_refs": [],
+      "surface": "raw"
+    }
+  ],
+  "backend": {
+    "kind": "webkitgtk",
+    "variant": "stable-ephemeral"
+  },
+  "capabilities": {
+    "backend": "webkitgtk",
+    "capabilities": {
+      "page.act.javascript": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "engine",
+        "semantics": "exact",
+        "verification": "source-audit"
+      },
+      "page.act.keyboard": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "injected",
+        "semantics": "normalized",
+        "verification": "source-audit"
+      },
+      "page.act.pointer": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "injected",
+        "semantics": "normalized",
+        "verification": "source-audit"
+      },
+      "page.await": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "host",
+        "semantics": "normalized",
+        "verification": "source-audit"
+      },
+      "page.dialog": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "engine",
+        "semantics": "exact",
+        "verification": "source-audit"
+      },
+      "page.download": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "engine",
+        "semantics": "normalized",
+        "verification": "source-audit"
+      },
+      "page.navigate": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "engine",
+        "semantics": "exact",
+        "verification": "source-audit"
+      },
+      "page.navigation.history": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "engine",
+        "semantics": "exact",
+        "verification": "source-audit"
+      },
+      "page.navigation.stop": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "engine",
+        "semantics": "normalized",
+        "verification": "source-audit"
+      },
+      "page.observe.accessibility": {
+        "availability": "partial",
+        "notes": [
+          "partial semantics must not satisfy an exact-capability gate"
+        ],
+        "provider": "injected",
+        "semantics": "partial",
+        "verification": "source-audit"
+      },
+      "page.observe.console": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "injected",
+        "semantics": "normalized",
+        "verification": "source-audit"
+      },
+      "page.observe.dom": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "injected",
+        "semantics": "normalized",
+        "verification": "source-audit"
+      },
+      "page.observe.network": {
+        "availability": "partial",
+        "notes": [
+          "partial semantics must not satisfy an exact-capability gate"
+        ],
+        "provider": "engine",
+        "semantics": "partial",
+        "verification": "source-audit"
+      },
+      "page.observe.screenshot": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "engine",
+        "semantics": "exact",
+        "verification": "source-audit"
+      },
+      "page.observe.state": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "engine",
+        "semantics": "normalized",
+        "verification": "source-audit"
+      },
+      "page.permission": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "engine",
+        "semantics": "exact",
+        "verification": "source-audit"
+      },
+      "page.tabs": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "host",
+        "semantics": "normalized",
+        "verification": "source-audit"
+      },
+      "page.termination": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "engine",
+        "semantics": "exact",
+        "verification": "source-audit"
+      },
+      "page.upload": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "engine",
+        "semantics": "exact",
+        "verification": "source-audit"
+      },
+      "run.compare": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "host",
+        "semantics": "exact",
+        "verification": "source-audit"
+      },
+      "session.checkpoint": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "host",
+        "semantics": "normalized",
+        "verification": "source-audit"
+      },
+      "session.create": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "host",
+        "semantics": "normalized",
+        "verification": "source-audit"
+      },
+      "session.export": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "host",
+        "semantics": "exact",
+        "verification": "source-audit"
+      },
+      "session.profile.ephemeral": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "engine",
+        "semantics": "exact",
+        "verification": "source-audit"
+      },
+      "session.profile.persistent": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "engine",
+        "semantics": "exact",
+        "verification": "source-audit"
+      }
+    },
+    "identity": {
+      "probe": {
+        "backend": "webkitgtk",
+        "checks": {
+          "cargo": {
+            "argv": [
+              "cargo",
+              "--version"
+            ],
+            "exit_code": 0,
+            "output": "cargo 1.97.1 (c980f4866 2026-06-30)",
+            "present": true
+          },
+          "gtk4": {
+            "argv": [
+              "pkg-config",
+              "--modversion",
+              "gtk4"
+            ],
+            "exit_code": 0,
+            "module": "gtk4",
+            "output": "4.22.4",
+            "present": true
+          },
+          "rustc": {
+            "argv": [
+              "rustc",
+              "--version",
+              "--verbose"
+            ],
+            "exit_code": 0,
+            "output": "rustc 1.97.1 (8bab26f4f 2026-07-14)\nbinary: rustc\ncommit-hash: 8bab26f4f68e0e26f0bb7960be334d5b520ea452\ncommit-date: 2026-07-14\nhost: x86_64-unknown-linux-gnu\nrelease: 1.97.1\nLLVM version: 22.1.6",
+            "present": true
+          },
+          "webkitgtk_6": {
+            "argv": [
+              "pkg-config",
+              "--modversion",
+              "webkitgtk-6.0"
+            ],
+            "exit_code": 0,
+            "expected": "2.52.6",
+            "matches_pin": true,
+            "module": "webkitgtk-6.0",
+            "output": "2.52.6",
+            "present": true
+          }
+        },
+        "display": {
+          "wayland": false,
+          "x11": true
+        },
+        "machine": "x86_64",
+        "os": "Linux-7.1.9-arch1-2-x86_64-with-glibc2.44",
+        "python": "3.14.7",
+        "ready": true,
+        "reasons": []
+      }
+    },
+    "schema_version": "browser-workbench.capabilities/v1",
+    "variant": "stable-ephemeral"
+  },
+  "deviations": [],
+  "environment": {
+    "platform": "Linux-7.1.9-arch1-2-x86_64-with-glibc2.44",
+    "python": "3.14.7",
+    "retry_count": 0,
+    "runner": "browser-workbench/0.2.0"
+  },
+  "gates": [
+    {
+      "details": {
+        "run_status": "passed"
+      },
+      "id": "contract",
+      "kind": "contract",
+      "required": true,
+      "status": "passed"
+    },
+    {
+      "details": {
+        "run_status": "passed"
+      },
+      "id": "capabilities",
+      "kind": "capability",
+      "required": true,
+      "status": "passed"
+    },
+    {
+      "details": {
+        "run_status": "passed"
+      },
+      "id": "execution",
+      "kind": "execution",
+      "required": true,
+      "status": "passed"
+    },
+    {
+      "details": {
+        "run_status": "passed"
+      },
+      "id": "evidence",
+      "kind": "evidence",
+      "required": true,
+      "status": "passed"
+    },
+    {
+      "details": {
+        "run_status": "passed"
+      },
+      "id": "native",
+      "kind": "native",
+      "required": true,
+      "status": "passed"
+    }
+  ],
+  "run_id": "native-webkitgtk-slice2-stable-ephemeral",
+  "schema_version": "browser-workbench.result/v1",
+  "status": "passed",
+  "steps": [
+    {
+      "error": null,
+      "method": "session.create",
+      "receipt": null,
+      "result": {
+        "backend": {
+          "identity": {
+            "adapter": "browser-workbench-webkitgtk-worker",
+            "adapter_version": "0.2.0",
+            "display_backend": "GdkX11Display",
+            "engine": "2.52.6",
+            "engine_api": "webkitgtk-6.0",
+            "gtk": "4.22.4",
+            "transport_version": 1
+          },
+          "kind": "webkitgtk",
+          "variant": "stable-ephemeral"
+        },
+        "event_id": "event-000002",
+        "lease": {
+          "lease_epoch": 1,
+          "lease_id": "lease-0001",
+          "mode": "single-writer",
+          "writer_id": "slice2-client"
+        },
+        "page_id": "page-1",
+        "profile": {
+          "mode": "ephemeral",
+          "name": "slice2"
+        },
+        "resumed_from": null,
+        "session_id": "session-0001"
+      },
+      "status": "passed",
+      "step_id": "create"
+    },
+    {
+      "error": null,
+      "method": "page.navigate",
+      "receipt": {
+        "accepted": true,
+        "caused_event_ids": [],
+        "navigation_id": "navigation-0001",
+        "provider": "engine",
+        "receipt_id": "receipt-navigation-0001",
+        "state_after": "f2aa8e2e682e2d064e2100b9c607e6244ddf51654e7eb8b543ee7b7dab0d8b9e",
+        "state_before": "f2aa8e2e682e2d064e2100b9c607e6244ddf51654e7eb8b543ee7b7dab0d8b9e"
+      },
+      "result": {
+        "accepted": true,
+        "caused_event_ids": [],
+        "navigation_id": "navigation-0001",
+        "provider": "engine",
+        "receipt_id": "receipt-navigation-0001",
+        "state_after": "f2aa8e2e682e2d064e2100b9c607e6244ddf51654e7eb8b543ee7b7dab0d8b9e",
+        "state_before": "f2aa8e2e682e2d064e2100b9c607e6244ddf51654e7eb8b543ee7b7dab0d8b9e"
+      },
+      "status": "passed",
+      "step_id": "navigate"
+    },
+    {
+      "error": null,
+      "method": "page.await",
+      "receipt": null,
+      "result": {
+        "conditions": [
+          {
+            "equals": "idle",
+            "kind": "load_state"
+          },
+          {
+            "equals": "Workbench Fixture Console",
+            "kind": "title"
+          }
+        ],
+        "event_cursor": 12,
+        "monotonic_ms": 475,
+        "satisfied": true
+      },
+      "status": "passed",
+      "step_id": "await"
+    },
+    {
+      "error": null,
+      "method": "page.act",
+      "receipt": {
+        "accepted": true,
+        "action_id": "action-0001",
+        "attempted": true,
+        "caused_event_ids": [],
+        "effects": [
+          {
+            "kind": "javascript.result",
+            "value": "deterministic-fixture-console"
+          }
+        ],
+        "executed": true,
+        "provider": "engine",
+        "receipt_id": "receipt-0001",
+        "state_after": "31e8798da14666f8f5407061ae3e23bdb9eb76228e3dc5657502932956fdaae5",
+        "state_before": "31e8798da14666f8f5407061ae3e23bdb9eb76228e3dc5657502932956fdaae5",
+        "verified": true
+      },
+      "result": {
+        "accepted": true,
+        "action_id": "action-0001",
+        "attempted": true,
+        "caused_event_ids": [],
+        "effects": [
+          {
+            "kind": "javascript.result",
+            "value": "deterministic-fixture-console"
+          }
+        ],
+        "executed": true,
+        "provider": "engine",
+        "receipt_id": "receipt-0001",
+        "state_after": "31e8798da14666f8f5407061ae3e23bdb9eb76228e3dc5657502932956fdaae5",
+        "state_before": "31e8798da14666f8f5407061ae3e23bdb9eb76228e3dc5657502932956fdaae5",
+        "verified": true
+      },
+      "status": "passed",
+      "step_id": "javascript"
+    },
+    {
+      "error": null,
+      "method": "page.observe",
+      "receipt": null,
+      "result": {
+        "data": {
+          "console": [
+            {
+              "causes": [],
+              "event_id": "event-000008",
+              "event_seq": 8,
+              "generation": 2,
+              "kind": "console.message",
+              "monotonic_ms": 436,
+              "page_id": "page-1",
+              "payload": {
+                "level": "log",
+                "text": "fixture console record"
+              },
+              "raw_refs": [
+                "raw-000007"
+              ],
+              "schema_version": "browser-workbench.event/v1",
+              "session_id": "session-0001",
+              "source": "injected"
+            },
+            {
+              "causes": [],
+              "event_id": "event-000009",
+              "event_seq": 9,
+              "generation": 2,
+              "kind": "console.message",
+              "monotonic_ms": 436,
+              "page_id": "page-1",
+              "payload": {
+                "level": "warn",
+                "text": "fixture console warning"
+              },
+              "raw_refs": [
+                "raw-000008"
+              ],
+              "schema_version": "browser-workbench.event/v1",
+              "session_id": "session-0001",
+              "source": "injected"
+            }
+          ],
+          "dom": {
+            "html": "<html><head><meta charset=\"utf-8\">\n<title>Workbench Fixture Console</title>\n</head><body><main>\n  <h1>Workbench Fixture Console</h1>\n  <p id=\"marker\">deterministic-fixture-console</p>\n  <img id=\"pixel\" alt=\"\" src=\"pixel.txt\">\n</main>\n<script>\n  console.log('fixture console record');\n  console.warn('fixture console warning');\n</script>\n</body></html>",
+            "sha256": "9942f784a45707207dc6e3250d2be4550231d91c86cb014d18d1a4b9290c0cb5"
+          },
+          "network": [
+            {
+              "causes": [],
+              "event_id": "event-000004",
+              "event_seq": 4,
+              "generation": 1,
+              "kind": "network.request",
+              "monotonic_ms": 432,
+              "page_id": "page-1",
+              "payload": {
+                "url": "http://127.0.0.1:35739/console.html"
+              },
+              "raw_refs": [
+                "raw-000003"
+              ],
+              "schema_version": "browser-workbench.event/v1",
+              "session_id": "session-0001",
+              "source": "engine"
+            },
+            {
+              "causes": [],
+              "event_id": "event-000005",
+              "event_seq": 5,
+              "generation": 1,
+              "kind": "network.response",
+              "monotonic_ms": 433,
+              "page_id": "page-1",
+              "payload": {
+                "mime_type": "text/html",
+                "status": 200,
+                "url": "http://127.0.0.1:35739/console.html"
+              },
+              "raw_refs": [
+                "raw-000004"
+              ],
+              "schema_version": "browser-workbench.event/v1",
+              "session_id": "session-0001",
+              "source": "engine"
+            },
+            {
+              "causes": [],
+              "event_id": "event-000007",
+              "event_seq": 7,
+              "generation": 2,
+              "kind": "network.request",
+              "monotonic_ms": 434,
+              "page_id": "page-1",
+              "payload": {
+                "url": "http://127.0.0.1:35739/pixel.txt"
+              },
+              "raw_refs": [
+                "raw-000006"
+              ],
+              "schema_version": "browser-workbench.event/v1",
+              "session_id": "session-0001",
+              "source": "engine"
+            },
+            {
+              "causes": [],
+              "event_id": "event-000011",
+              "event_seq": 11,
+              "generation": 2,
+              "kind": "network.response",
+              "monotonic_ms": 475,
+              "page_id": "page-1",
+              "payload": {
+                "mime_type": "text/plain",
+                "status": 200,
+                "url": "http://127.0.0.1:35739/pixel.txt"
+              },
+              "raw_refs": [
+                "raw-000010"
+              ],
+              "schema_version": "browser-workbench.event/v1",
+              "session_id": "session-0001",
+              "source": "engine"
+            }
+          ],
+          "screenshot": {
+            "artifact_ref": "sha256:b5b070be2115a01442f8ff5969a24a1e463606dae80aa2162e51724f659caf44",
+            "declared_viewport": {
+              "height": 768,
+              "width": 1024
+            },
+            "height": 768,
+            "media_type": "image/png",
+            "path": "screenshots/page-1-g2-01.png",
+            "provider": "engine",
+            "region": "full-document",
+            "sha256": "b5b070be2115a01442f8ff5969a24a1e463606dae80aa2162e51724f659caf44",
+            "size_bytes": 16209,
+            "source_refs": [],
+            "surface": "raw",
+            "width": 1024
+          },
+          "state": {
+            "engine": {
+              "can_go_back": false,
+              "can_go_forward": false,
+              "estimated_load_progress": 1.0,
+              "generation": 1,
+              "is_loading": false,
+              "page_id": "page-1",
+              "title": "Workbench Fixture Console",
+              "url": "http://127.0.0.1:35739/console.html"
+            },
+            "generation": 2,
+            "last_navigation_outcome": "success",
+            "lifecycle": "open",
+            "load_state": "idle",
+            "page_id": "page-1",
+            "title": "Workbench Fixture Console",
+            "url": "http://127.0.0.1:35739/console.html"
+          }
+        },
+        "generation": 2,
+        "lossy": false,
+        "max_bytes": 262144,
+        "next_event": 12,
+        "omitted": {},
+        "page_id": "page-1",
+        "provider": "engine",
+        "raw_ref": null,
+        "returned_projections": [
+          "state",
+          "dom",
+          "console",
+          "network",
+          "screenshot"
+        ],
+        "since_event": 0
+      },
+      "status": "passed",
+      "step_id": "observe"
+    },
+    {
+      "error": null,
+      "method": "session.export",
+      "receipt": null,
+      "result": {
+        "artifact": {
+          "artifact_ref": "sha256:c4048e8489371ac9dcc20344ff17c18fdb18f84e79ccbc13fd2536c095a03f94",
+          "media_type": "application/json",
+          "path": "exports/export-0001.json",
+          "sha256": "c4048e8489371ac9dcc20344ff17c18fdb18f84e79ccbc13fd2536c095a03f94",
+          "size_bytes": 10376,
+          "source_refs": [],
+          "surface": "redacted"
+        },
+        "lossy": false,
+        "redaction": {
+          "count": 0,
+          "rule_ids": []
+        }
+      },
+      "status": "passed",
+      "step_id": "export"
+    }
+  ],
+  "terminal_reason": {
+    "code": "completed"
+  }
+}

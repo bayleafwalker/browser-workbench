@@ -19,3 +19,12 @@
 - lifted the runner's non-mock hard block for WebKitGTK only, and only after capability probing and a real adapter connection both succeed;
 - unimplemented operations and projections report `capability_unsupported`; no lane falls back to the mock;
 - this is one session, not corpus conformance. Wave 2 remains open.
+
+## Unreleased — native slice 2 (engine-truth observation and action)
+
+- added deferred adapter replies for engine-asynchronous operations, keeping events in ordinal order while an operation is in flight;
+- added `page.evaluate` and `page.snapshot` adapter operations;
+- wired `page.act.javascript`, and the `dom`, `console`, `network`, and `screenshot` observation projections on the native lane;
+- console capture is injected through a user content bridge and is labelled `injected`, never engine truth;
+- the declared viewport is now the content view's size request, with a recorded deviation if an observed snapshot is narrower than declared;
+- inline snapshot evidence is bounded; an oversized capture fails explicitly rather than being downscaled.

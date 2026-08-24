@@ -84,15 +84,29 @@ and marked incomplete. The host does not infer that an in-flight action had no
 effect, because a crash after a native effect looks identical to a crash
 before it.
 
-## Slice 1 operation surface
+## Operation surface
 
-| `op` | Purpose |
-| --- | --- |
-| `handshake` | version and engine identity |
-| `session.open` | create the GTK window and hosted content view |
-| `page.navigate` | begin a navigation; acceptance only |
-| `page.observe` | read engine-owned page state |
-| `shutdown` | orderly teardown |
+| `op` | Purpose | Reply |
+| --- | --- | --- |
+| `handshake` | version and engine identity | immediate |
+| `session.open` | create the GTK window and hosted content view | immediate |
+| `page.navigate` | begin a navigation; acceptance only | immediate |
+| `page.observe` | read engine-owned page state | immediate |
+| `page.evaluate` | evaluate declared JavaScript, return its JSON projection | deferred |
+| `page.snapshot` | capture an engine snapshot as inline PNG bytes | deferred |
+| `shutdown` | orderly teardown | immediate |
+
+### Deferred replies
+
+`page.evaluate` and `page.snapshot` resolve asynchronously in the engine. The
+adapter replies when the engine resolves, so engine events observed while the
+operation is in flight are emitted first and keep their place in the ordinal
+sequence. The host still has exactly one request outstanding, and the reply
+still terminates it exactly once; only the wall-clock gap widens.
+
+Inline evidence is bounded. A snapshot whose encoded payload exceeds the
+declared bound is an `evidence_incomplete` error, never a downscaled or
+cropped image.
 
 `page.await` is deliberately absent. Waiting is a host concern evaluated over
 the ordered event stream, which is why the capability matrix declares

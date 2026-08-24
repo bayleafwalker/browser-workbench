@@ -20,7 +20,10 @@ use gtk::{gio, glib};
 use serde::Serialize;
 use serde_json::{Value, json};
 use webkit6::prelude::*;
-use webkit6::{LoadEvent, SnapshotOptions, SnapshotRegion, WebView};
+use webkit6::{
+    LoadEvent, SnapshotOptions, SnapshotRegion, UserContentInjectedFrames, UserContentManager,
+    UserScript, UserScriptInjectionTime, WebView,
+};
 
 const TRANSPORT_VERSION: u64 = 1;
 const APPLICATION_ID: &str = "app.workbench.browser.WebKitGtkWorker";
@@ -273,6 +276,8 @@ fn dispatch(seq: u64, op: &str, params: &Value) {
         "session.open" => op_session_open(seq, params),
         "page.navigate" => op_page_navigate(seq, params),
         "page.observe" => op_page_observe(seq),
+        "page.evaluate" => op_page_evaluate(seq, params),
+        "page.snapshot" => op_page_snapshot(seq, params),
         "shutdown" => {
             with_state(|state| {
                 state.reply_ok(seq, json!({"closing": true}));
@@ -315,7 +320,40 @@ fn op_session_open(seq: u64, params: &Value) {
         None => return,
     };
 
-    let view = WebView::new();
+    let manager = UserContentManager::new();
+    if !manager.register_script_message_handler("workbench", None) {
+        with_state(|state| {
+            state.reply_error(
+                seq,
+                "backend_failed",
+                "the console bridge handler could not be registered",
+                json!({}),
+            );
+        });
+        return;
+    }
+    manager.connect_script_message_received(Some("workbench"), |_manager, value| {
+        // Raw injected payload, reported exactly as the page sent it.
+        let text = value.to_json(0).map(|json| json.to_string());
+        emit(
+            "script-message",
+            json!({"handler": "workbench", "json": text}),
+        );
+    });
+    manager.add_script(&UserScript::new(
+        CONSOLE_BRIDGE,
+        UserContentInjectedFrames::TopFrame,
+        UserScriptInjectionTime::Start,
+        &[],
+        &[],
+    ));
+
+    let view = WebView::builder().user_content_manager(&manager).build();
+    // Headless there is no window manager to honour a default window size, so
+    // the declared viewport is expressed as the content view's own size
+    // request. Otherwise the engine lays out at GTK's fallback size and every
+    // snapshot silently disagrees with the run spec.
+    view.set_size_request(width, height);
     install_engine_hooks(&view);
     let window = gtk::ApplicationWindow::builder()
         .application(&application)
@@ -415,6 +453,134 @@ fn op_page_observe(seq: u64) {
     });
 }
 
+/// Maximum base64 payload the adapter will put in one frame.
+///
+/// Evidence is bounded by contract. An oversized snapshot is an explicit
+/// failure, never a silently downscaled or cropped image.
+const MAX_INLINE_EVIDENCE_BYTES: usize = 700 * 1024;
+
+fn current_view(seq: u64) -> Option<WebView> {
+    match with_state(|state| state.view.clone()).flatten() {
+        Some(view) => Some(view),
+        None => {
+            with_state(|state| {
+                state.reply_error(seq, "page_not_found", "no page is open", json!({}));
+            });
+            None
+        }
+    }
+}
+
+/// Evaluate declared JavaScript in the page and return its JSON projection.
+///
+/// The reply arrives after the engine resolves, so engine events observed
+/// while the script runs are emitted first and keep their place in the
+/// ordinal sequence.
+fn op_page_evaluate(seq: u64, params: &Value) {
+    let script = params
+        .get("script")
+        .and_then(Value::as_str)
+        .unwrap_or("")
+        .to_string();
+    if script.is_empty() {
+        with_state(|state| {
+            state.reply_error(
+                seq,
+                "invalid_request",
+                "evaluate requires a script",
+                json!({}),
+            );
+        });
+        return;
+    }
+    let Some(view) = current_view(seq) else {
+        return;
+    };
+    let future = view.evaluate_javascript_future(&script, None, None);
+    glib::MainContext::default().spawn_local(async move {
+        match future.await {
+            Ok(value) => {
+                let json = value.to_json(0).map(|value| value.to_string());
+                with_state(|state| {
+                    state.reply_ok(seq, json!({"json": json}));
+                });
+            }
+            Err(error) => {
+                with_state(|state| {
+                    state.reply_error(
+                        seq,
+                        "backend_rejected",
+                        "script evaluation failed",
+                        json!({"detail": error.to_string()}),
+                    );
+                });
+            }
+        }
+    });
+}
+
+/// Capture an engine snapshot and hand it back inline as PNG bytes.
+///
+/// The host is the only writer of evidence; the adapter never touches the
+/// evidence tree itself.
+fn op_page_snapshot(seq: u64, params: &Value) {
+    let full = params
+        .get("region")
+        .and_then(Value::as_str)
+        .unwrap_or("full-document")
+        == "full-document";
+    let Some(view) = current_view(seq) else {
+        return;
+    };
+    let region = if full {
+        SnapshotRegion::FullDocument
+    } else {
+        SnapshotRegion::Visible
+    };
+    let future = view.snapshot_future(region, SnapshotOptions::NONE);
+    glib::MainContext::default().spawn_local(async move {
+        match future.await {
+            Ok(texture) => {
+                let bytes = texture.save_to_png_bytes();
+                let encoded = base64_encode(&bytes);
+                if encoded.len() > MAX_INLINE_EVIDENCE_BYTES {
+                    with_state(|state| {
+                        state.reply_error(
+                            seq,
+                            "evidence_incomplete",
+                            "snapshot exceeds the declared inline evidence bound",
+                            json!({"encoded_bytes": encoded.len(), "bound": MAX_INLINE_EVIDENCE_BYTES}),
+                        );
+                    });
+                    return;
+                }
+                with_state(|state| {
+                    state.reply_ok(
+                        seq,
+                        json!({
+                            "png_base64": encoded,
+                            "bytes": bytes.len(),
+                            "width": texture.width(),
+                            "height": texture.height(),
+                            "region": if full { "full-document" } else { "visible" },
+                        }),
+                    );
+                });
+            }
+            Err(error) => {
+                with_state(|state| {
+                    state.reply_error(
+                        seq,
+                        "backend_rejected",
+                        "snapshot failed",
+                        json!({"detail": error.to_string()}),
+                    );
+                });
+            }
+        }
+    });
+}
+
 fn teardown(state: &mut AdapterState) {
     if let Some(window) = state.window.take() {
         window.close();
@@ -423,6 +589,61 @@ fn teardown(state: &mut AdapterState) {
     // Dropping the hold guard lets the application loop finish.
     state.hold = None;
     state.application.quit();
+}
+
+/// Injected console bridge.
+///
+/// WebKitGTK 6 exposes no console signal, so console capture is necessarily
+/// injected. The capability matrix declares this lane `provider: injected,
+/// semantics: normalized` for exactly this reason: a page can observe and
+/// defeat this wrapper, which an engine-level hook could not be.
+const CONSOLE_BRIDGE: &str = r#"
+(() => {
+  const post = (level, args) => {
+    try {
+      const text = args.map((value) => {
+        try { return typeof value === 'string' ? value : JSON.stringify(value); }
+        catch (error) { return String(value); }
+      }).join(' ');
+      window.webkit.messageHandlers.workbench.postMessage(
+        JSON.stringify({ kind: 'console', level: level, text: text })
+      );
+    } catch (error) { /* the page may have removed the bridge; stay silent */ }
+  };
+  for (const level of ['log', 'info', 'warn', 'error', 'debug']) {
+    const original = console[level].bind(console);
+    console[level] = (...args) => { post(level, args); original(...args); };
+  }
+  window.addEventListener('error', (event) => post('error', [String(event.message)]));
+})();
+"#;
+
+const BASE64: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+/// Minimal base64 encoder. The adapter carries no dependency for this.
+fn base64_encode(data: &[u8]) -> String {
+    let mut out = String::with_capacity(data.len().div_ceil(3) * 4);
+    for chunk in data.chunks(3) {
+        let b = [
+            chunk[0],
+            *chunk.get(1).unwrap_or(&0),
+            *chunk.get(2).unwrap_or(&0),
+        ];
+        let n = ((b[0] as u32) << 16) | ((b[1] as u32) << 8) | b[2] as u32;
+        out.push(BASE64[(n >> 18) as usize & 63] as char);
+        out.push(BASE64[(n >> 12) as usize & 63] as char);
+        out.push(if chunk.len() > 1 {
+            BASE64[(n >> 6) as usize & 63] as char
+        } else {
+            '='
+        });
+        out.push(if chunk.len() > 2 {
+            BASE64[n as usize & 63] as char
+        } else {
+            '='
+        });
+    }
+    out
 }
 
 fn install_engine_hooks(view: &WebView) {
@@ -454,12 +675,37 @@ fn install_engine_hooks(view: &WebView) {
         );
         false
     });
-    view.connect_resource_load_started(|_view, _resource, request| {
+    view.connect_resource_load_started(|_view, resource, request| {
         // Raw request identity is captured before any host-side normalization.
         emit(
             "resource-load-started",
             json!({"url": request.uri().map(|value| value.to_string())}),
         );
+        // Response status is only knowable per resource, which is why the
+        // capability matrix declares this lane partial rather than exact.
+        resource.connect_response_notify(|resource| {
+            let response = resource.response();
+            emit(
+                "resource-response",
+                json!({
+                    "url": resource.uri().map(|value| value.to_string()),
+                    "status": response.as_ref().map(|value| value.status_code()),
+                    "mime_type": response
+                        .as_ref()
+                        .and_then(|value| value.mime_type())
+                        .map(|value| value.to_string()),
+                }),
+            );
+        });
+        resource.connect_failed(|resource, error| {
+            emit(
+                "resource-failed",
+                json!({
+                    "url": resource.uri().map(|value| value.to_string()),
+                    "error": error.to_string(),
+                }),
+            );
+        });
     });
     view.connect_script_dialog(|_view, _dialog| false); // host resolves decision tokens
     view.connect_permission_request(|_view, _request| false); // default deny until declared
@@ -485,12 +731,12 @@ fn install_engine_hooks(view: &WebView) {
     });
 }
 
-/// Pinned engine surface that slice 1 does not wire.
+/// Pinned engine surface that is not wired yet.
 ///
-/// These operations are part of the declared WebKitGTK boundary and are kept
-/// compiled so the pin stays honest, but nothing routes to them yet. They are
-/// not reachable from the adapter's operation table and must not be described
-/// as available.
+/// `evaluate_javascript_future` and `snapshot_future` are now reachable
+/// through `page.evaluate` and `page.snapshot`; they remain named here because
+/// the source gate asserts the pinned boundary. `reload` and `stop_loading`
+/// are genuinely unwired and must not be described as available.
 #[allow(dead_code)]
 fn declared_operations(view: &WebView) {
     view.reload();

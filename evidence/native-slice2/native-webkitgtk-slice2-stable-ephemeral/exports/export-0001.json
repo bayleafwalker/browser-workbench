@@ -1,0 +1,412 @@
+{
+  "events": [
+    {
+      "causes": [],
+      "event_id": "event-000001",
+      "event_seq": 1,
+      "generation": null,
+      "kind": "adapter.connected",
+      "monotonic_ms": 0,
+      "page_id": null,
+      "payload": {
+        "adapter": "browser-workbench-webkitgtk-worker",
+        "adapter_version": "0.2.0",
+        "display_backend": "GdkX11Display",
+        "engine": "2.52.6",
+        "engine_api": "webkitgtk-6.0",
+        "gtk": "4.22.4",
+        "transport_version": 1
+      },
+      "raw_refs": [],
+      "schema_version": "browser-workbench.event/v1",
+      "session_id": "session-0001",
+      "source": "host"
+    },
+    {
+      "causes": [],
+      "event_id": "event-000002",
+      "event_seq": 2,
+      "generation": null,
+      "kind": "session.created",
+      "monotonic_ms": 0,
+      "page_id": null,
+      "payload": {
+        "engine": {
+          "adapter": "browser-workbench-webkitgtk-worker",
+          "adapter_version": "0.2.0",
+          "display_backend": "GdkX11Display",
+          "engine": "2.52.6",
+          "engine_api": "webkitgtk-6.0",
+          "gtk": "4.22.4",
+          "transport_version": 1
+        },
+        "lease_epoch": 1,
+        "profile": {
+          "mode": "ephemeral",
+          "name": "slice2"
+        },
+        "writer_id": "slice2-client"
+      },
+      "raw_refs": [],
+      "schema_version": "browser-workbench.event/v1",
+      "session_id": "session-0001",
+      "source": "host"
+    },
+    {
+      "causes": [],
+      "event_id": "event-000003",
+      "event_seq": 3,
+      "generation": 1,
+      "kind": "navigation.started",
+      "monotonic_ms": 432,
+      "page_id": "page-1",
+      "payload": {
+        "is_loading": true,
+        "phase": "started",
+        "title": null,
+        "url": "http://127.0.0.1:35739/console.html"
+      },
+      "raw_refs": [
+        "raw-000002"
+      ],
+      "schema_version": "browser-workbench.event/v1",
+      "session_id": "session-0001",
+      "source": "engine"
+    },
+    {
+      "causes": [],
+      "event_id": "event-000004",
+      "event_seq": 4,
+      "generation": 1,
+      "kind": "network.request",
+      "monotonic_ms": 432,
+      "page_id": "page-1",
+      "payload": {
+        "url": "http://127.0.0.1:35739/console.html"
+      },
+      "raw_refs": [
+        "raw-000003"
+      ],
+      "schema_version": "browser-workbench.event/v1",
+      "session_id": "session-0001",
+      "source": "engine"
+    },
+    {
+      "causes": [],
+      "event_id": "event-000005",
+      "event_seq": 5,
+      "generation": 1,
+      "kind": "network.response",
+      "monotonic_ms": 433,
+      "page_id": "page-1",
+      "payload": {
+        "mime_type": "text/html",
+        "status": 200,
+        "url": "http://127.0.0.1:35739/console.html"
+      },
+      "raw_refs": [
+        "raw-000004"
+      ],
+      "schema_version": "browser-workbench.event/v1",
+      "session_id": "session-0001",
+      "source": "engine"
+    },
+    {
+      "causes": [],
+      "event_id": "event-000006",
+      "event_seq": 6,
+      "generation": 2,
+      "kind": "navigation.committed",
+      "monotonic_ms": 433,
+      "page_id": "page-1",
+      "payload": {
+        "is_loading": true,
+        "phase": "committed",
+        "title": null,
+        "url": "http://127.0.0.1:35739/console.html"
+      },
+      "raw_refs": [
+        "raw-000005"
+      ],
+      "schema_version": "browser-workbench.event/v1",
+      "session_id": "session-0001",
+      "source": "engine"
+    },
+    {
+      "causes": [],
+      "event_id": "event-000007",
+      "event_seq": 7,
+      "generation": 2,
+      "kind": "network.request",
+      "monotonic_ms": 434,
+      "page_id": "page-1",
+      "payload": {
+        "url": "http://127.0.0.1:35739/pixel.txt"
+      },
+      "raw_refs": [
+        "raw-000006"
+      ],
+      "schema_version": "browser-workbench.event/v1",
+      "session_id": "session-0001",
+      "source": "engine"
+    },
+    {
+      "causes": [],
+      "event_id": "event-000008",
+      "event_seq": 8,
+      "generation": 2,
+      "kind": "console.message",
+      "monotonic_ms": 436,
+      "page_id": "page-1",
+      "payload": {
+        "level": "log",
+        "text": "fixture console record"
+      },
+      "raw_refs": [
+        "raw-000007"
+      ],
+      "schema_version": "browser-workbench.event/v1",
+      "session_id": "session-0001",
+      "source": "injected"
+    },
+    {
+      "causes": [],
+      "event_id": "event-000009",
+      "event_seq": 9,
+      "generation": 2,
+      "kind": "console.message",
+      "monotonic_ms": 436,
+      "page_id": "page-1",
+      "payload": {
+        "level": "warn",
+        "text": "fixture console warning"
+      },
+      "raw_refs": [
+        "raw-000008"
+      ],
+      "schema_version": "browser-workbench.event/v1",
+      "session_id": "session-0001",
+      "source": "injected"
+    },
+    {
+      "causes": [],
+      "event_id": "event-000010",
+      "event_seq": 10,
+      "generation": 2,
+      "kind": "page.title_changed",
+      "monotonic_ms": 437,
+      "page_id": "page-1",
+      "payload": {
+        "title": "Workbench Fixture Console",
+        "url": "http://127.0.0.1:35739/console.html"
+      },
+      "raw_refs": [
+        "raw-000009"
+      ],
+      "schema_version": "browser-workbench.event/v1",
+      "session_id": "session-0001",
+      "source": "engine"
+    },
+    {
+      "causes": [],
+      "event_id": "event-000011",
+      "event_seq": 11,
+      "generation": 2,
+      "kind": "network.response",
+      "monotonic_ms": 475,
+      "page_id": "page-1",
+      "payload": {
+        "mime_type": "text/plain",
+        "status": 200,
+        "url": "http://127.0.0.1:35739/pixel.txt"
+      },
+      "raw_refs": [
+        "raw-000010"
+      ],
+      "schema_version": "browser-workbench.event/v1",
+      "session_id": "session-0001",
+      "source": "engine"
+    },
+    {
+      "causes": [],
+      "event_id": "event-000012",
+      "event_seq": 12,
+      "generation": 2,
+      "kind": "navigation.finished",
+      "monotonic_ms": 475,
+      "page_id": "page-1",
+      "payload": {
+        "is_loading": false,
+        "phase": "finished",
+        "title": "Workbench Fixture Console",
+        "url": "http://127.0.0.1:35739/console.html"
+      },
+      "raw_refs": [
+        "raw-000011"
+      ],
+      "schema_version": "browser-workbench.event/v1",
+      "session_id": "session-0001",
+      "source": "engine"
+    }
+  ],
+  "metadata": {
+    "purpose": "native-slice-2"
+  },
+  "raw": [
+    {
+      "causes": [],
+      "kind": "adapter.ready",
+      "monotonic_ms": 0,
+      "ordinal": 1,
+      "page_id": null,
+      "payload": {
+        "adapter": "browser-workbench-webkitgtk-worker",
+        "adapter_version": "0.2.0",
+        "display_backend": "GdkX11Display",
+        "engine": "2.52.6",
+        "engine_api": "webkitgtk-6.0",
+        "gtk": "4.22.4",
+        "transport_version": 1
+      },
+      "raw_id": "raw-000001",
+      "source": "webkitgtk"
+    },
+    {
+      "causes": [],
+      "kind": "load-changed",
+      "monotonic_ms": 432,
+      "ordinal": 2,
+      "page_id": "page-1",
+      "payload": {
+        "is_loading": true,
+        "phase": "started",
+        "title": null,
+        "url": "http://127.0.0.1:35739/console.html"
+      },
+      "raw_id": "raw-000002",
+      "source": "webkitgtk"
+    },
+    {
+      "causes": [],
+      "kind": "resource-load-started",
+      "monotonic_ms": 432,
+      "ordinal": 3,
+      "page_id": "page-1",
+      "payload": {
+        "url": "http://127.0.0.1:35739/console.html"
+      },
+      "raw_id": "raw-000003",
+      "source": "webkitgtk"
+    },
+    {
+      "causes": [],
+      "kind": "resource-response",
+      "monotonic_ms": 433,
+      "ordinal": 4,
+      "page_id": "page-1",
+      "payload": {
+        "mime_type": "text/html",
+        "status": 200,
+        "url": "http://127.0.0.1:35739/console.html"
+      },
+      "raw_id": "raw-000004",
+      "source": "webkitgtk"
+    },
+    {
+      "causes": [],
+      "kind": "load-changed",
+      "monotonic_ms": 433,
+      "ordinal": 5,
+      "page_id": "page-1",
+      "payload": {
+        "is_loading": true,
+        "phase": "committed",
+        "title": null,
+        "url": "http://127.0.0.1:35739/console.html"
+      },
+      "raw_id": "raw-000005",
+      "source": "webkitgtk"
+    },
+    {
+      "causes": [],
+      "kind": "resource-load-started",
+      "monotonic_ms": 434,
+      "ordinal": 6,
+      "page_id": "page-1",
+      "payload": {
+        "url": "http://127.0.0.1:35739/pixel.txt"
+      },
+      "raw_id": "raw-000006",
+      "source": "webkitgtk"
+    },
+    {
+      "causes": [],
+      "kind": "script-message",
+      "monotonic_ms": 436,
+      "ordinal": 7,
+      "page_id": "page-1",
+      "payload": {
+        "handler": "workbench",
+        "json": "\"{\\\"kind\\\":\\\"console\\\",\\\"level\\\":\\\"log\\\",\\\"text\\\":\\\"fixture console record\\\"}\""
+      },
+      "raw_id": "raw-000007",
+      "source": "webkitgtk"
+    },
+    {
+      "causes": [],
+      "kind": "script-message",
+      "monotonic_ms": 436,
+      "ordinal": 8,
+      "page_id": "page-1",
+      "payload": {
+        "handler": "workbench",
+        "json": "\"{\\\"kind\\\":\\\"console\\\",\\\"level\\\":\\\"warn\\\",\\\"text\\\":\\\"fixture console warning\\\"}\""
+      },
+      "raw_id": "raw-000008",
+      "source": "webkitgtk"
+    },
+    {
+      "causes": [],
+      "kind": "title-changed",
+      "monotonic_ms": 437,
+      "ordinal": 9,
+      "page_id": "page-1",
+      "payload": {
+        "title": "Workbench Fixture Console",
+        "url": "http://127.0.0.1:35739/console.html"
+      },
+      "raw_id": "raw-000009",
+      "source": "webkitgtk"
+    },
+    {
+      "causes": [],
+      "kind": "resource-response",
+      "monotonic_ms": 475,
+      "ordinal": 10,
+      "page_id": "page-1",
+      "payload": {
+        "mime_type": "text/plain",
+        "status": 200,
+        "url": "http://127.0.0.1:35739/pixel.txt"
+      },
+      "raw_id": "raw-000010",
+      "source": "webkitgtk"
+    },
+    {
+      "causes": [],
+      "kind": "load-changed",
+      "monotonic_ms": 475,
+      "ordinal": 11,
+      "page_id": "page-1",
+      "payload": {
+        "is_loading": false,
+        "phase": "finished",
+        "title": "Workbench Fixture Console",
+        "url": "http://127.0.0.1:35739/console.html"
+      },
+      "raw_id": "raw-000011",
+      "source": "webkitgtk"
+    }
+  ],
+  "session_id": "session-0001"
+}

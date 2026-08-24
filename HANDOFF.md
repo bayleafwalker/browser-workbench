@@ -1,4 +1,4 @@
-# Handoff — native slice 1 (WebKitGTK vertical proof)
+# Handoff — native slices 1 and 2 (WebKitGTK)
 
 Date: 2026-08-24. Host: Arch Linux, kernel 7.1.9-arch1-2, x86_64.
 
@@ -22,15 +22,40 @@ complete evidence manifest.
 session.export`, against a deterministic loopback fixture, on WebKitGTK 2.52.6
 and GTK 4.22.4, headless under Xvfb.
 
+## Slice 2 — engine-truth observation and action
+
+Added on top of slice 1, all executed against the fixture:
+
+| Capability | Provider | How |
+| --- | --- | --- |
+| `page.act.javascript` | engine | `evaluate_javascript_future`, deferred reply |
+| `page.observe.dom` | injected | engine-serialized `outerHTML` via evaluate |
+| `page.observe.screenshot` | engine | `snapshot_future`, inline bounded PNG |
+| `page.observe.console` | injected | user content manager + console bridge |
+| `page.observe.network` | engine (partial) | resource request/response/failure signals |
+
+Verified content, not just green steps: the DOM comes back as the engine's
+parsed tree, both console messages are captured and labelled `injected`, the
+subresource fetch appears as a request/response pair with status 200, and the
+snapshot is a real 1024x768 RGBA PNG.
+
+Three consecutive runs produced byte-identical DOM digests
+(`9942f784a4570720`), identical console and network counts, and identical PNG
+sizes. That is determinism observed on the native lane, not asserted.
+
 ## What is still not true
 
 - The 12-scenario corpus has not run on a native backend. Not once, let alone
-  three times, let alone on both variants.
+  three times, let alone on both variants. The corpus drivers in `corpus.py`
+  are written against `MockBackend` directly and would need a backend-neutral
+  harness before any native corpus run is possible.
 - `stable-persistent` is not implemented. `session.create` rejects persistent
   profiles as `capability_unsupported`.
-- `page.act`, `session.checkpoint`, and the `dom`, `accessibility`, `console`,
-  `network`, `dialogs`, `permissions`, `downloads`, and `screenshot`
-  projections are not wired on the native lane.
+- Still unwired on the native lane: `page.tabs`, `page.act` pointer and
+  keyboard, target enumeration and stale-target rejection,
+  `session.checkpoint`, `page.termination`, dialog and permission decision
+  tokens, upload and download, and the `accessibility`, `dialogs`,
+  `permissions`, and `downloads` projections.
 - Playwright oracle and ServoGTK remain unexecuted.
 - **Wave 2 is not complete.** This is one session.
 
@@ -103,7 +128,9 @@ Run on this host unless noted. Unabridged.
 | `cargo build -p browser-workbench-webkitgtk-worker --no-default-features --features native` | **passed** |
 | `xvfb-run -a python3 scripts/native_gate.py webkitgtk --execute` | **passed** — `native-compile-verified` |
 | `xvfb-run -a python3 scripts/native_e2e.py` | **passed** — all 5 steps, all 5 gates, zero deviations |
-| e2e repeated twice more | **passed** both times, zero deviations |
+| `xvfb-run -a python3 scripts/native_e2e.py --spec examples/native-webkitgtk-slice2.json` | **passed** — all 6 steps, all 5 gates, zero deviations |
+| slice 1 e2e repeated twice more | **passed** both times, zero deviations |
+| slice 2 e2e repeated three times | **passed** all three, zero deviations, identical digests |
 
 `cargo test --workspace --all-features` reporting zero tests is not a silent
 pass: neither Rust crate defines a test. The adapter is covered by the Python
@@ -111,8 +138,14 @@ transport tests and by the e2e, not by Rust unit tests.
 
 ## Evidence
 
-Root: `evidence/native-slice1/`. Manifest `complete: true`, root digest
+Slice 1 root: `evidence/native-slice1/`. Manifest `complete: true`, root digest
 `9424ebbff624e4cef4d7c07159071ccedc9bde4f860eef4d518948baf53c3731`.
+
+Slice 2 root: `evidence/native-slice2/`. Manifest `complete: true`, root digest
+`42a2fdddd45b96ca1b87b940894345d2292faadd1c35997c243710d418654a99`, adding a
+`screenshots/page-1-g2-01.png` raw artifact (16209 bytes).
+
+Slice 1 artifacts:
 
 | Artifact | Bytes | SHA-256 (16) | Surface |
 | --- | ---: | --- | --- |
@@ -185,12 +218,32 @@ Run the release gate in a disposable copy, as the 0.2.0 consolidation did —
 it regenerates `evidence/release-0.2.0/`, and those files are part of the
 checkpoint's integrity set.
 
+## A fidelity bug the evidence caught
+
+The first slice 2 run produced a 640x480 snapshot from a run spec declaring a
+1024x768 viewport. Headless there is no window manager, so GTK's
+`default_width`/`default_height` — hints to a WM — were ignored and the engine
+laid out at its fallback size. Every snapshot would have quietly disagreed
+with its own run spec.
+
+Fixed by expressing the declared viewport as the content view's size request
+(ADR-S2-02), and a `viewport-width-divergence` deviation now fires if an
+observed snapshot is ever narrower than declared. Snapshots are 1024x768.
+
+This is the kind of defect that only a real run can surface, and the reason
+the evidence records observed dimensions alongside declared ones.
+
 ## Next eligible slice
 
-Complete the WebKitGTK operations the 12-scenario corpus needs — `page.act`
-pointer and keyboard, the remaining observation projections, and
-`session.checkpoint` — then run `stable-ephemeral` three times per scenario.
-`stable-persistent` needs a profile implementation before it can run at all.
+Slice 3: target enumeration with generation-scoped identity, `page.act`
+pointer and keyboard, and stale-target rejection — the WB-S003 group, and the
+largest remaining gap between the native lane and the corpus.
+
+Then, in order: `page.tabs`, dialog and permission decision tokens, upload and
+download, `session.checkpoint` and `page.termination`. Only once those exist
+does a backend-neutral corpus harness become worth building, and only then can
+`stable-ephemeral` run three times per scenario. `stable-persistent` needs a
+profile implementation before it can run at all.
 
 Do not raise the release claim past `native_vertical_proof` until those runs
 exist. Wave 2 means real WebKitGTK corpus evidence, and it does not exist yet.
