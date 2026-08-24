@@ -1,0 +1,93 @@
+{
+  "schema_version": "browser-workbench.handoff/v1",
+  "generated_at": "2026-08-24T17:18:28Z",
+  "source_sessions": [
+    {
+      "title": "Browser",
+      "date": "2026-08-23",
+      "role": "architecture and direction"
+    },
+    {
+      "title": "Summarize Browser Session Progress",
+      "date": "2026-08-24",
+      "role": "later pickup and implementation",
+      "post_checkpoint_transcript": "unavailable"
+    }
+  ],
+  "authoritative_checkpoint": {
+    "file": "source/browser-workbench-0.2.0-source-checkpoint.zip",
+    "created_at": "2026-08-24T16:05:10.871950Z",
+    "size_bytes": 266387,
+    "sha256": "0bc2f9a12ae49b42af2165edeaa4dbba54e51708d7effbc9dde148a30f096fe2",
+    "classification": "source-and-mock-verified",
+    "native_runtime_claim": false,
+    "git_identity": null
+  },
+  "project": {
+    "name": "browser-workbench",
+    "version": "0.2.0",
+    "thesis": "minimal Linux-first browser workbench with a typed observation/action protocol shared by humans, agents, command-line tools, and developer integrations",
+    "baseline": {
+      "name": "hostproto",
+      "version": "0.1.0",
+      "scenario_count": 16,
+      "frozen": true
+    },
+    "workbench_corpus": {
+      "version": "v1",
+      "scenario_count": 12,
+      "repetitions": 3,
+      "expected_run_count": 36
+    }
+  },
+  "backend_lanes": {
+    "webkitgtk": "primary-gating",
+    "webkitgtk_variants": [
+      "stable-ephemeral",
+      "stable-persistent"
+    ],
+    "playwright_webkit": "external-oracle",
+    "servo_gtk": "experimental-non-gating",
+    "wpe_webkit": "deferred"
+  },
+  "verification": {
+    "archive_integrity": "passed",
+    "package_verified_files": 283,
+    "source_validation": "passed",
+    "python_tests": {
+      "passed": 15,
+      "failed": 0
+    },
+    "chrome_tests": {
+      "passed": 3,
+      "failed": 0
+    },
+    "mock_corpus": {
+      "passed_runs": 36,
+      "failed_runs": 0,
+      "retry_count": 0,
+      "semantic_digest": "a8d0c478fcdca32bc9167425744d3a9c54969c7d9e497fc6a48f388399b8a74f"
+    },
+    "disclosure_scan": "passed-zero-findings",
+    "webkitgtk_native": "blocked",
+    "servo_gtk_native": "blocked",
+    "playwright_oracle": "blocked"
+  },
+  "implementation_boundary": {
+    "runner_supports_connected_native_backend": false,
+    "gtk_shell_hosts_live_content": false,
+    "webkitgtk_adapter_connected": false,
+    "playwright_connected_to_main_runner": false,
+    "servo_semantic_observation": false,
+    "native_corpus_evidence": false
+  },
+  "next_required_slice": "one end-to-end WebKitGTK session through the public protocol with retained raw and normalized evidence",
+  "unconfirmed": [
+    "all work after the saved checkpoint",
+    "repository branch or commit",
+    "native compilation",
+    "native runtime execution",
+    "Playwright oracle execution",
+    "ServoGTK execution"
+  ]
+}
