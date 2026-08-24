@@ -13,6 +13,7 @@ from .evidence import ArtifactStore
 from .mock_backend import MockBackend
 from .models import terminal_status, validate_run_spec
 from .native_probe import probe_backend
+from .webkitgtk_backend import WebKitGtkBackend
 from .util import json_size
 
 
@@ -77,7 +78,7 @@ class Runner:
         deviations: list[dict[str, Any]] = []
         terminal_error: WorkbenchError | None = None
         capability: dict[str, Any] = {}
-        backend: MockBackend | None = None
+        backend: MockBackend | WebKitGtkBackend | None = None
 
         store.write_json("contract/run-spec.json", spec, "contract")
         try:
@@ -92,17 +93,31 @@ class Runner:
                 spec["required_capabilities"],
                 spec.get("allowed_providers"),
             )
-            if kind != "mock":
+            if kind == "mock":
+                backend = MockBackend(store, variant=variant)
+            elif kind == "webkitgtk":
+                # The block lifts only for a probed host with an adapter that
+                # actually connects. connect() raises rather than degrading.
+                if not probe["ready"]:
+                    raise WorkbenchError(
+                        "capability_blocked",
+                        "the WebKitGTK prerequisites are not satisfied on this host",
+                        {"backend": kind, "reasons": probe["reasons"]},
+                    )
+                native = WebKitGtkBackend(store, variant=variant)
+                identity = native.connect()
+                store.write_json("diagnostics/adapter-identity.json", identity, "diagnostic")
+                backend = native
+            else:
                 raise WorkbenchError(
                     "capability_blocked",
-                    "this source checkpoint has no connected native/oracle adapter process",
+                    "this checkpoint has no connected adapter process for this backend",
                     {
                         "backend": kind,
                         "probe_ready": probe["ready"],
                         "source_boundary": f"native/{kind}-worker" if kind != "playwright" else "oracle/playwright",
                     },
                 )
-            backend = MockBackend(store, variant=variant)
         except WorkbenchError as error:
             terminal_error = error
 
@@ -148,6 +163,15 @@ class Runner:
             steps.append(step_record)
 
         if backend is not None:
+            # Teardown before the trace flush so the adapter's own closing
+            # record is part of the evidence rather than lost after it.
+            close = getattr(backend, "close", None)
+            if close is not None:
+                try:
+                    close()
+                except WorkbenchError as error:
+                    deviations.append({"kind": "adapter-teardown-error", "error": error.as_dict()})
+            deviations.extend(getattr(backend, "deviations", []))
             backend.flush_traces()
 
         status = terminal_status(terminal_error)

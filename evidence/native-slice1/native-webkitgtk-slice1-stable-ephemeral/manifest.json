@@ -1,0 +1,77 @@
+{
+  "artifacts": [
+    {
+      "media_type": "application/json",
+      "path": "contract/run-spec.json",
+      "sha256": "e606a6ffdcc867fb5b8721accd84665726293a723a4b11bc54fc7b584aa6ebad",
+      "size_bytes": 3259,
+      "source_refs": [],
+      "surface": "contract"
+    },
+    {
+      "media_type": "application/json",
+      "path": "diagnostics/adapter-identity.json",
+      "sha256": "c1da7be15b3a9974fb4ef91578e4ac4ba1038d7448990d0c8b09a2f1513db11c",
+      "size_bytes": 222,
+      "source_refs": [],
+      "surface": "diagnostic"
+    },
+    {
+      "media_type": "application/json",
+      "path": "diagnostics/capabilities.json",
+      "sha256": "20a7d247be83c208b57aeb9c43c7e63347ac76ad6b2c199e28f25c0ac40d57eb",
+      "size_bytes": 6404,
+      "source_refs": [],
+      "surface": "diagnostic"
+    },
+    {
+      "media_type": "application/json",
+      "path": "exports/export-0001.json",
+      "sha256": "80057ca4c11038fc2283048996bb17ee6510f62715821eaf0e2662dbc00f276b",
+      "size_bytes": 6217,
+      "source_refs": [],
+      "surface": "redacted"
+    },
+    {
+      "media_type": "application/json",
+      "path": "result.json",
+      "sha256": "101b57b860cfdc45ec824261f6d455dfed4ca719c059aea1eafaf5a681136072",
+      "size_bytes": 17322,
+      "source_refs": [],
+      "surface": "contract"
+    },
+    {
+      "media_type": "text/plain",
+      "path": "traces/adapter-stderr.log",
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4",
+      "size_bytes": 140,
+      "source_refs": [],
+      "surface": "raw"
+    },
+    {
+      "media_type": "application/x-ndjson",
+      "path": "traces/normalized.ndjson",
+      "sha256": "fcf9ba5ba2793b9459b6f4d7eb2c139591f16e41e64fb48a88ef5fce2decaaed",
+      "size_bytes": 3247,
+      "source_refs": [],
+      "surface": "normalized"
+    },
+    {
+      "media_type": "application/x-ndjson",
+      "path": "traces/raw.ndjson",
+      "sha256": "5421b484c8168b448fa8e56983f90d31a8598479f9649f9f89d229b98b32a910",
+      "size_bytes": 1565,
+      "source_refs": [],
+      "surface": "raw"
+    }
+  ],
+  "complete": true,
+  "created_at": "2026-08-24T18:11:48+00:00",
+  "redaction": {
+    "count": 0,
+    "rule_ids": []
+  },
+  "root_digest": "9424ebbff624e4cef4d7c07159071ccedc9bde4f860eef4d518948baf53c3731",
+  "run_id": "native-webkitgtk-slice1-stable-ephemeral",
+  "schema_version": "browser-workbench.evidence-manifest/v1"
+}

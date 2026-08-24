@@ -1,3 +1,14 @@
+# Standalone workspace: see the exclude note in the root Cargo.toml.
+[workspace]
+members = ["."]
+resolver = "2"
+
+[workspace.package]
+version = "0.2.0"
+edition = "2024"
+rust-version = "1.85"
+license = "MIT"
+
 [package]
 name = "browser-workbench-servo-gtk-worker"
 version.workspace = true

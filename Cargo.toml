@@ -1,9 +1,13 @@
 [workspace]
 members = [
   "native/gtk-shell",
-  "native/webkitgtk-worker",
-  "native/servo-gtk-worker"
+  "native/webkitgtk-worker"
 ]
+# The experimental ServoGTK lane is its own workspace on purpose. Its pinned
+# Servo revision requires a newer serde than this workspace pins, and a
+# non-gating research lane must never constrain, or block, the gating
+# WebKitGTK lane through shared dependency resolution.
+exclude = ["native/servo-gtk-worker"]
 resolver = "2"
 
 [workspace.package]
@@ -14,9 +18,15 @@ license = "MIT"
 
 [workspace.dependencies]
 anyhow = "=1.0.99"
-gio = "=0.21.2"
-glib = "=0.21.3"
-gtk = { package = "gtk4", version = "=0.11.4" }
+# gtk4 0.11.4 requires glib/gio 0.22; the 0.21 pins the checkpoint carried
+# could never have resolved against it. Adapter code uses the gtk
+# re-exports so the versions cannot drift apart again.
+gio = "=0.22.8"
+glib = "=0.22.8"
+# webkit6 0.6.1 names gtk::Accessible unconditionally, and gtk4 gates that
+# type behind v4_10. The crate version stays pinned; only the feature the
+# pinned WebKitGTK binding already requires is enabled.
+gtk = { package = "gtk4", version = "=0.11.4", features = ["v4_10"] }
 serde = { version = "=1.0.219", features = ["derive"] }
 serde_json = "=1.0.143"
 webkit6 = { version = "=0.6.1", features = ["v2_52"] }

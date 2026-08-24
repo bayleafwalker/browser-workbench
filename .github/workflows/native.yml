@@ -11,6 +11,11 @@ jobs:
       - uses: dtolnay/rust-toolchain@1.85.0
       - run: sudo apt-get update && sudo apt-get install -y libgtk-4-dev libwebkitgtk-6.0-dev xvfb
       - run: xvfb-run -a python scripts/native_gate.py webkitgtk --execute --output evidence/native-webkitgtk.json
+      - run: cargo build -p browser-workbench-webkitgtk-worker --no-default-features --features native
+      # A compile gate is not evidence of a session; this executes one.
+      - run: xvfb-run -a python scripts/native_e2e.py --output evidence/native-slice1
+      - uses: actions/upload-artifact@v4
+        with: {name: native-slice1-evidence, path: evidence/native-slice1}
 
   playwright-oracle:
     runs-on: ubuntu-24.04

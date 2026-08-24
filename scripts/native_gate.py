@@ -26,7 +26,11 @@ def main() -> int:
     if args.backend == "webkitgtk":
         command = ["cargo", "check", "-p", "browser-workbench-webkitgtk-worker", "--no-default-features", "--features", "native"]
     elif args.backend == "servo-gtk":
-        command = ["cargo", "check", "-p", "browser-workbench-servo-gtk-worker", "--no-default-features", "--features", "native"]
+        # Its own workspace; see the exclude note in the root Cargo.toml.
+        command = [
+            "cargo", "check", "--manifest-path", "native/servo-gtk-worker/Cargo.toml",
+            "--no-default-features", "--features", "native",
+        ]
     elif args.backend == "playwright":
         command = ["node", "oracle/playwright/probe.mjs", "--launch"]
     executed = False

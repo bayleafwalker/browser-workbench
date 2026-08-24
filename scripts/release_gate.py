@@ -44,21 +44,29 @@ def main() -> int:
         run("webkitgtk-native-probe", [python, "scripts/native_gate.py", "webkitgtk", "--output", str(EVIDENCE / "native-webkitgtk.json")], accept={0, 78}),
         run("servo-gtk-native-probe", [python, "scripts/native_gate.py", "servo-gtk", "--output", str(EVIDENCE / "native-servo-gtk.json")], accept={0, 78}),
         run("playwright-oracle-probe", [python, "scripts/native_gate.py", "playwright", "--output", str(EVIDENCE / "oracle-playwright.json")], accept={0, 78}),
+        # One real WebKitGTK session. Blocked is an accepted outcome on a host
+        # without the adapter built; a mock substitution never is.
+        run("webkitgtk-native-e2e", [python, "scripts/native_e2e.py", "--output", str(EVIDENCE / "native-slice1")], accept={0, 78}),
     ]
     required = checks[:5]
     passed = all(item["status"] == "passed" for item in required)
     native_blocked = [item["name"] for item in checks[5:] if item["exit_code"] == 78]
+    e2e = checks[-1]
     report = {
         "schema_version": "browser-workbench.release-gate/v1",
         "release": "0.2.0-source-checkpoint",
         "status": "passed" if passed else "failed",
         "claim": "source-and-mock-verified",
+        # One session through the public protocol on a real engine. This is not
+        # corpus conformance: Wave 2 needs both variants x 12 scenarios x 3.
+        "native_vertical_proof": "passed" if e2e["exit_code"] == 0 else "blocked",
         "native_runtime_claim": False,
+        "native_corpus_claim": False,
         "native_or_oracle_blocked": native_blocked,
         "checks": checks,
     }
     (EVIDENCE / "release-gate.json").write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    print(json.dumps({key: report[key] for key in ("status", "claim", "native_runtime_claim", "native_or_oracle_blocked")}, indent=2))
+    print(json.dumps({key: report[key] for key in ("status", "claim", "native_vertical_proof", "native_runtime_claim", "native_corpus_claim", "native_or_oracle_blocked")}, indent=2))
     return 0 if passed else 1
 
 

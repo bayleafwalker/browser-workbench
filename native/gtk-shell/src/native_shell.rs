@@ -1,5 +1,8 @@
 use gtk::prelude::*;
-use gtk::{Application, ApplicationWindow, Box as GtkBox, Button, Entry, HeaderBar, Label, Orientation, Stack, StackSwitcher};
+use gtk::{
+    Application, ApplicationWindow, Box as GtkBox, Button, Entry, HeaderBar, Label, Orientation,
+    Stack, StackSwitcher,
+};
 
 pub fn run() {
     let app = Application::builder()
@@ -14,14 +17,21 @@ fn build_window(app: &Application) {
     let back = Button::with_label("Back");
     let forward = Button::with_label("Forward");
     let reload = Button::with_label("Reload");
-    let location = Entry::builder().hexpand(true).placeholder_text("Address or workbench command").build();
+    let location = Entry::builder()
+        .hexpand(true)
+        .placeholder_text("Address or workbench command")
+        .build();
     header.pack_start(&back);
     header.pack_start(&forward);
     header.pack_start(&reload);
     header.set_title_widget(Some(&location));
 
     let stack = Stack::builder().hexpand(true).vexpand(true).build();
-    stack.add_titled(&Label::new(Some("Adapter view attaches here")), Some("page-1"), "New tab");
+    stack.add_titled(
+        &Label::new(Some("Adapter view attaches here")),
+        Some("page-1"),
+        "New tab",
+    );
     let switcher = StackSwitcher::builder().stack(&stack).build();
     let status = Label::new(Some("No adapter connected · single-writer lease unclaimed"));
     let takeover = Button::with_label("Request takeover");
