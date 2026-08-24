@@ -1,0 +1,30 @@
+{
+  "assertions": [
+    {
+      "passed": true,
+      "text": "response is within max_bytes"
+    },
+    {
+      "passed": true,
+      "text": "loss is explicit"
+    },
+    {
+      "passed": true,
+      "text": "raw artifact is content-addressed"
+    },
+    {
+      "passed": true,
+      "text": "event cursor advances"
+    }
+  ],
+  "driver": "bounded_observation",
+  "error": null,
+  "missing_assertions": [],
+  "repetition": 1,
+  "retry_count": 0,
+  "run_id": "WB-S002-r1",
+  "scenario_id": "WB-S002",
+  "schema_version": "browser-workbench.corpus-result/v1",
+  "status": "passed",
+  "unexpected_assertions": []
+}

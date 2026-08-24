@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/browser-workbench/capability-report-v1.schema.json",
+  "title": "Browser workbench capability report v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "backend", "variant", "capabilities"],
+  "properties": {
+    "schema_version": {"const": "browser-workbench.capabilities/v1"},
+    "backend": {"enum": ["mock", "webkitgtk", "playwright", "servo-gtk"]},
+    "variant": {"type": "string", "minLength": 1},
+    "identity": {"type": "object"},
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["availability", "provider", "semantics", "verification", "notes"],
+        "properties": {
+          "availability": {"enum": ["supported", "partial", "unsupported", "blocked"]},
+          "provider": {"enum": ["engine", "adapter", "host", "injected", "oracle", "mock"]},
+          "semantics": {"enum": ["exact", "normalized", "partial", "none"]},
+          "verification": {"enum": ["runtime", "source-audit", "declared", "none"]},
+          "notes": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    }
+  }
+}

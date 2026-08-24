@@ -1,0 +1,14 @@
+[package]
+name = "browser-workbench-gtk-shell"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[features]
+default = ["source-audit"]
+source-audit = []
+native = ["dep:gtk"]
+
+[dependencies]
+gtk = { workspace = true, optional = true }

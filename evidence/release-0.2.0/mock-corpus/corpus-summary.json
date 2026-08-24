@@ -1,0 +1,1433 @@
+{
+  "corpus_id": "browser-workbench-denominator",
+  "corpus_version": "1.0.0",
+  "deterministic": true,
+  "failed": 0,
+  "passed": 36,
+  "records": [
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "profile is ephemeral"
+        },
+        {
+          "passed": true,
+          "text": "one page is active"
+        },
+        {
+          "passed": true,
+          "text": "lease epoch is one"
+        },
+        {
+          "passed": true,
+          "text": "second writer is rejected"
+        }
+      ],
+      "driver": "session_tabs_profiles",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:c5c562726536fa394c0412a21086872d1e6a4133e345056036a1be9f6a8ea5c6",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "6ec2a319fc95405e8bead242d2fb043c0abeb4c0734f114fbeac27db469519bc",
+        "sha256": "c5c562726536fa394c0412a21086872d1e6a4133e345056036a1be9f6a8ea5c6",
+        "size_bytes": 1073,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 1,
+      "retry_count": 0,
+      "run_id": "WB-S001-r1",
+      "scenario_id": "WB-S001",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "profile is ephemeral"
+        },
+        {
+          "passed": true,
+          "text": "one page is active"
+        },
+        {
+          "passed": true,
+          "text": "lease epoch is one"
+        },
+        {
+          "passed": true,
+          "text": "second writer is rejected"
+        }
+      ],
+      "driver": "session_tabs_profiles",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:d50d9c887b243acd00c2d6b9f3d79e1a50af94ebbb88c9f0099ef80a56c4013f",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "40b7b5ef571cbf2306b17b1f00b55781e893aa4a8d4290d4600e9e47d2643ccf",
+        "sha256": "d50d9c887b243acd00c2d6b9f3d79e1a50af94ebbb88c9f0099ef80a56c4013f",
+        "size_bytes": 1073,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 2,
+      "retry_count": 0,
+      "run_id": "WB-S001-r2",
+      "scenario_id": "WB-S001",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "profile is ephemeral"
+        },
+        {
+          "passed": true,
+          "text": "one page is active"
+        },
+        {
+          "passed": true,
+          "text": "lease epoch is one"
+        },
+        {
+          "passed": true,
+          "text": "second writer is rejected"
+        }
+      ],
+      "driver": "session_tabs_profiles",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:13b554ea56f0810aa5f2b90beae0147f06f97ebf26eea1f06ff2c192026c2d03",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "4522892722ddd90bc3475976cdefce38750fddd74e62a4e0f61cda0d263ef9b1",
+        "sha256": "13b554ea56f0810aa5f2b90beae0147f06f97ebf26eea1f06ff2c192026c2d03",
+        "size_bytes": 1073,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 3,
+      "retry_count": 0,
+      "run_id": "WB-S001-r3",
+      "scenario_id": "WB-S001",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "response is within max_bytes"
+        },
+        {
+          "passed": true,
+          "text": "loss is explicit"
+        },
+        {
+          "passed": true,
+          "text": "raw artifact is content-addressed"
+        },
+        {
+          "passed": true,
+          "text": "event cursor advances"
+        }
+      ],
+      "driver": "bounded_observation",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:ccefdca7a79f2df55bfc3fc93fea6e8638a376f5c3f019f6ca9ba6fe12b28e07",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "f526fadb2fbfb9dbf977912faeafd2e02c7e33903d03ab76436acac9211ae918",
+        "sha256": "ccefdca7a79f2df55bfc3fc93fea6e8638a376f5c3f019f6ca9ba6fe12b28e07",
+        "size_bytes": 1340,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 1,
+      "retry_count": 0,
+      "run_id": "WB-S002-r1",
+      "scenario_id": "WB-S002",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "response is within max_bytes"
+        },
+        {
+          "passed": true,
+          "text": "loss is explicit"
+        },
+        {
+          "passed": true,
+          "text": "raw artifact is content-addressed"
+        },
+        {
+          "passed": true,
+          "text": "event cursor advances"
+        }
+      ],
+      "driver": "bounded_observation",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:76167b82c5fdaa8811c65d6aa7bf1a9faa2e0e44a3d3e4472f8780373194b3d9",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "33b46cb17054f36adac9b9007aba5c13a283639038ae108a7b75ee91a563bf9c",
+        "sha256": "76167b82c5fdaa8811c65d6aa7bf1a9faa2e0e44a3d3e4472f8780373194b3d9",
+        "size_bytes": 1340,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 2,
+      "retry_count": 0,
+      "run_id": "WB-S002-r2",
+      "scenario_id": "WB-S002",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "response is within max_bytes"
+        },
+        {
+          "passed": true,
+          "text": "loss is explicit"
+        },
+        {
+          "passed": true,
+          "text": "raw artifact is content-addressed"
+        },
+        {
+          "passed": true,
+          "text": "event cursor advances"
+        }
+      ],
+      "driver": "bounded_observation",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:d1aa3c687897f64b9ab858c743526791bba128d21a9b0616eb03a9c720bf37e3",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "de90a2dfcbb10726fd13f7c64f3e04808b9ca96d566718df87fd34c95874ed4b",
+        "sha256": "d1aa3c687897f64b9ab858c743526791bba128d21a9b0616eb03a9c720bf37e3",
+        "size_bytes": 1340,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 3,
+      "retry_count": 0,
+      "run_id": "WB-S002-r3",
+      "scenario_id": "WB-S002",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "fresh target executes"
+        },
+        {
+          "passed": true,
+          "text": "receipt names causal events"
+        },
+        {
+          "passed": true,
+          "text": "navigation increments generation"
+        },
+        {
+          "passed": true,
+          "text": "stale target fails before backend invocation"
+        }
+      ],
+      "driver": "generation_targets_receipts",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:5b13429c996b864c30211934156b806ac1b6563b8c4641d5a9feb07ad0ef38c6",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "753434404a3201b07b6ee2dcc66fb3d3dee57c10640c153853617b7e6bff8ab9",
+        "sha256": "5b13429c996b864c30211934156b806ac1b6563b8c4641d5a9feb07ad0ef38c6",
+        "size_bytes": 1077,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 1,
+      "retry_count": 0,
+      "run_id": "WB-S003-r1",
+      "scenario_id": "WB-S003",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "fresh target executes"
+        },
+        {
+          "passed": true,
+          "text": "receipt names causal events"
+        },
+        {
+          "passed": true,
+          "text": "navigation increments generation"
+        },
+        {
+          "passed": true,
+          "text": "stale target fails before backend invocation"
+        }
+      ],
+      "driver": "generation_targets_receipts",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:72b81145667090e617e4850490c2382c07eb3ef07aa8c11835a1da1f6f3d3b5c",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "b3e3de6d6739a18b72b0efeb73ab51f7c865d9cb083d32a2643e17b43cbcbf67",
+        "sha256": "72b81145667090e617e4850490c2382c07eb3ef07aa8c11835a1da1f6f3d3b5c",
+        "size_bytes": 1077,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 2,
+      "retry_count": 0,
+      "run_id": "WB-S003-r2",
+      "scenario_id": "WB-S003",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "fresh target executes"
+        },
+        {
+          "passed": true,
+          "text": "receipt names causal events"
+        },
+        {
+          "passed": true,
+          "text": "navigation increments generation"
+        },
+        {
+          "passed": true,
+          "text": "stale target fails before backend invocation"
+        }
+      ],
+      "driver": "generation_targets_receipts",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:e2510828b42330fa73488843f6cf942198b0503a4fc551e9036f1a33443ff491",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "30cbd10da37ae88e74e841b6d33cf278dab4b1eaf2fe8e0b3f64f1b48c31d5e5",
+        "sha256": "e2510828b42330fa73488843f6cf942198b0503a4fc551e9036f1a33443ff491",
+        "size_bytes": 1077,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 3,
+      "retry_count": 0,
+      "run_id": "WB-S003-r3",
+      "scenario_id": "WB-S003",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "scheduled event satisfies condition"
+        },
+        {
+          "passed": true,
+          "text": "virtual clock is deterministic"
+        },
+        {
+          "passed": true,
+          "text": "deadline reports unsatisfied predicates"
+        }
+      ],
+      "driver": "event_driven_await",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:9c228ddaa6cd5c367f7b87e6d7ca509f2d9adcf7a30075395458f67a75731d69",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "d46035f7428e1578ce9c2a5cafd927b02fe4c932662ca6d688816e1f71260fb6",
+        "sha256": "9c228ddaa6cd5c367f7b87e6d7ca509f2d9adcf7a30075395458f67a75731d69",
+        "size_bytes": 1077,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 1,
+      "retry_count": 0,
+      "run_id": "WB-S004-r1",
+      "scenario_id": "WB-S004",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "scheduled event satisfies condition"
+        },
+        {
+          "passed": true,
+          "text": "virtual clock is deterministic"
+        },
+        {
+          "passed": true,
+          "text": "deadline reports unsatisfied predicates"
+        }
+      ],
+      "driver": "event_driven_await",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:ed207bad2d5c6793ac77f9cb20bb18c3b71109583b6a481062f68e30b5cf4b34",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "e54131b46d70e33d5e5c9bf98c440bb265b20aa615710ce0aba00737d23a22da",
+        "sha256": "ed207bad2d5c6793ac77f9cb20bb18c3b71109583b6a481062f68e30b5cf4b34",
+        "size_bytes": 1077,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 2,
+      "retry_count": 0,
+      "run_id": "WB-S004-r2",
+      "scenario_id": "WB-S004",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "scheduled event satisfies condition"
+        },
+        {
+          "passed": true,
+          "text": "virtual clock is deterministic"
+        },
+        {
+          "passed": true,
+          "text": "deadline reports unsatisfied predicates"
+        }
+      ],
+      "driver": "event_driven_await",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:3459ed9a2c84e2653c86fec1075688dbfb2b37eefb0c0800f2e7acb3fd64daae",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "761fd868928c0b53e64de25981416604b3d3a33a0ad3e63a9f24a29e10cb916a",
+        "sha256": "3459ed9a2c84e2653c86fec1075688dbfb2b37eefb0c0800f2e7acb3fd64daae",
+        "size_bytes": 1077,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 3,
+      "retry_count": 0,
+      "run_id": "WB-S004-r3",
+      "scenario_id": "WB-S004",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "screenshot is an artifact"
+        },
+        {
+          "passed": true,
+          "text": "script result is bounded"
+        },
+        {
+          "passed": true,
+          "text": "provider class is recorded"
+        },
+        {
+          "passed": true,
+          "text": "state digest changes only when declared"
+        }
+      ],
+      "driver": "snapshot_screenshot_javascript",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:a5eda61b40f8025d1a1d58af4639749c1b69d3ca13468f540257bdbf0b6f9b1d",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "83145192beaca69520b8aa78f34b94722ce574f79905d47d9e513813256ca607",
+        "sha256": "a5eda61b40f8025d1a1d58af4639749c1b69d3ca13468f540257bdbf0b6f9b1d",
+        "size_bytes": 1321,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 1,
+      "retry_count": 0,
+      "run_id": "WB-S005-r1",
+      "scenario_id": "WB-S005",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "screenshot is an artifact"
+        },
+        {
+          "passed": true,
+          "text": "script result is bounded"
+        },
+        {
+          "passed": true,
+          "text": "provider class is recorded"
+        },
+        {
+          "passed": true,
+          "text": "state digest changes only when declared"
+        }
+      ],
+      "driver": "snapshot_screenshot_javascript",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:ef9ef32ab360d3867ed636f6ce477d73be4e7d35435b685eb343cbf2b812a824",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "b6ea6c1038220603cce269536f6c4085bbcd3c2ef6c5698ac9062d845a6030d6",
+        "sha256": "ef9ef32ab360d3867ed636f6ce477d73be4e7d35435b685eb343cbf2b812a824",
+        "size_bytes": 1321,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 2,
+      "retry_count": 0,
+      "run_id": "WB-S005-r2",
+      "scenario_id": "WB-S005",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "screenshot is an artifact"
+        },
+        {
+          "passed": true,
+          "text": "script result is bounded"
+        },
+        {
+          "passed": true,
+          "text": "provider class is recorded"
+        },
+        {
+          "passed": true,
+          "text": "state digest changes only when declared"
+        }
+      ],
+      "driver": "snapshot_screenshot_javascript",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:3af1ecc0fb93469546f7e007c2bebeb6a5c63fccb4f027bb631751ec423d56f1",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "f8d17532331865f481f408dda7b863af4fdf3e2db87b36bf48cb52942e5709ff",
+        "sha256": "3af1ecc0fb93469546f7e007c2bebeb6a5c63fccb4f027bb631751ec423d56f1",
+        "size_bytes": 1321,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 3,
+      "retry_count": 0,
+      "run_id": "WB-S005-r3",
+      "scenario_id": "WB-S005",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "console record has event identity"
+        },
+        {
+          "passed": true,
+          "text": "network request and response correlate"
+        },
+        {
+          "passed": true,
+          "text": "raw and normalized records are linked"
+        }
+      ],
+      "driver": "console_network_evidence",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:602bc58c535b707f06dfd5efbaed729b6caf53ed9d4637fbecccbf9a0d9e7c45",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "9fe42142dcfa9154f5360f04aaa80f926cf70c597f46eb11f03a7debf339bec6",
+        "sha256": "602bc58c535b707f06dfd5efbaed729b6caf53ed9d4637fbecccbf9a0d9e7c45",
+        "size_bytes": 1077,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 1,
+      "retry_count": 0,
+      "run_id": "WB-S006-r1",
+      "scenario_id": "WB-S006",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "console record has event identity"
+        },
+        {
+          "passed": true,
+          "text": "network request and response correlate"
+        },
+        {
+          "passed": true,
+          "text": "raw and normalized records are linked"
+        }
+      ],
+      "driver": "console_network_evidence",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:62a03822fde9b4b2d73582f74bcf82969a617631e3932fd3648ef41fbaef0fd6",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "89aa92e3d257e3b9603234dcccf16b05782d6c763d85426dc8bf4b972fae24b8",
+        "sha256": "62a03822fde9b4b2d73582f74bcf82969a617631e3932fd3648ef41fbaef0fd6",
+        "size_bytes": 1077,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 2,
+      "retry_count": 0,
+      "run_id": "WB-S006-r2",
+      "scenario_id": "WB-S006",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "console record has event identity"
+        },
+        {
+          "passed": true,
+          "text": "network request and response correlate"
+        },
+        {
+          "passed": true,
+          "text": "raw and normalized records are linked"
+        }
+      ],
+      "driver": "console_network_evidence",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:4c449c72fff4f2522c383a760768856ee0d0b4cd7f90aae8772a91196dbdafc3",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "2e33d9c01569250089ae4c64d3b2a6ef852748c693ca04028c0746b7ba1e007d",
+        "sha256": "4c449c72fff4f2522c383a760768856ee0d0b4cd7f90aae8772a91196dbdafc3",
+        "size_bytes": 1077,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 3,
+      "retry_count": 0,
+      "run_id": "WB-S006-r3",
+      "scenario_id": "WB-S006",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "decision token is required"
+        },
+        {
+          "passed": true,
+          "text": "default is deny"
+        },
+        {
+          "passed": true,
+          "text": "duplicate decision is rejected"
+        },
+        {
+          "passed": true,
+          "text": "receipt records applied decision"
+        }
+      ],
+      "driver": "dialog_permission",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:c7a09d6edfcb8bb7b1bc3256a4a85749633aa1b5936533dc11cd106d144819a4",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "e018018d9532dc2cc1bf3dc67a247b09dfad89dca9221cce2c0f71e5db2da79f",
+        "sha256": "c7a09d6edfcb8bb7b1bc3256a4a85749633aa1b5936533dc11cd106d144819a4",
+        "size_bytes": 1077,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 1,
+      "retry_count": 0,
+      "run_id": "WB-S007-r1",
+      "scenario_id": "WB-S007",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "decision token is required"
+        },
+        {
+          "passed": true,
+          "text": "default is deny"
+        },
+        {
+          "passed": true,
+          "text": "duplicate decision is rejected"
+        },
+        {
+          "passed": true,
+          "text": "receipt records applied decision"
+        }
+      ],
+      "driver": "dialog_permission",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:31b53c55410b01f0ca3739d53bff600faab3f539983d42de74b583e882f559b6",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "fb78e916598db487aead1c24fca704b47cd7f6d5855f3b0c1c3df993f3108703",
+        "sha256": "31b53c55410b01f0ca3739d53bff600faab3f539983d42de74b583e882f559b6",
+        "size_bytes": 1077,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 2,
+      "retry_count": 0,
+      "run_id": "WB-S007-r2",
+      "scenario_id": "WB-S007",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "decision token is required"
+        },
+        {
+          "passed": true,
+          "text": "default is deny"
+        },
+        {
+          "passed": true,
+          "text": "duplicate decision is rejected"
+        },
+        {
+          "passed": true,
+          "text": "receipt records applied decision"
+        }
+      ],
+      "driver": "dialog_permission",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:aa71495c92bf164d97bc691db40e88044fa60ce70682679aa9a91c3502f0f732",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "c5c84a898ffbb41d0672bc68e471a9d36101f0e125cc241b9832a2cfeb250902",
+        "sha256": "aa71495c92bf164d97bc691db40e88044fa60ce70682679aa9a91c3502f0f732",
+        "size_bytes": 1077,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 3,
+      "retry_count": 0,
+      "run_id": "WB-S007-r3",
+      "scenario_id": "WB-S007",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "upload uses an allowed fixture"
+        },
+        {
+          "passed": true,
+          "text": "download remains quarantined"
+        },
+        {
+          "passed": true,
+          "text": "artifact hash is recorded"
+        },
+        {
+          "passed": true,
+          "text": "undeclared path is rejected"
+        }
+      ],
+      "driver": "upload_download",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:cfde2980df9092b0cd2c7becde2ba409223b574c01f4fcd68e4876bfe8f8564c",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "76f29d6e474cbc01d0034c62a0c88f37a92317cb010307d7a0665ccd23118259",
+        "sha256": "cfde2980df9092b0cd2c7becde2ba409223b574c01f4fcd68e4876bfe8f8564c",
+        "size_bytes": 1582,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 1,
+      "retry_count": 0,
+      "run_id": "WB-S008-r1",
+      "scenario_id": "WB-S008",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "upload uses an allowed fixture"
+        },
+        {
+          "passed": true,
+          "text": "download remains quarantined"
+        },
+        {
+          "passed": true,
+          "text": "artifact hash is recorded"
+        },
+        {
+          "passed": true,
+          "text": "undeclared path is rejected"
+        }
+      ],
+      "driver": "upload_download",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:fcc0a048a5e672bb1cfbb8ec8ac715261cd42fc3b3227c0f8ebd33a8ca59230b",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "0c89dd0ac06102210496f280ef206a4cd21d956a2c1cceedd795089f0b060ae0",
+        "sha256": "fcc0a048a5e672bb1cfbb8ec8ac715261cd42fc3b3227c0f8ebd33a8ca59230b",
+        "size_bytes": 1582,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 2,
+      "retry_count": 0,
+      "run_id": "WB-S008-r2",
+      "scenario_id": "WB-S008",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "upload uses an allowed fixture"
+        },
+        {
+          "passed": true,
+          "text": "download remains quarantined"
+        },
+        {
+          "passed": true,
+          "text": "artifact hash is recorded"
+        },
+        {
+          "passed": true,
+          "text": "undeclared path is rejected"
+        }
+      ],
+      "driver": "upload_download",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:c109c9e70e48c8dcfaca1f2340796bf9470a277643ccc79b39f287348e5aa8b4",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "44b1d3253033fd444f6b694c38f8bb171fd31cca8f30b788e5980fca3436bed5",
+        "sha256": "c109c9e70e48c8dcfaca1f2340796bf9470a277643ccc79b39f287348e5aa8b4",
+        "size_bytes": 1582,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 3,
+      "retry_count": 0,
+      "run_id": "WB-S008-r3",
+      "scenario_id": "WB-S008",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "checkpoint is content-addressed"
+        },
+        {
+          "passed": true,
+          "text": "old lease becomes read-only"
+        },
+        {
+          "passed": true,
+          "text": "successor lease epoch increments"
+        },
+        {
+          "passed": true,
+          "text": "handover does not grant approval"
+        }
+      ],
+      "driver": "checkpoint_handover",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:b5d39a003fa789efd7a47035663ddf6c1d97cdf5aab85864a502c9962c130721",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "69fdbefcc3561ffa8200f0be045a769cd1204f8cf70627abbcd1867973661de2",
+        "sha256": "b5d39a003fa789efd7a47035663ddf6c1d97cdf5aab85864a502c9962c130721",
+        "size_bytes": 1340,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 1,
+      "retry_count": 0,
+      "run_id": "WB-S009-r1",
+      "scenario_id": "WB-S009",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "checkpoint is content-addressed"
+        },
+        {
+          "passed": true,
+          "text": "old lease becomes read-only"
+        },
+        {
+          "passed": true,
+          "text": "successor lease epoch increments"
+        },
+        {
+          "passed": true,
+          "text": "handover does not grant approval"
+        }
+      ],
+      "driver": "checkpoint_handover",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:5244fd0dd125ffd1e78e48ae3df3c61fc511509b28b47c973ad80e04ecfb17d2",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "589b0515cfe25c3d82406df8d2edf38ee976fd0c8c4c6b31917042025f4ae2cc",
+        "sha256": "5244fd0dd125ffd1e78e48ae3df3c61fc511509b28b47c973ad80e04ecfb17d2",
+        "size_bytes": 1340,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 2,
+      "retry_count": 0,
+      "run_id": "WB-S009-r2",
+      "scenario_id": "WB-S009",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "checkpoint is content-addressed"
+        },
+        {
+          "passed": true,
+          "text": "old lease becomes read-only"
+        },
+        {
+          "passed": true,
+          "text": "successor lease epoch increments"
+        },
+        {
+          "passed": true,
+          "text": "handover does not grant approval"
+        }
+      ],
+      "driver": "checkpoint_handover",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:49f399733aeb7091b3413e8320fe867b805899e12c477dfb4d769c4f7c8e614b",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "bbbbb4e473ec4295936b2784fabc85dd2ce963e07d7dd43d31feb5bf0fec9f96",
+        "sha256": "49f399733aeb7091b3413e8320fe867b805899e12c477dfb4d769c4f7c8e614b",
+        "size_bytes": 1340,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 3,
+      "retry_count": 0,
+      "run_id": "WB-S009-r3",
+      "scenario_id": "WB-S009",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "crash is visible"
+        },
+        {
+          "passed": true,
+          "text": "partial evidence is retained"
+        },
+        {
+          "passed": true,
+          "text": "checkpoint restores canonical state"
+        },
+        {
+          "passed": true,
+          "text": "sensitive fields are redacted before export"
+        }
+      ],
+      "driver": "crash_recovery_redacted_export",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:4cac0d35c1794a313e3f90b3861ea12ca4ff8b46917e3bcafe277c035671f1c6",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "9da661ee78ee9f9447ec6b305b4a28e2d68ae677a5e3ddd13408dfd111de45b8",
+        "sha256": "4cac0d35c1794a313e3f90b3861ea12ca4ff8b46917e3bcafe277c035671f1c6",
+        "size_bytes": 1600,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 1,
+      "retry_count": 0,
+      "run_id": "WB-S010-r1",
+      "scenario_id": "WB-S010",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "crash is visible"
+        },
+        {
+          "passed": true,
+          "text": "partial evidence is retained"
+        },
+        {
+          "passed": true,
+          "text": "checkpoint restores canonical state"
+        },
+        {
+          "passed": true,
+          "text": "sensitive fields are redacted before export"
+        }
+      ],
+      "driver": "crash_recovery_redacted_export",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:99d3a189ae34f021ab2c7a2bd7fbad29796f04aa461bf87697b3b1b41b3331bd",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "921373a1387bbfbf1bab084610a2b72b0d95f4424f9c8b5fecf92b0af579119d",
+        "sha256": "99d3a189ae34f021ab2c7a2bd7fbad29796f04aa461bf87697b3b1b41b3331bd",
+        "size_bytes": 1600,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 2,
+      "retry_count": 0,
+      "run_id": "WB-S010-r2",
+      "scenario_id": "WB-S010",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "crash is visible"
+        },
+        {
+          "passed": true,
+          "text": "partial evidence is retained"
+        },
+        {
+          "passed": true,
+          "text": "checkpoint restores canonical state"
+        },
+        {
+          "passed": true,
+          "text": "sensitive fields are redacted before export"
+        }
+      ],
+      "driver": "crash_recovery_redacted_export",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:ba5166d750113dd618c5111b9f5df597e19755f3370d578aa6d4b24bd1a666cd",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "aab6466637cbbdd352e45266d83940df234493b70a5559f6c1522c4e3769bb6a",
+        "sha256": "ba5166d750113dd618c5111b9f5df597e19755f3370d578aa6d4b24bd1a666cd",
+        "size_bytes": 1600,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 3,
+      "retry_count": 0,
+      "run_id": "WB-S010-r3",
+      "scenario_id": "WB-S010",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "partial order is accepted"
+        },
+        {
+          "passed": true,
+          "text": "wall time is ignored only when declared"
+        },
+        {
+          "passed": true,
+          "text": "capability difference is visible"
+        },
+        {
+          "passed": true,
+          "text": "semantic mismatch fails"
+        }
+      ],
+      "driver": "differential_compare",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:d70ff749b1ccfece0e87b60bea5a96c865181b35457fcbfa665b1661ab394d1c",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "3d5722c69035cff6cd87b6b03705cd5253dcea10bb18faa5e1b16eb45da82751",
+        "sha256": "d70ff749b1ccfece0e87b60bea5a96c865181b35457fcbfa665b1661ab394d1c",
+        "size_bytes": 1071,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 1,
+      "retry_count": 0,
+      "run_id": "WB-S011-r1",
+      "scenario_id": "WB-S011",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "partial order is accepted"
+        },
+        {
+          "passed": true,
+          "text": "wall time is ignored only when declared"
+        },
+        {
+          "passed": true,
+          "text": "capability difference is visible"
+        },
+        {
+          "passed": true,
+          "text": "semantic mismatch fails"
+        }
+      ],
+      "driver": "differential_compare",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:134c66b83057bab6d327edf66e6d9b0d80f6e0c90d06656dc454ab547d9d4d35",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "afdaea78717ebfaa9b177a86cc3d2cd7fae3cad6083a2adc692dd0009f0d4f64",
+        "sha256": "134c66b83057bab6d327edf66e6d9b0d80f6e0c90d06656dc454ab547d9d4d35",
+        "size_bytes": 1071,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 2,
+      "retry_count": 0,
+      "run_id": "WB-S011-r2",
+      "scenario_id": "WB-S011",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "partial order is accepted"
+        },
+        {
+          "passed": true,
+          "text": "wall time is ignored only when declared"
+        },
+        {
+          "passed": true,
+          "text": "capability difference is visible"
+        },
+        {
+          "passed": true,
+          "text": "semantic mismatch fails"
+        }
+      ],
+      "driver": "differential_compare",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:4ec7fd667cd2c6f91bec418f66ee92543967c57a0a29d5449744f9ced6d5740e",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "9e96b1f8c3c7d52e470709768f508f49c23beb57ed72ccb2e92c716d36b12833",
+        "sha256": "4ec7fd667cd2c6f91bec418f66ee92543967c57a0a29d5449744f9ced6d5740e",
+        "size_bytes": 1071,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 3,
+      "retry_count": 0,
+      "run_id": "WB-S011-r3",
+      "scenario_id": "WB-S011",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "input digest is checked before and after"
+        },
+        {
+          "passed": true,
+          "text": "mutation produces candidate_mutated"
+        },
+        {
+          "passed": true,
+          "text": "no green report is emitted"
+        },
+        {
+          "passed": true,
+          "text": "baseline remains unchanged"
+        }
+      ],
+      "driver": "candidate_mutation_block",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:93344dfe306c5d05344ca76fc680192673edc9cfe03a0d2640f9883d28d7b4cd",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "2332a78cf70b0c3fe4a7ff3200d3b4c8a3ab423cb3ede5e3f2115ec43662af11",
+        "sha256": "93344dfe306c5d05344ca76fc680192673edc9cfe03a0d2640f9883d28d7b4cd",
+        "size_bytes": 1071,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 1,
+      "retry_count": 0,
+      "run_id": "WB-S012-r1",
+      "scenario_id": "WB-S012",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "input digest is checked before and after"
+        },
+        {
+          "passed": true,
+          "text": "mutation produces candidate_mutated"
+        },
+        {
+          "passed": true,
+          "text": "no green report is emitted"
+        },
+        {
+          "passed": true,
+          "text": "baseline remains unchanged"
+        }
+      ],
+      "driver": "candidate_mutation_block",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:1683a42690c5db9768f124341e258205d6317a43d2df38015797bf83bd8b0cd6",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "6e99b206ccb6f8ab8658dd6cc1de7c4c9e14012d826c73bb87f6390566536488",
+        "sha256": "1683a42690c5db9768f124341e258205d6317a43d2df38015797bf83bd8b0cd6",
+        "size_bytes": 1071,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 2,
+      "retry_count": 0,
+      "run_id": "WB-S012-r2",
+      "scenario_id": "WB-S012",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    },
+    {
+      "assertions": [
+        {
+          "passed": true,
+          "text": "input digest is checked before and after"
+        },
+        {
+          "passed": true,
+          "text": "mutation produces candidate_mutated"
+        },
+        {
+          "passed": true,
+          "text": "no green report is emitted"
+        },
+        {
+          "passed": true,
+          "text": "baseline remains unchanged"
+        }
+      ],
+      "driver": "candidate_mutation_block",
+      "error": null,
+      "manifest": {
+        "artifact_ref": "sha256:318ce67129ecd697184b0e68b7ad58e29736b803c7f3b16f0bb4f5b28334fa13",
+        "media_type": "application/json",
+        "path": "manifest.json",
+        "root_digest": "f13a8fb3ef78b479bcb86f073a66e14d22ff9e305821beb43a8dbba4e866cdbc",
+        "sha256": "318ce67129ecd697184b0e68b7ad58e29736b803c7f3b16f0bb4f5b28334fa13",
+        "size_bytes": 1071,
+        "surface": "contract"
+      },
+      "missing_assertions": [],
+      "repetition": 3,
+      "retry_count": 0,
+      "run_id": "WB-S012-r3",
+      "scenario_id": "WB-S012",
+      "schema_version": "browser-workbench.corpus-result/v1",
+      "status": "passed",
+      "unexpected_assertions": []
+    }
+  ],
+  "repetitions": 3,
+  "run_count": 36,
+  "scenario_count": 12,
+  "scenario_semantic_signatures": {
+    "WB-S001": [
+      "27125f345d36f70e9f842c1dbc2e400263390e422d6cf24ac458f6bd01acb191"
+    ],
+    "WB-S002": [
+      "c931bc074227271de0c5d0c240f3afa6a48c4bf63a6b22ba3e959745d8c40dad"
+    ],
+    "WB-S003": [
+      "1fc7c1e6aa25563e3b3deec3d07099673217c74edda7dd460d54ad6682fcc297"
+    ],
+    "WB-S004": [
+      "d6cac3513c17705692bbd6a7208bf1582a18672ee58d508946f848c2cd1e2ee7"
+    ],
+    "WB-S005": [
+      "46c6893177238135da79ecf17e969343d2f08370966805fb893ae2563f956c04"
+    ],
+    "WB-S006": [
+      "9466f994198bb1ca617c227c627d399aff779f897b779d836525aa677807ed83"
+    ],
+    "WB-S007": [
+      "f5e66e9e3de972d997b1919bb63be056bcae740f04311b269a4cc55527b6aa5d"
+    ],
+    "WB-S008": [
+      "3ad812cbef992efea720ff5955598853d945732870aebda04b933aa881327602"
+    ],
+    "WB-S009": [
+      "7f8c183c04d782d9af18898fe9c7b0e6a16cc42a04b9a467bd302e3b9b1c5e7a"
+    ],
+    "WB-S010": [
+      "2ebb15dae7ac0716d8d08f769452ab7cbe9ce30411896fa3c6947dca936e697f"
+    ],
+    "WB-S011": [
+      "6f7d5deb5b7efb364c22c05951f7df6ee6102c2edef065cf2ce462873d022768"
+    ],
+    "WB-S012": [
+      "f713b118a286501f980c634bd71e747460ccbcbb3c0b9c0ebf45ec102afc2ed8"
+    ]
+  },
+  "schema_version": "browser-workbench.corpus-summary/v1",
+  "semantic_digest": "a8d0c478fcdca32bc9167425744d3a9c54969c7d9e497fc6a48f388399b8a74f",
+  "status": "passed"
+}

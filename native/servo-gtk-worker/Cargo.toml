@@ -1,0 +1,15 @@
+[package]
+name = "browser-workbench-servo-gtk-worker"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[features]
+default = ["source-audit"]
+source-audit = []
+native = ["dep:gtk", "dep:servo-gtk"]
+
+[dependencies]
+gtk = { workspace = true, optional = true }
+servo-gtk = { git = "https://github.com/nacho/servo-gtk", rev = "d366e11a41e042cc08f94004f28dba67f83b11a5", optional = true }

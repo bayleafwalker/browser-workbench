@@ -1,0 +1,43 @@
+{
+  "schema_version": "browser-workbench.run/v1",
+  "run_id": "example-mock-run",
+  "backend": {"kind": "mock", "variant": "default"},
+  "required_capabilities": ["session.create", "page.navigate", "page.observe.state", "page.await", "session.export"],
+  "allowed_providers": ["mock", "host"],
+  "workflow": [
+    {
+      "step_id": "create",
+      "method": "session.create",
+      "params": {"client": {"id": "example-client", "kind": "human"}, "profile": {"mode": "ephemeral", "name": "example"}}
+    },
+    {
+      "step_id": "navigate",
+      "method": "page.navigate",
+      "params": {"page_id": {"$step": "create", "path": "page_id"}, "client_id": "example-client", "url": "https://fixture.invalid/console"}
+    },
+    {
+      "step_id": "await",
+      "method": "page.await",
+      "params": {"page_id": {"$step": "create", "path": "page_id"}, "conditions": [{"kind": "load_state", "equals": "idle"}], "deadline_ms": 50},
+      "expect": {"path": "satisfied", "equals": true}
+    },
+    {
+      "step_id": "observe",
+      "method": "page.observe",
+      "params": {"page_id": {"$step": "create", "path": "page_id"}, "projection": ["state", "console", "network"], "since_event": 0, "max_bytes": 16384}
+    },
+    {
+      "step_id": "export",
+      "method": "session.export",
+      "params": {"include_raw": true, "metadata": {"purpose": "example"}, "max_bytes": 65536}
+    }
+  ],
+  "gates": [
+    {"id": "contract", "kind": "contract", "required": true},
+    {"id": "capabilities", "kind": "capability", "required": true},
+    {"id": "execution", "kind": "execution", "required": true},
+    {"id": "evidence", "kind": "evidence", "required": true}
+  ],
+  "policy": {"mutation": "forbid", "profile": "ephemeral", "redaction_profile": "default", "single_writer": true},
+  "evidence": {"raw": true, "normalized": true, "max_artifact_bytes": 1048576, "redaction_profile": "default"}
+}

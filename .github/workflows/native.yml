@@ -1,0 +1,35 @@
+name: native-target-gates
+
+on:
+  workflow_dispatch:
+
+jobs:
+  webkitgtk:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@1.85.0
+      - run: sudo apt-get update && sudo apt-get install -y libgtk-4-dev libwebkitgtk-6.0-dev xvfb
+      - run: xvfb-run -a python scripts/native_gate.py webkitgtk --execute --output evidence/native-webkitgtk.json
+
+  playwright-oracle:
+    runs-on: ubuntu-24.04
+    defaults: {run: {working-directory: oracle/playwright}}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: "24"}
+      - run: npm install --package-lock-only --ignore-scripts
+      - run: npm ci
+      - run: npx playwright install --with-deps webkit
+      - run: node -e "require.resolve('@playwright/test')"
+
+  servo-gtk:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@1.85.0
+      - run: sudo apt-get update && sudo apt-get install -y libgtk-4-dev xvfb
+      - run: git clone https://github.com/nacho/servo-gtk /tmp/servo-gtk
+      - run: git -C /tmp/servo-gtk checkout d366e11a41e042cc08f94004f28dba67f83b11a5
+      - run: SERVO_GTK_SOURCE=/tmp/servo-gtk xvfb-run -a python scripts/native_gate.py servo-gtk --execute --output evidence/native-servo-gtk.json

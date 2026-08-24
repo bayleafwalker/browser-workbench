@@ -1,0 +1,30 @@
+{
+  "assertions": [
+    {
+      "passed": true,
+      "text": "checkpoint is content-addressed"
+    },
+    {
+      "passed": true,
+      "text": "old lease becomes read-only"
+    },
+    {
+      "passed": true,
+      "text": "successor lease epoch increments"
+    },
+    {
+      "passed": true,
+      "text": "handover does not grant approval"
+    }
+  ],
+  "driver": "checkpoint_handover",
+  "error": null,
+  "missing_assertions": [],
+  "repetition": 2,
+  "retry_count": 0,
+  "run_id": "WB-S009-r2",
+  "scenario_id": "WB-S009",
+  "schema_version": "browser-workbench.corpus-result/v1",
+  "status": "passed",
+  "unexpected_assertions": []
+}

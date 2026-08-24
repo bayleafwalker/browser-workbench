@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/browser-workbench/comparison-v1.schema.json",
+  "title": "Browser workbench comparison report v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "status", "baseline", "candidate", "tolerances", "differences", "input_integrity"],
+  "properties": {
+    "schema_version": {"const": "browser-workbench.comparison/v1"},
+    "status": {"enum": ["equivalent", "different", "invalid"]},
+    "baseline": {"type": "object"},
+    "candidate": {"type": "object"},
+    "tolerances": {"type": "object"},
+    "differences": {"type": "array", "items": {"type": "object"}},
+    "capability_differences": {"type": "array", "items": {"type": "object"}},
+    "input_integrity": {
+      "type": "object",
+      "required": ["baseline_before", "baseline_after", "candidate_before", "candidate_after", "unchanged"],
+      "properties": {
+        "baseline_before": {"type": "string"},
+        "baseline_after": {"type": "string"},
+        "candidate_before": {"type": "string"},
+        "candidate_after": {"type": "string"},
+        "unchanged": {"type": "boolean"}
+      }
+    }
+  }
+}

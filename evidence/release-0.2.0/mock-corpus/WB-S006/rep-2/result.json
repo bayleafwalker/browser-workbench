@@ -1,0 +1,26 @@
+{
+  "assertions": [
+    {
+      "passed": true,
+      "text": "console record has event identity"
+    },
+    {
+      "passed": true,
+      "text": "network request and response correlate"
+    },
+    {
+      "passed": true,
+      "text": "raw and normalized records are linked"
+    }
+  ],
+  "driver": "console_network_evidence",
+  "error": null,
+  "missing_assertions": [],
+  "repetition": 2,
+  "retry_count": 0,
+  "run_id": "WB-S006-r2",
+  "scenario_id": "WB-S006",
+  "schema_version": "browser-workbench.corpus-result/v1",
+  "status": "passed",
+  "unexpected_assertions": []
+}

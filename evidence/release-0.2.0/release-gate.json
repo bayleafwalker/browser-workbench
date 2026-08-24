@@ -1,0 +1,97 @@
+{
+  "checks": [
+    {
+      "accepted_exit_codes": [
+        0
+      ],
+      "exit_code": 0,
+      "name": "source-validation",
+      "status": "passed",
+      "stderr": "",
+      "stdout": "{\n  \"errors\": [],\n  \"schema_version\": \"browser-workbench.source-validation/v1\",\n  \"status\": \"passed\"\n}\n"
+    },
+    {
+      "accepted_exit_codes": [
+        0
+      ],
+      "exit_code": 0,
+      "name": "python-tests",
+      "status": "passed",
+      "stderr": "test_partial_capability_does_not_satisfy_exact_gate (test_capabilities.CapabilityTests.test_partial_capability_does_not_satisfy_exact_gate) ... ok\ntest_servo_missing_public_hooks_are_explicitly_unsupported (test_capabilities.CapabilityTests.test_servo_missing_public_hooks_are_explicitly_unsupported) ... ok\ntest_declared_candidate_digest_blocks_mutation (test_compare.CompareTests.test_declared_candidate_digest_blocks_mutation) ... ok\ntest_declared_partial_order_normalization (test_compare.CompareTests.test_declared_partial_order_normalization) ... ok\ntest_semantic_change_is_visible (test_compare.CompareTests.test_semantic_change_is_visible) ... ok\ntest_frozen_hostproto_baseline_still_has_sixteen_scenarios (test_corpus.CorpusTests.test_frozen_hostproto_baseline_still_has_sixteen_scenarios) ... ok\ntest_frozen_workbench_corpus_has_twelve_bound_drivers (test_corpus.CorpusTests.test_frozen_workbench_corpus_has_twelve_bound_drivers) ... ok\ntest_one_repetition_passes_all_scenarios (test_corpus.CorpusTests.test_one_repetition_passes_all_scenarios) ... ok\ntest_export_redacts_sensitive_keys_and_values (test_protocol.ProtocolTests.test_export_redacts_sensitive_keys_and_values) ... ok\ntest_loopback_bridge_requires_bearer_and_never_binds_wildcard (test_protocol.ProtocolTests.test_loopback_bridge_requires_bearer_and_never_binds_wildcard) ... ok\ntest_stale_target_is_rejected_before_invocation (test_protocol.ProtocolTests.test_stale_target_is_rejected_before_invocation) ... ok\ntest_unsupported_intent_is_rejected_before_backend_invocation (test_protocol.ProtocolTests.test_unsupported_intent_is_rejected_before_backend_invocation) ... ok\ntest_declared_mock_workflow_passes_without_retries (test_runner.RunnerTests.test_declared_mock_workflow_passes_without_retries) ... ok\ntest_native_lane_is_blocked_not_faked (test_runner.RunnerTests.test_native_lane_is_blocked_not_faked) ... ok\ntest_unknown_method_is_invalid_before_backend_use (test_runner.RunnerTests.test_unknown_method_is_invalid_before_backend_use) ... ok\n\n----------------------------------------------------------------------\nRan 15 tests in 0.031s\n\nOK\n",
+      "stdout": ""
+    },
+    {
+      "accepted_exit_codes": [
+        0
+      ],
+      "exit_code": 0,
+      "name": "chrome-tests",
+      "status": "passed",
+      "stderr": "",
+      "stdout": "\u2714 single writer controls mutation (0.665621ms)\n\u2714 tab identity is stable and termination is visible (0.14771ms)\n\u2714 blocked capability remains explicit (0.552924ms)\n\u2139 tests 3\n\u2139 suites 0\n\u2139 pass 3\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 71.637201\n"
+    },
+    {
+      "accepted_exit_codes": [
+        0
+      ],
+      "exit_code": 0,
+      "name": "mock-corpus-12x3",
+      "status": "passed",
+      "stderr": "",
+      "stdout": "re\",\n      \"error\": null,\n      \"manifest\": {\n        \"artifact_ref\": \"sha256:d70ff749b1ccfece0e87b60bea5a96c865181b35457fcbfa665b1661ab394d1c\",\n        \"media_type\": \"application/json\",\n        \"path\": \"manifest.json\",\n        \"root_digest\": \"3d5722c69035cff6cd87b6b03705cd5253dcea10bb18faa5e1b16eb45da82751\",\n        \"sha256\": \"d70ff749b1ccfece0e87b60bea5a96c865181b35457fcbfa665b1661ab394d1c\",\n        \"size_bytes\": 1071,\n        \"surface\": \"contract\"\n      },\n      \"missing_assertions\": [],\n      \"repetition\": 1,\n      \"retry_count\": 0,\n      \"run_id\": \"WB-S011-r1\",\n      \"scenario_id\": \"WB-S011\",\n      \"schema_version\": \"browser-workbench.corpus-result/v1\",\n      \"status\": \"passed\",\n      \"unexpected_assertions\": []\n    },\n    {\n      \"assertions\": [\n        {\n          \"passed\": true,\n          \"text\": \"partial order is accepted\"\n        },\n        {\n          \"passed\": true,\n          \"text\": \"wall time is ignored only when declared\"\n        },\n        {\n          \"passed\": true,\n          \"text\": \"capability difference is visible\"\n        },\n        {\n          \"passed\": true,\n          \"text\": \"semantic mismatch fails\"\n        }\n      ],\n      \"driver\": \"differential_compare\",\n      \"error\": null,\n      \"manifest\": {\n        \"artifact_ref\": \"sha256:134c66b83057bab6d327edf66e6d9b0d80f6e0c90d06656dc454ab547d9d4d35\",\n        \"media_type\": \"application/json\",\n        \"path\": \"manifest.json\",\n        \"root_digest\": \"afdaea78717ebfaa9b177a86cc3d2cd7fae3cad6083a2adc692dd0009f0d4f64\",\n        \"sha256\": \"134c66b83057bab6d327edf66e6d9b0d80f6e0c90d06656dc454ab547d9d4d35\",\n        \"size_bytes\": 1071,\n        \"surface\": \"contract\"\n      },\n      \"missing_assertions\": [],\n      \"repetition\": 2,\n      \"retry_count\": 0,\n      \"run_id\": \"WB-S011-r2\",\n      \"scenario_id\": \"WB-S011\",\n      \"schema_version\": \"browser-workbench.corpus-result/v1\",\n      \"status\": \"passed\",\n      \"unexpected_assertions\": []\n    },\n    {\n      \"assertions\": [\n        {\n          \"passed\": true,\n          \"text\": \"partial order is accepted\"\n        },\n        {\n          \"passed\": true,\n          \"text\": \"wall time is ignored only when declared\"\n        },\n        {\n          \"passed\": true,\n          \"text\": \"capability difference is visible\"\n        },\n        {\n          \"passed\": true,\n          \"text\": \"semantic mismatch fails\"\n        }\n      ],\n      \"driver\": \"differential_compare\",\n      \"error\": null,\n      \"manifest\": {\n        \"artifact_ref\": \"sha256:4ec7fd667cd2c6f91bec418f66ee92543967c57a0a29d5449744f9ced6d5740e\",\n        \"media_type\": \"application/json\",\n        \"path\": \"manifest.json\",\n        \"root_digest\": \"9e96b1f8c3c7d52e470709768f508f49c23beb57ed72ccb2e92c716d36b12833\",\n        \"sha256\": \"4ec7fd667cd2c6f91bec418f66ee92543967c57a0a29d5449744f9ced6d5740e\",\n        \"size_bytes\": 1071,\n        \"surface\": \"contract\"\n      },\n      \"missing_assertions\": [],\n      \"repetition\": 3,\n      \"retry_count\": 0,\n      \"run_id\": \"WB-S011-r3\",\n      \"scenario_id\": \"WB-S011\",\n      \"schema_version\": \"browser-workbench.corpus-result/v1\",\n      \"status\": \"passed\",\n      \"unexpected_assertions\": []\n    },\n    {\n      \"assertions\": [\n        {\n          \"passed\": true,\n          \"text\": \"input digest is checked before and after\"\n        },\n        {\n          \"passed\": true,\n          \"text\": \"mutation produces candidate_mutated\"\n        },\n        {\n          \"passed\": true,\n          \"text\": \"no green report is emitted\"\n        },\n        {\n          \"passed\": true,\n          \"text\": \"baseline remains unchanged\"\n        }\n      ],\n      \"driver\": \"candidate_mutation_block\",\n      \"error\": null,\n      \"manifest\": {\n        \"artifact_ref\": \"sha256:93344dfe306c5d05344ca76fc680192673edc9cfe03a0d2640f9883d28d7b4cd\",\n        \"media_type\": \"application/json\",\n        \"path\": \"manifest.json\",\n        \"root_digest\": \"2332a78cf70b0c3fe4a7ff3200d3b4c8a3ab423cb3ede5e3f2115ec43662af11\",\n        \"sha256\": \"93344dfe306c5d05344ca76fc680192673edc9cfe03a0d2640f9883d28d7b4cd\",\n        \"size_bytes\": 1071,\n        \"surface\": \"contract\"\n      },\n      \"missing_assertions\": [],\n      \"repetition\": 1,\n      \"retry_count\": 0,\n      \"run_id\": \"WB-S012-r1\",\n      \"scenario_id\": \"WB-S012\",\n      \"schema_version\": \"browser-workbench.corpus-result/v1\",\n      \"status\": \"passed\",\n      \"unexpected_assertions\": []\n    },\n    {\n      \"assertions\": [\n        {\n          \"passed\": true,\n          \"text\": \"input digest is checked before and after\"\n        },\n        {\n          \"passed\": true,\n          \"text\": \"mutation produces candidate_mutated\"\n        },\n        {\n          \"passed\": true,\n          \"text\": \"no green report is emitted\"\n        },\n        {\n          \"passed\": true,\n          \"text\": \"baseline remains unchanged\"\n        }\n      ],\n      \"driver\": \"candidate_mutation_block\",\n      \"error\": null,\n      \"manifest\": {\n        \"artifact_ref\": \"sha256:1683a42690c5db9768f124341e258205d6317a43d2df38015797bf83bd8b0cd6\",\n        \"media_type\": \"application/json\",\n        \"path\": \"manifest.json\",\n        \"root_digest\": \"6e99b206ccb6f8ab8658dd6cc1de7c4c9e14012d826c73bb87f6390566536488\",\n        \"sha256\": \"1683a42690c5db9768f124341e258205d6317a43d2df38015797bf83bd8b0cd6\",\n        \"size_bytes\": 1071,\n        \"surface\": \"contract\"\n      },\n      \"missing_assertions\": [],\n      \"repetition\": 2,\n      \"retry_count\": 0,\n      \"run_id\": \"WB-S012-r2\",\n      \"scenario_id\": \"WB-S012\",\n      \"schema_version\": \"browser-workbench.corpus-result/v1\",\n      \"status\": \"passed\",\n      \"unexpected_assertions\": []\n    },\n    {\n      \"assertions\": [\n        {\n          \"passed\": true,\n          \"text\": \"input digest is checked before and after\"\n        },\n        {\n          \"passed\": true,\n          \"text\": \"mutation produces candidate_mutated\"\n        },\n        {\n          \"passed\": true,\n          \"text\": \"no green report is emitted\"\n        },\n        {\n          \"passed\": true,\n          \"text\": \"baseline remains unchanged\"\n        }\n      ],\n      \"driver\": \"candidate_mutation_block\",\n      \"error\": null,\n      \"manifest\": {\n        \"artifact_ref\": \"sha256:318ce67129ecd697184b0e68b7ad58e29736b803c7f3b16f0bb4f5b28334fa13\",\n        \"media_type\": \"application/json\",\n        \"path\": \"manifest.json\",\n        \"root_digest\": \"f13a8fb3ef78b479bcb86f073a66e14d22ff9e305821beb43a8dbba4e866cdbc\",\n        \"sha256\": \"318ce67129ecd697184b0e68b7ad58e29736b803c7f3b16f0bb4f5b28334fa13\",\n        \"size_bytes\": 1071,\n        \"surface\": \"contract\"\n      },\n      \"missing_assertions\": [],\n      \"repetition\": 3,\n      \"retry_count\": 0,\n      \"run_id\": \"WB-S012-r3\",\n      \"scenario_id\": \"WB-S012\",\n      \"schema_version\": \"browser-workbench.corpus-result/v1\",\n      \"status\": \"passed\",\n      \"unexpected_assertions\": []\n    }\n  ],\n  \"repetitions\": 3,\n  \"run_count\": 36,\n  \"scenario_count\": 12,\n  \"scenario_semantic_signatures\": {\n    \"WB-S001\": [\n      \"27125f345d36f70e9f842c1dbc2e400263390e422d6cf24ac458f6bd01acb191\"\n    ],\n    \"WB-S002\": [\n      \"c931bc074227271de0c5d0c240f3afa6a48c4bf63a6b22ba3e959745d8c40dad\"\n    ],\n    \"WB-S003\": [\n      \"1fc7c1e6aa25563e3b3deec3d07099673217c74edda7dd460d54ad6682fcc297\"\n    ],\n    \"WB-S004\": [\n      \"d6cac3513c17705692bbd6a7208bf1582a18672ee58d508946f848c2cd1e2ee7\"\n    ],\n    \"WB-S005\": [\n      \"46c6893177238135da79ecf17e969343d2f08370966805fb893ae2563f956c04\"\n    ],\n    \"WB-S006\": [\n      \"9466f994198bb1ca617c227c627d399aff779f897b779d836525aa677807ed83\"\n    ],\n    \"WB-S007\": [\n      \"f5e66e9e3de972d997b1919bb63be056bcae740f04311b269a4cc55527b6aa5d\"\n    ],\n    \"WB-S008\": [\n      \"3ad812cbef992efea720ff5955598853d945732870aebda04b933aa881327602\"\n    ],\n    \"WB-S009\": [\n      \"7f8c183c04d782d9af18898fe9c7b0e6a16cc42a04b9a467bd302e3b9b1c5e7a\"\n    ],\n    \"WB-S010\": [\n      \"2ebb15dae7ac0716d8d08f769452ab7cbe9ce30411896fa3c6947dca936e697f\"\n    ],\n    \"WB-S011\": [\n      \"6f7d5deb5b7efb364c22c05951f7df6ee6102c2edef065cf2ce462873d022768\"\n    ],\n    \"WB-S012\": [\n      \"f713b118a286501f980c634bd71e747460ccbcbb3c0b9c0ebf45ec102afc2ed8\"\n    ]\n  },\n  \"schema_version\": \"browser-workbench.corpus-summary/v1\",\n  \"semantic_digest\": \"a8d0c478fcdca32bc9167425744d3a9c54969c7d9e497fc6a48f388399b8a74f\",\n  \"status\": \"passed\"\n}\n"
+    },
+    {
+      "accepted_exit_codes": [
+        0
+      ],
+      "exit_code": 0,
+      "name": "disclosure-scan",
+      "status": "passed",
+      "stderr": "",
+      "stdout": "{\n  \"findings\": [],\n  \"schema_version\": \"browser-workbench.disclosure-scan/v1\",\n  \"status\": \"passed\"\n}\n"
+    },
+    {
+      "accepted_exit_codes": [
+        0,
+        78
+      ],
+      "exit_code": 78,
+      "name": "webkitgtk-native-probe",
+      "status": "accepted-blocked",
+      "stderr": "",
+      "stdout": "{\n  \"backend\": \"webkitgtk\",\n  \"claim\": \"not-runtime-verified\",\n  \"command\": [\n    \"cargo\",\n    \"check\",\n    \"-p\",\n    \"browser-workbench-webkitgtk-worker\",\n    \"--no-default-features\",\n    \"--features\",\n    \"native\"\n  ],\n  \"executed\": false,\n  \"exit_code\": null,\n  \"output\": \"\",\n  \"probe\": {\n    \"backend\": \"webkitgtk\",\n    \"checks\": {\n      \"cargo\": {\n        \"argv\": [\n          \"cargo\",\n          \"--version\"\n        ],\n        \"output\": null,\n        \"present\": false\n      },\n      \"gtk4\": {\n        \"module\": \"gtk4\",\n        \"present\": false,\n        \"reason\": \"pkg-config missing\"\n      },\n      \"rustc\": {\n        \"argv\": [\n          \"rustc\",\n          \"--version\",\n          \"--verbose\"\n        ],\n        \"output\": null,\n        \"present\": false\n      },\n      \"webkitgtk_6\": {\n        \"module\": \"webkitgtk-6.0\",\n        \"present\": false,\n        \"reason\": \"pkg-config missing\"\n      }\n    },\n    \"display\": {\n      \"wayland\": false,\n      \"x11\": false\n    },\n    \"machine\": \"x86_64\",\n    \"os\": \"Linux-6.18.35-x86_64-with-glibc2.39\",\n    \"python\": \"3.12.13\",\n    \"ready\": false,\n    \"reasons\": [\n      \"Rust compiler missing\",\n      \"Cargo missing\",\n      \"GTK4 development package missing\",\n      \"no Wayland or X11 display available\",\n      \"WebKitGTK 6.0 development package missing\"\n    ]\n  },\n  \"runtime_conformance_claim\": false,\n  \"schema_version\": \"browser-workbench.native-gate/v1\",\n  \"status\": \"blocked\"\n}\n"
+    },
+    {
+      "accepted_exit_codes": [
+        0,
+        78
+      ],
+      "exit_code": 78,
+      "name": "servo-gtk-native-probe",
+      "status": "accepted-blocked",
+      "stderr": "",
+      "stdout": "{\n  \"backend\": \"servo-gtk\",\n  \"claim\": \"not-runtime-verified\",\n  \"command\": [\n    \"cargo\",\n    \"check\",\n    \"-p\",\n    \"browser-workbench-servo-gtk-worker\",\n    \"--no-default-features\",\n    \"--features\",\n    \"native\"\n  ],\n  \"executed\": false,\n  \"exit_code\": null,\n  \"output\": \"\",\n  \"probe\": {\n    \"backend\": \"servo-gtk\",\n    \"checks\": {\n      \"cargo\": {\n        \"argv\": [\n          \"cargo\",\n          \"--version\"\n        ],\n        \"output\": null,\n        \"present\": false\n      },\n      \"gtk4\": {\n        \"module\": \"gtk4\",\n        \"present\": false,\n        \"reason\": \"pkg-config missing\"\n      },\n      \"rustc\": {\n        \"argv\": [\n          \"rustc\",\n          \"--version\",\n          \"--verbose\"\n        ],\n        \"output\": null,\n        \"present\": false\n      },\n      \"servo_gtk_source\": {\n        \"path\": null,\n        \"present\": false\n      }\n    },\n    \"display\": {\n      \"wayland\": false,\n      \"x11\": false\n    },\n    \"machine\": \"x86_64\",\n    \"os\": \"Linux-6.18.35-x86_64-with-glibc2.39\",\n    \"python\": \"3.12.13\",\n    \"ready\": false,\n    \"reasons\": [\n      \"Rust compiler missing\",\n      \"Cargo missing\",\n      \"GTK4 development package missing\",\n      \"no Wayland or X11 display available\",\n      \"SERVO_GTK_SOURCE does not point to the pinned checkout\"\n    ]\n  },\n  \"runtime_conformance_claim\": false,\n  \"schema_version\": \"browser-workbench.native-gate/v1\",\n  \"status\": \"blocked\"\n}\n"
+    },
+    {
+      "accepted_exit_codes": [
+        0,
+        78
+      ],
+      "exit_code": 78,
+      "name": "playwright-oracle-probe",
+      "status": "accepted-blocked",
+      "stderr": "",
+      "stdout": "{\n  \"backend\": \"playwright\",\n  \"claim\": \"not-runtime-verified\",\n  \"command\": [\n    \"node\",\n    \"oracle/playwright/probe.mjs\",\n    \"--launch\"\n  ],\n  \"executed\": false,\n  \"exit_code\": null,\n  \"output\": \"\",\n  \"probe\": {\n    \"backend\": \"playwright\",\n    \"checks\": {\n      \"node\": {\n        \"argv\": [\n          \"node\",\n          \"--version\"\n        ],\n        \"exit_code\": 0,\n        \"output\": \"v24.19.0\",\n        \"present\": true\n      },\n      \"playwright\": {\n        \"argv\": [\n          \"/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node\",\n          \"/workspace/scratch/205f7104b972/browser-workbench-resume/work/browser-workbench/oracle/playwright/probe.mjs\"\n        ],\n        \"exit_code\": 1,\n        \"output\": \"node:internal/modules/package_json_reader:301\\n  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);\\n        ^\\n\\nError [ERR_MODULE_NOT_FOUND]: Cannot find package '@playwright/test' imported from /workspace/scratch/205f7104b972/browser-workbench-resume/work/browser-workbench/oracle/playwright/probe.mjs\\n    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:301:9)\\n    at packageResolve (node:internal/modules/esm/resolve:768:81)\\n    at moduleResolve (node:internal/modules/esm/resolve:859:18)\\n    at defaultResolve (node:internal/modules/esm/resolve:992:11)\\n    at #cachedDefaultResolve (node:internal/modules/esm/loader:701:20)\\n    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:721:38)\\n    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:759:56)\\n    at #resolve (node:internal/modules/esm/loader:683:17)\\n    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:35)\\n    at ModuleJob.syncLink (node:internal/modules/esm/module_job:163:33) {\\n  code: 'ERR_MODULE_NOT_FOUND'\\n}\\n\\nNode.js v24.19.0\",\n        \"present\": false\n      }\n    },\n    \"display\": {\n      \"wayland\": false,\n      \"x11\": false\n    },\n    \"machine\": \"x86_64\",\n    \"os\": \"Linux-6.18.35-x86_64-with-glibc2.39\",\n    \"python\": \"3.12.13\",\n    \"ready\": false,\n    \"reasons\": [\n      \"@playwright/test missing\"\n    ]\n  },\n  \"runtime_conformance_claim\": false,\n  \"schema_version\": \"browser-workbench.native-gate/v1\",\n  \"status\": \"blocked\"\n}\n"
+    }
+  ],
+  "claim": "source-and-mock-verified",
+  "native_or_oracle_blocked": [
+    "webkitgtk-native-probe",
+    "servo-gtk-native-probe",
+    "playwright-oracle-probe"
+  ],
+  "native_runtime_claim": false,
+  "release": "0.2.0-source-checkpoint",
+  "schema_version": "browser-workbench.release-gate/v1",
+  "status": "passed"
+}

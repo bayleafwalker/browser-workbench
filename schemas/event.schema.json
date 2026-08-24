@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/browser-workbench/event-v1.schema.json",
+  "title": "Browser workbench event v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "event_id", "event_seq", "kind", "session_id", "payload", "source", "causes"],
+  "properties": {
+    "schema_version": {"const": "browser-workbench.event/v1"},
+    "event_id": {"type": "string", "minLength": 1},
+    "event_seq": {"type": "integer", "minimum": 1},
+    "kind": {"type": "string", "minLength": 1},
+    "session_id": {"type": "string", "minLength": 1},
+    "page_id": {"type": ["string", "null"]},
+    "generation": {"type": ["integer", "null"], "minimum": 0},
+    "payload": {"type": "object"},
+    "source": {"enum": ["engine", "adapter", "host", "injected", "oracle", "mock"]},
+    "causes": {"type": "array", "items": {"type": "string"}},
+    "raw_refs": {"type": "array", "items": {"type": "string"}},
+    "monotonic_ms": {"type": "integer", "minimum": 0}
+  }
+}

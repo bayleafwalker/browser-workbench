@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Browser Workbench</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="toolbar">
+      <div class="nav" aria-label="Navigation">
+        <button aria-label="Back">←</button><button aria-label="Forward">→</button><button aria-label="Reload">↻</button>
+      </div>
+      <label class="location"><span class="sr-only">Location</span><input value="about:blank" spellcheck="false"></label>
+      <button id="observe">Observe</button>
+    </header>
+    <nav id="tabs" class="tabs" aria-label="Tabs"></nav>
+    <section class="viewport" aria-label="Engine viewport">
+      <div><p class="eyebrow">Adapter viewport</p><h1>No engine connected</h1><p>Attach a truthful capability report to begin. Source-only lanes stay visibly blocked.</p></div>
+    </section>
+    <footer class="statusbar">
+      <span id="backend" class="badge blocked">disconnected · blocked</span>
+      <span id="lease">single-writer lease unclaimed</span>
+      <span class="spacer"></span>
+      <button id="takeover">Request takeover</button>
+      <button id="evidence">Evidence <span id="evidence-count">0</span></button>
+    </footer>
+  </main>
+  <script type="module" src="app.mjs"></script>
+</body>
+</html>

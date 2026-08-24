@@ -1,0 +1,66 @@
+{
+  "backend": "webkitgtk",
+  "claim": "not-runtime-verified",
+  "command": [
+    "cargo",
+    "check",
+    "-p",
+    "browser-workbench-webkitgtk-worker",
+    "--no-default-features",
+    "--features",
+    "native"
+  ],
+  "executed": false,
+  "exit_code": null,
+  "output": "",
+  "probe": {
+    "backend": "webkitgtk",
+    "checks": {
+      "cargo": {
+        "argv": [
+          "cargo",
+          "--version"
+        ],
+        "output": null,
+        "present": false
+      },
+      "gtk4": {
+        "module": "gtk4",
+        "present": false,
+        "reason": "pkg-config missing"
+      },
+      "rustc": {
+        "argv": [
+          "rustc",
+          "--version",
+          "--verbose"
+        ],
+        "output": null,
+        "present": false
+      },
+      "webkitgtk_6": {
+        "module": "webkitgtk-6.0",
+        "present": false,
+        "reason": "pkg-config missing"
+      }
+    },
+    "display": {
+      "wayland": false,
+      "x11": false
+    },
+    "machine": "x86_64",
+    "os": "Linux-6.18.35-x86_64-with-glibc2.39",
+    "python": "3.12.13",
+    "ready": false,
+    "reasons": [
+      "Rust compiler missing",
+      "Cargo missing",
+      "GTK4 development package missing",
+      "no Wayland or X11 display available",
+      "WebKitGTK 6.0 development package missing"
+    ]
+  },
+  "runtime_conformance_claim": false,
+  "schema_version": "browser-workbench.native-gate/v1",
+  "status": "blocked"
+}

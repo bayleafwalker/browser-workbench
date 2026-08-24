@@ -1,0 +1,33 @@
+name: hostproto-artifact-package
+version: 0.1.0
+status: pre-implementation
+fact_base_date: 2026-08-22
+research_question: >-
+  What is the smallest command, request, and event protocol sufficient for a
+  frozen reference browser chrome, and where do WebKitGTK and Servo resist
+  honest normalization?
+authoritative_denominator:
+  reference_chrome: REFERENCE_CHROME_V0.md
+  scenarios: SCENARIO_CORPUS_V0.yaml
+authoritative_contract:
+  protocol: HOST_PROTOCOL_V0.md
+  capabilities: CAPABILITY_MODEL.md
+  temporal_state_semantics: TEMPORAL_AND_STATE_SEMANTICS.md
+invariants:
+  - byte-identical chrome assets across engine runs
+  - no engine-specific API visible to chrome code
+  - raw and normalized traces retained together
+  - unsupported capabilities fail explicitly
+  - negative findings are valid release outputs
+  - no browser-product milestone inside this repository
+  - no WebExtension runtime or compatibility shim
+release_boundaries:
+  - contract
+  - webkitgtk-evidence
+  - servo-evidence
+  - selected-upstream-repros
+schemas:
+  - schemas/protocol-envelope.schema.json
+  - schemas/trace-record.schema.json
+  - schemas/evidence-manifest.schema.json
+  - schemas/finding.schema.json

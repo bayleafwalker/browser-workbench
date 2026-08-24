@@ -1,0 +1,157 @@
+{
+  "schema_version": "browser-workbench.capability-matrix/v1",
+  "pins_ref": "native/UPSTREAM_PINS.json",
+  "status": "source-release-expectations-not-runtime-evidence",
+  "capabilities": {
+    "session.create": {
+      "mock": ["supported", "mock", "exact"],
+      "webkitgtk": ["supported", "host", "normalized"],
+      "playwright": ["supported", "oracle", "normalized"],
+      "servo-gtk": ["supported", "host", "normalized"]
+    },
+    "session.profile.ephemeral": {
+      "mock": ["supported", "mock", "exact"],
+      "webkitgtk": ["supported", "engine", "exact"],
+      "playwright": ["supported", "oracle", "exact"],
+      "servo-gtk": ["partial", "host", "partial"]
+    },
+    "session.profile.persistent": {
+      "mock": ["supported", "mock", "exact"],
+      "webkitgtk": ["supported", "engine", "exact"],
+      "playwright": ["partial", "oracle", "partial"],
+      "servo-gtk": ["partial", "host", "partial"]
+    },
+    "page.tabs": {
+      "mock": ["supported", "mock", "exact"],
+      "webkitgtk": ["supported", "host", "normalized"],
+      "playwright": ["supported", "oracle", "normalized"],
+      "servo-gtk": ["supported", "host", "normalized"]
+    },
+    "page.navigate": {
+      "mock": ["supported", "mock", "exact"],
+      "webkitgtk": ["supported", "engine", "exact"],
+      "playwright": ["supported", "oracle", "exact"],
+      "servo-gtk": ["supported", "engine", "exact"]
+    },
+    "page.navigation.history": {
+      "mock": ["supported", "mock", "exact"],
+      "webkitgtk": ["supported", "engine", "exact"],
+      "playwright": ["supported", "oracle", "exact"],
+      "servo-gtk": ["supported", "engine", "exact"]
+    },
+    "page.navigation.stop": {
+      "mock": ["supported", "mock", "exact"],
+      "webkitgtk": ["supported", "engine", "normalized"],
+      "playwright": ["supported", "oracle", "normalized"],
+      "servo-gtk": ["unsupported", "engine", "none"]
+    },
+    "page.observe.state": {
+      "mock": ["supported", "mock", "exact"],
+      "webkitgtk": ["supported", "engine", "normalized"],
+      "playwright": ["supported", "oracle", "normalized"],
+      "servo-gtk": ["unsupported", "engine", "none"]
+    },
+    "page.observe.dom": {
+      "mock": ["supported", "mock", "exact"],
+      "webkitgtk": ["supported", "injected", "normalized"],
+      "playwright": ["supported", "oracle", "normalized"],
+      "servo-gtk": ["unsupported", "engine", "none"]
+    },
+    "page.observe.accessibility": {
+      "mock": ["supported", "mock", "exact"],
+      "webkitgtk": ["partial", "injected", "partial"],
+      "playwright": ["supported", "oracle", "normalized"],
+      "servo-gtk": ["unsupported", "engine", "none"]
+    },
+    "page.observe.screenshot": {
+      "mock": ["supported", "mock", "exact"],
+      "webkitgtk": ["supported", "engine", "exact"],
+      "playwright": ["supported", "oracle", "exact"],
+      "servo-gtk": ["partial", "adapter", "partial"]
+    },
+    "page.observe.console": {
+      "mock": ["supported", "mock", "exact"],
+      "webkitgtk": ["supported", "injected", "normalized"],
+      "playwright": ["supported", "oracle", "exact"],
+      "servo-gtk": ["unsupported", "engine", "none"]
+    },
+    "page.observe.network": {
+      "mock": ["supported", "mock", "exact"],
+      "webkitgtk": ["partial", "engine", "partial"],
+      "playwright": ["supported", "oracle", "exact"],
+      "servo-gtk": ["unsupported", "engine", "none"]
+    },
+    "page.act.pointer": {
+      "mock": ["supported", "mock", "exact"],
+      "webkitgtk": ["supported", "injected", "normalized"],
+      "playwright": ["supported", "oracle", "normalized"],
+      "servo-gtk": ["supported", "engine", "exact"]
+    },
+    "page.act.keyboard": {
+      "mock": ["supported", "mock", "exact"],
+      "webkitgtk": ["supported", "injected", "normalized"],
+      "playwright": ["supported", "oracle", "normalized"],
+      "servo-gtk": ["supported", "engine", "exact"]
+    },
+    "page.act.javascript": {
+      "mock": ["supported", "mock", "exact"],
+      "webkitgtk": ["supported", "engine", "exact"],
+      "playwright": ["supported", "oracle", "exact"],
+      "servo-gtk": ["unsupported", "engine", "none"]
+    },
+    "page.dialog": {
+      "mock": ["supported", "mock", "exact"],
+      "webkitgtk": ["supported", "engine", "exact"],
+      "playwright": ["supported", "oracle", "exact"],
+      "servo-gtk": ["unsupported", "engine", "none"]
+    },
+    "page.permission": {
+      "mock": ["supported", "mock", "exact"],
+      "webkitgtk": ["supported", "engine", "exact"],
+      "playwright": ["supported", "oracle", "normalized"],
+      "servo-gtk": ["unsupported", "engine", "none"]
+    },
+    "page.upload": {
+      "mock": ["supported", "mock", "exact"],
+      "webkitgtk": ["supported", "engine", "exact"],
+      "playwright": ["supported", "oracle", "normalized"],
+      "servo-gtk": ["unsupported", "engine", "none"]
+    },
+    "page.download": {
+      "mock": ["supported", "mock", "exact"],
+      "webkitgtk": ["supported", "engine", "normalized"],
+      "playwright": ["supported", "oracle", "normalized"],
+      "servo-gtk": ["unsupported", "engine", "none"]
+    },
+    "page.termination": {
+      "mock": ["supported", "mock", "exact"],
+      "webkitgtk": ["supported", "engine", "exact"],
+      "playwright": ["supported", "oracle", "normalized"],
+      "servo-gtk": ["unsupported", "engine", "none"]
+    },
+    "page.await": {
+      "mock": ["supported", "host", "exact"],
+      "webkitgtk": ["supported", "host", "normalized"],
+      "playwright": ["supported", "oracle", "normalized"],
+      "servo-gtk": ["partial", "host", "partial"]
+    },
+    "session.checkpoint": {
+      "mock": ["supported", "host", "exact"],
+      "webkitgtk": ["supported", "host", "normalized"],
+      "playwright": ["supported", "host", "normalized"],
+      "servo-gtk": ["partial", "host", "partial"]
+    },
+    "session.export": {
+      "mock": ["supported", "host", "exact"],
+      "webkitgtk": ["supported", "host", "exact"],
+      "playwright": ["supported", "host", "exact"],
+      "servo-gtk": ["supported", "host", "exact"]
+    },
+    "run.compare": {
+      "mock": ["supported", "host", "exact"],
+      "webkitgtk": ["supported", "host", "exact"],
+      "playwright": ["supported", "host", "exact"],
+      "servo-gtk": ["supported", "host", "exact"]
+    }
+  }
+}

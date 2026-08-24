@@ -1,0 +1,19 @@
+{
+  "schema_version": "browser-workbench.run/v1",
+  "run_id": "webkitgtk-stable-persistent",
+  "backend": {"kind": "webkitgtk", "variant": "stable-persistent", "expected_identity": {"webkitgtk": "2.52.6", "webkit6": "0.6.1"}},
+  "required_capabilities": ["session.create", "session.profile.persistent", "page.navigate", "page.observe.state", "page.await"],
+  "allowed_providers": ["engine", "host"],
+  "workflow": [
+    {"step_id": "create", "method": "session.create", "params": {"client": {"id": "native-gate", "kind": "tool"}, "profile": {"mode": "persistent", "name": "isolated-native-gate"}}},
+    {"step_id": "navigate", "method": "page.navigate", "params": {"page_id": {"$step": "create", "path": "page_id"}, "client_id": "native-gate", "url": "https://fixture.invalid/title-a"}},
+    {"step_id": "await", "method": "page.await", "params": {"page_id": {"$step": "create", "path": "page_id"}, "conditions": [{"kind": "load_state", "equals": "idle"}], "deadline_ms": 5000}}
+  ],
+  "gates": [
+    {"id": "contract", "kind": "contract", "required": true},
+    {"id": "native", "kind": "native", "required": true},
+    {"id": "evidence", "kind": "evidence", "required": true}
+  ],
+  "policy": {"mutation": "forbid", "profile": "persistent", "single_writer": true},
+  "evidence": {"raw": true, "normalized": true, "max_artifact_bytes": 1048576}
+}

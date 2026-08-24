@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:hostproto:schema:trace-record:0.1",
+  "title": "hostproto trace record 0.1",
+  "oneOf": [
+    { "$ref": "#/$defs/rawObservation" },
+    { "$ref": "#/$defs/normalizedEnvelope" },
+    { "$ref": "#/$defs/suppression" }
+  ],
+  "$defs": {
+    "commonProperties": {
+      "trace_version": { "const": "0.1" },
+      "ordinal": { "type": "integer", "minimum": 0 },
+      "captured_at_unix_ns": { "type": "string", "pattern": "^[0-9]+$" },
+      "monotonic_ns": { "type": "string", "pattern": "^[0-9]+$" },
+      "scenario_id": { "type": "string", "pattern": "^HP-S[0-9]{3}$" },
+      "adapter": { "type": "string", "minLength": 1, "maxLength": 120 },
+      "raw_ref": { "type": "string", "minLength": 1, "maxLength": 200 }
+    },
+    "rawObservation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "trace_version",
+        "layer",
+        "record_type",
+        "ordinal",
+        "captured_at_unix_ns",
+        "monotonic_ns",
+        "scenario_id",
+        "adapter",
+        "direction",
+        "payload"
+      ],
+      "properties": {
+        "trace_version": { "const": "0.1" },
+        "layer": { "const": "raw" },
+        "record_type": { "const": "observation" },
+        "ordinal": { "$ref": "#/$defs/commonProperties/ordinal" },
+        "captured_at_unix_ns": { "$ref": "#/$defs/commonProperties/captured_at_unix_ns" },
+        "monotonic_ns": { "$ref": "#/$defs/commonProperties/monotonic_ns" },
+        "scenario_id": { "$ref": "#/$defs/commonProperties/scenario_id" },
+        "adapter": { "$ref": "#/$defs/commonProperties/adapter" },
+        "direction": {
+          "enum": ["backend_to_adapter", "adapter_to_backend", "transport"]
+        },
+        "payload": {
+          "type": "object",
+          "required": ["name", "data"],
+          "properties": {
+            "name": { "type": "string", "minLength": 1 },
+            "data": {},
+            "backend_object_ref": { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "normalizedEnvelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "trace_version",
+        "layer",
+        "record_type",
+        "ordinal",
+        "captured_at_unix_ns",
+        "monotonic_ns",
+        "scenario_id",
+        "adapter",
+        "direction",
+        "payload"
+      ],
+      "properties": {
+        "trace_version": { "const": "0.1" },
+        "layer": { "const": "normalized" },
+        "record_type": { "const": "envelope" },
+        "ordinal": { "$ref": "#/$defs/commonProperties/ordinal" },
+        "captured_at_unix_ns": { "$ref": "#/$defs/commonProperties/captured_at_unix_ns" },
+        "monotonic_ns": { "$ref": "#/$defs/commonProperties/monotonic_ns" },
+        "scenario_id": { "$ref": "#/$defs/commonProperties/scenario_id" },
+        "adapter": { "$ref": "#/$defs/commonProperties/adapter" },
+        "direction": {
+          "enum": ["chrome_to_host", "host_to_chrome", "internal"]
+        },
+        "raw_ref": { "$ref": "#/$defs/commonProperties/raw_ref" },
+        "payload": { "$ref": "protocol-envelope.schema.json" }
+      }
+    },
+    "suppression": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "trace_version",
+        "layer",
+        "record_type",
+        "ordinal",
+        "captured_at_unix_ns",
+        "monotonic_ns",
+        "scenario_id",
+        "adapter",
+        "direction",
+        "raw_ref",
+        "payload"
+      ],
+      "properties": {
+        "trace_version": { "const": "0.1" },
+        "layer": { "const": "normalized" },
+        "record_type": { "const": "suppression" },
+        "ordinal": { "$ref": "#/$defs/commonProperties/ordinal" },
+        "captured_at_unix_ns": { "$ref": "#/$defs/commonProperties/captured_at_unix_ns" },
+        "monotonic_ns": { "$ref": "#/$defs/commonProperties/monotonic_ns" },
+        "scenario_id": { "$ref": "#/$defs/commonProperties/scenario_id" },
+        "adapter": { "$ref": "#/$defs/commonProperties/adapter" },
+        "direction": { "const": "internal" },
+        "raw_ref": { "$ref": "#/$defs/commonProperties/raw_ref" },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["rule_id", "reason", "object_refs"],
+          "properties": {
+            "rule_id": { "type": "string", "pattern": "^SUP-[0-9]{3}$" },
+            "reason": { "type": "string", "minLength": 1, "maxLength": 1000 },
+            "object_refs": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "schema_version": "browser-workbench.corpus/v1",
+  "id": "browser-workbench-denominator",
+  "version": "1.0.0",
+  "status": "frozen",
+  "repetitions": 3,
+  "scenarios": [
+    {
+      "id": "WB-S001",
+      "driver": "session_tabs_profiles",
+      "title": "create an isolated session with tabs and a fenced writer",
+      "requires": ["session.create", "session.profile.ephemeral", "page.tabs"],
+      "assertions": ["profile is ephemeral", "one page is active", "lease epoch is one", "second writer is rejected"]
+    },
+    {
+      "id": "WB-S002",
+      "driver": "bounded_observation",
+      "title": "return bounded observations with recoverable raw references",
+      "requires": ["page.navigate", "page.observe.state", "page.observe.dom"],
+      "assertions": ["response is within max_bytes", "loss is explicit", "raw artifact is content-addressed", "event cursor advances"]
+    },
+    {
+      "id": "WB-S003",
+      "driver": "generation_targets_receipts",
+      "title": "reject stale targets and emit causal receipts",
+      "requires": ["page.act.pointer"],
+      "assertions": ["fresh target executes", "receipt names causal events", "navigation increments generation", "stale target fails before backend invocation"]
+    },
+    {
+      "id": "WB-S004",
+      "driver": "event_driven_await",
+      "title": "await conditions from events rather than sleep",
+      "requires": ["page.await"],
+      "assertions": ["scheduled event satisfies condition", "virtual clock is deterministic", "deadline reports unsatisfied predicates"]
+    },
+    {
+      "id": "WB-S005",
+      "driver": "snapshot_screenshot_javascript",
+      "title": "capture snapshot and screenshot and execute declared JavaScript",
+      "requires": ["page.observe.screenshot", "page.act.javascript"],
+      "assertions": ["screenshot is an artifact", "script result is bounded", "provider class is recorded", "state digest changes only when declared"]
+    },
+    {
+      "id": "WB-S006",
+      "driver": "console_network_evidence",
+      "title": "retain console and network evidence",
+      "requires": ["page.observe.console", "page.observe.network"],
+      "assertions": ["console record has event identity", "network request and response correlate", "raw and normalized records are linked"]
+    },
+    {
+      "id": "WB-S007",
+      "driver": "dialog_permission",
+      "title": "treat dialog and permission prompts as browser-owned interactions",
+      "requires": ["page.dialog", "page.permission"],
+      "assertions": ["decision token is required", "default is deny", "duplicate decision is rejected", "receipt records applied decision"]
+    },
+    {
+      "id": "WB-S008",
+      "driver": "upload_download",
+      "title": "bind upload and download decisions to declared paths",
+      "requires": ["page.upload", "page.download"],
+      "assertions": ["upload uses an allowed fixture", "download remains quarantined", "artifact hash is recorded", "undeclared path is rejected"]
+    },
+    {
+      "id": "WB-S009",
+      "driver": "checkpoint_handover",
+      "title": "handover through a checkpoint and fence the former writer",
+      "requires": ["session.checkpoint"],
+      "assertions": ["checkpoint is content-addressed", "old lease becomes read-only", "successor lease epoch increments", "handover does not grant approval"]
+    },
+    {
+      "id": "WB-S010",
+      "driver": "crash_recovery_redacted_export",
+      "title": "recover after adapter crash and export a redacted projection",
+      "requires": ["page.termination", "session.export"],
+      "assertions": ["crash is visible", "partial evidence is retained", "checkpoint restores canonical state", "sensitive fields are redacted before export"]
+    },
+    {
+      "id": "WB-S011",
+      "driver": "differential_compare",
+      "title": "compare variants by invariants and capability truth",
+      "requires": ["run.compare"],
+      "assertions": ["partial order is accepted", "wall time is ignored only when declared", "capability difference is visible", "semantic mismatch fails"]
+    },
+    {
+      "id": "WB-S012",
+      "driver": "candidate_mutation_block",
+      "title": "block comparison when the candidate mutates",
+      "requires": ["run.compare"],
+      "assertions": ["input digest is checked before and after", "mutation produces candidate_mutated", "no green report is emitted", "baseline remains unchanged"]
+    }
+  ]
+}

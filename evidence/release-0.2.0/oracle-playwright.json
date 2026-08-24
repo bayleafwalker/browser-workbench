@@ -1,0 +1,49 @@
+{
+  "backend": "playwright",
+  "claim": "not-runtime-verified",
+  "command": [
+    "node",
+    "oracle/playwright/probe.mjs",
+    "--launch"
+  ],
+  "executed": false,
+  "exit_code": null,
+  "output": "",
+  "probe": {
+    "backend": "playwright",
+    "checks": {
+      "node": {
+        "argv": [
+          "node",
+          "--version"
+        ],
+        "exit_code": 0,
+        "output": "v24.19.0",
+        "present": true
+      },
+      "playwright": {
+        "argv": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+          "/workspace/scratch/205f7104b972/browser-workbench-resume/work/browser-workbench/oracle/playwright/probe.mjs"
+        ],
+        "exit_code": 1,
+        "output": "node:internal/modules/package_json_reader:301\n  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);\n        ^\n\nError [ERR_MODULE_NOT_FOUND]: Cannot find package '@playwright/test' imported from /workspace/scratch/205f7104b972/browser-workbench-resume/work/browser-workbench/oracle/playwright/probe.mjs\n    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:301:9)\n    at packageResolve (node:internal/modules/esm/resolve:768:81)\n    at moduleResolve (node:internal/modules/esm/resolve:859:18)\n    at defaultResolve (node:internal/modules/esm/resolve:992:11)\n    at #cachedDefaultResolve (node:internal/modules/esm/loader:701:20)\n    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:721:38)\n    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:759:56)\n    at #resolve (node:internal/modules/esm/loader:683:17)\n    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:35)\n    at ModuleJob.syncLink (node:internal/modules/esm/module_job:163:33) {\n  code: 'ERR_MODULE_NOT_FOUND'\n}\n\nNode.js v24.19.0",
+        "present": false
+      }
+    },
+    "display": {
+      "wayland": false,
+      "x11": false
+    },
+    "machine": "x86_64",
+    "os": "Linux-6.18.35-x86_64-with-glibc2.39",
+    "python": "3.12.13",
+    "ready": false,
+    "reasons": [
+      "@playwright/test missing"
+    ]
+  },
+  "runtime_conformance_claim": false,
+  "schema_version": "browser-workbench.native-gate/v1",
+  "status": "blocked"
+}

@@ -1,0 +1,35 @@
+{
+  "approval": null,
+  "checkpoint_id": "checkpoint-0001",
+  "event_cursor": 1,
+  "lease": {
+    "epoch": 1,
+    "id": "lease-0001",
+    "writer_id": "writer-a"
+  },
+  "parent": null,
+  "schema_version": "browser-workbench.checkpoint/v1",
+  "session_id": "session-0001",
+  "state": {
+    "active_page_id": "page-1",
+    "pages": {
+      "page-1": {
+        "dom": "<main><a id='next'>Next</a><input id='query'></main>",
+        "generation": 1,
+        "history": [
+          "about:blank"
+        ],
+        "history_index": 0,
+        "last_navigation_outcome": null,
+        "lifecycle": "open",
+        "load_state": "idle",
+        "page_id": "page-1",
+        "title": "New Page",
+        "url": "about:blank",
+        "values": {
+          "target-query": ""
+        }
+      }
+    }
+  }
+}

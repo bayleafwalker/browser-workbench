@@ -1,0 +1,30 @@
+{
+  "assertions": [
+    {
+      "passed": true,
+      "text": "input digest is checked before and after"
+    },
+    {
+      "passed": true,
+      "text": "mutation produces candidate_mutated"
+    },
+    {
+      "passed": true,
+      "text": "no green report is emitted"
+    },
+    {
+      "passed": true,
+      "text": "baseline remains unchanged"
+    }
+  ],
+  "driver": "candidate_mutation_block",
+  "error": null,
+  "missing_assertions": [],
+  "repetition": 3,
+  "retry_count": 0,
+  "run_id": "WB-S012-r3",
+  "scenario_id": "WB-S012",
+  "schema_version": "browser-workbench.corpus-result/v1",
+  "status": "passed",
+  "unexpected_assertions": []
+}

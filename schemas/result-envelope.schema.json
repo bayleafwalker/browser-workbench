@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/browser-workbench/result-v1.schema.json",
+  "title": "Browser workbench result envelope v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run_id", "status", "backend", "capabilities", "steps", "gates", "artifacts", "terminal_reason"],
+  "properties": {
+    "schema_version": {"const": "browser-workbench.result/v1"},
+    "run_id": {"type": "string", "minLength": 1},
+    "status": {"enum": ["passed", "failed", "unsupported", "blocked", "invalid"]},
+    "backend": {"type": "object"},
+    "capabilities": {"type": "object"},
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["step_id", "method", "status"],
+        "properties": {
+          "step_id": {"type": "string"},
+          "method": {"type": "string"},
+          "status": {"enum": ["passed", "failed", "unsupported", "blocked", "invalid", "skipped"]},
+          "result": {},
+          "error": {"type": ["object", "null"]},
+          "receipt": {"type": ["object", "null"]}
+        }
+      }
+    },
+    "gates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "status", "required"],
+        "properties": {
+          "id": {"type": "string"},
+          "kind": {"type": "string"},
+          "status": {"enum": ["passed", "failed", "blocked", "skipped"]},
+          "required": {"type": "boolean"},
+          "details": {"type": "object"}
+        }
+      }
+    },
+    "artifacts": {"type": "array", "items": {"type": "object"}},
+    "environment": {"type": "object"},
+    "deviations": {"type": "array", "items": {"type": "object"}},
+    "terminal_reason": {"type": "object"}
+  }
+}

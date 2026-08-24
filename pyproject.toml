@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "browser-workbench"
+version = "0.2.0"
+description = "Typed browser observation/action runner and evidence workbench"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Juha Huotari" }]
+dependencies = []
+
+[project.scripts]
+browser-workbench = "workbench.cli:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]

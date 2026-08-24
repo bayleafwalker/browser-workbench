@@ -1,0 +1,30 @@
+{
+  "assertions": [
+    {
+      "passed": true,
+      "text": "decision token is required"
+    },
+    {
+      "passed": true,
+      "text": "default is deny"
+    },
+    {
+      "passed": true,
+      "text": "duplicate decision is rejected"
+    },
+    {
+      "passed": true,
+      "text": "receipt records applied decision"
+    }
+  ],
+  "driver": "dialog_permission",
+  "error": null,
+  "missing_assertions": [],
+  "repetition": 2,
+  "retry_count": 0,
+  "run_id": "WB-S007-r2",
+  "scenario_id": "WB-S007",
+  "schema_version": "browser-workbench.corpus-result/v1",
+  "status": "passed",
+  "unexpected_assertions": []
+}

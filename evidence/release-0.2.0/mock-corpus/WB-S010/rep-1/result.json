@@ -1,0 +1,30 @@
+{
+  "assertions": [
+    {
+      "passed": true,
+      "text": "crash is visible"
+    },
+    {
+      "passed": true,
+      "text": "partial evidence is retained"
+    },
+    {
+      "passed": true,
+      "text": "checkpoint restores canonical state"
+    },
+    {
+      "passed": true,
+      "text": "sensitive fields are redacted before export"
+    }
+  ],
+  "driver": "crash_recovery_redacted_export",
+  "error": null,
+  "missing_assertions": [],
+  "repetition": 1,
+  "retry_count": 0,
+  "run_id": "WB-S010-r1",
+  "scenario_id": "WB-S010",
+  "schema_version": "browser-workbench.corpus-result/v1",
+  "status": "passed",
+  "unexpected_assertions": []
+}

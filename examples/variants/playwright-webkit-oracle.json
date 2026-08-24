@@ -1,0 +1,19 @@
+{
+  "schema_version": "browser-workbench.run/v1",
+  "run_id": "playwright-webkit-oracle",
+  "backend": {"kind": "playwright", "variant": "webkit-1.62.1", "expected_identity": {"package": "@playwright/test", "version": "1.62.1"}},
+  "required_capabilities": ["session.create", "page.navigate", "page.observe.state", "page.await"],
+  "allowed_providers": ["oracle"],
+  "workflow": [
+    {"step_id": "create", "method": "session.create", "params": {"client": {"id": "oracle", "kind": "tool"}, "profile": {"mode": "ephemeral", "name": "oracle"}}},
+    {"step_id": "navigate", "method": "page.navigate", "params": {"page_id": "oracle-page-1", "url": "https://fixture.invalid/title-a"}},
+    {"step_id": "await", "method": "page.await", "params": {"page_id": "oracle-page-1", "conditions": [{"kind": "load_state", "equals": "idle"}], "deadline_ms": 5000}}
+  ],
+  "gates": [
+    {"id": "contract", "kind": "contract", "required": true},
+    {"id": "comparison", "kind": "comparison", "required": true},
+    {"id": "evidence", "kind": "evidence", "required": true}
+  ],
+  "policy": {"mutation": "forbid", "profile": "ephemeral", "single_writer": true},
+  "evidence": {"raw": true, "normalized": true, "max_artifact_bytes": 1048576}
+}

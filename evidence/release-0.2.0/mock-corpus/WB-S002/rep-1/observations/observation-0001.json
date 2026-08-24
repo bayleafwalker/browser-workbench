@@ -1,0 +1,118 @@
+{
+  "data": {
+    "dom": {
+      "html": "<main><h1>Large</h1><a id='next'>Next</a><input id='query'><p> evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence</p></main>",
+      "sha256": "bd64f2ea9bd02acd16c74bad15cb6276ff6205aba3fe9cef97880868a51414dc"
+    },
+    "raw-events": [
+      {
+        "causes": [],
+        "kind": "navigate.invoked",
+        "monotonic_ms": 0,
+        "ordinal": 1,
+        "page_id": "page-1",
+        "payload": {
+          "navigation_id": "navigation-0001",
+          "url": "https://fixture.invalid/large"
+        },
+        "raw_id": "raw-000001",
+        "source": "mock"
+      },
+      {
+        "causes": [
+          "event-000002"
+        ],
+        "kind": "resource.request",
+        "monotonic_ms": 5,
+        "ordinal": 2,
+        "page_id": "page-1",
+        "payload": {
+          "method": "GET",
+          "request_id": "navigation-0001",
+          "url": "https://fixture.invalid/large"
+        },
+        "raw_id": "raw-000002",
+        "source": "mock"
+      },
+      {
+        "causes": [
+          "event-000003"
+        ],
+        "kind": "resource.response",
+        "monotonic_ms": 5,
+        "ordinal": 3,
+        "page_id": "page-1",
+        "payload": {
+          "request_id": "navigation-0001",
+          "status": 200,
+          "url": "https://fixture.invalid/large"
+        },
+        "raw_id": "raw-000003",
+        "source": "mock"
+      },
+      {
+        "causes": [
+          "event-000002"
+        ],
+        "kind": "load.committed",
+        "monotonic_ms": 5,
+        "ordinal": 4,
+        "page_id": "page-1",
+        "payload": {
+          "navigation_id": "navigation-0001",
+          "title": "Large",
+          "url": "https://fixture.invalid/large"
+        },
+        "raw_id": "raw-000004",
+        "source": "mock"
+      },
+      {
+        "causes": [
+          "event-000002"
+        ],
+        "kind": "load.finished",
+        "monotonic_ms": 10,
+        "ordinal": 5,
+        "page_id": "page-1",
+        "payload": {
+          "navigation_id": "navigation-0001",
+          "outcome": "success",
+          "url": "https://fixture.invalid/large"
+        },
+        "raw_id": "raw-000005",
+        "source": "mock"
+      }
+    ],
+    "state": {
+      "dom": "<main><h1>Large</h1><a id='next'>Next</a><input id='query'><p> evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence evidence</p></main>",
+      "generation": 2,
+      "history": [
+        "about:blank",
+        "https://fixture.invalid/large"
+      ],
+      "history_index": 1,
+      "last_navigation_outcome": "success",
+      "lifecycle": "open",
+      "load_state": "idle",
+      "page_id": "page-1",
+      "title": "Large",
+      "url": "https://fixture.invalid/large",
+      "values": {
+        "target-query": ""
+      }
+    }
+  },
+  "generation": 2,
+  "lossy": false,
+  "max_bytes": 1024,
+  "next_event": 6,
+  "omitted": {},
+  "page_id": "page-1",
+  "raw_ref": null,
+  "returned_projections": [
+    "state",
+    "dom",
+    "raw-events"
+  ],
+  "since_event": 0
+}

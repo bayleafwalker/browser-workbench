@@ -1,0 +1,12 @@
+{
+  "name": "browser-workbench-playwright-oracle",
+  "private": true,
+  "version": "0.2.0",
+  "type": "module",
+  "devDependencies": {
+    "@playwright/test": "1.62.1"
+  },
+  "scripts": {
+    "oracle": "node runner.mjs"
+  }
+}

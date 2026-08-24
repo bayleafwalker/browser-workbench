@@ -1,0 +1,19 @@
+{
+  "finding_version": "0.1",
+  "id": "HP-F0001",
+  "title": "Illustrative synchronous new-view decision mismatch",
+  "status": "open",
+  "classification": "semantic_mismatch",
+  "confidence": "low",
+  "scenario_ids": ["HP-S030", "HP-S031"],
+  "evidence_refs": [
+    "illustrative-servo/scenarios/HP-S030/raw.ndjson#record-14",
+    "illustrative-servo/scenarios/HP-S030/normalized.ndjson#record-9"
+  ],
+  "summary": "Illustrative only: the backend callback appears to require a synchronous decision while hostproto specifies a bounded asynchronous resolution.",
+  "raw_observation": "The native callback returns a view handle or null before control returns to the event loop.",
+  "normalized_effect": "The adapter cannot emit view.open_requested and later apply an allow decision without holding or replaying the native request.",
+  "decision": "Do not add an engine-specific chrome path. Reduce the callback behavior and determine whether a safe bounded holding mechanism exists; otherwise declare the capability unsupported for the pinned adapter.",
+  "upstream": null,
+  "supersedes": []
+}

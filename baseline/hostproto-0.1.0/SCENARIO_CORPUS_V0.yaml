@@ -1,0 +1,175 @@
+corpus:
+  id: hostproto-reference-chrome
+  version: 0.1.0
+  status: frozen-for-wave-0
+  reference: REFERENCE_CHROME_V0.md
+  fixture_origin: http://127.0.0.1:${ALLOCATED_PORT}
+  oracle_model: invariant-and-partial-order
+
+outcomes:
+  - pass
+  - fail
+  - unsupported
+  - blocked
+  - invalid
+
+scenarios:
+  - id: HP-S001
+    title: negotiate protocol and capabilities
+    requires: [host.handshake]
+    given: chrome bridge connected with supported protocol versions
+    when: chrome sends hello
+    then:
+      - exactly one welcome selects a mutually supported version
+      - capability declarations are available before operational requests
+      - session state can be requested after welcome
+
+  - id: HP-S002
+    title: reject incompatible protocol versions
+    requires: [host.handshake]
+    given: chrome and host have no mutually supported protocol version
+    when: chrome sends hello
+    then:
+      - handshake terminates with protocol_version_mismatch
+      - no operational request is accepted
+
+  - id: HP-S010
+    title: create first view
+    requires: [view.create]
+    given: a ready session with no views
+    when: chrome requests view.create
+    then:
+      - request receives exactly one successful terminal response
+      - view.created precedes view.activation_changed for the same view
+      - the new view is open and active in canonical state
+
+  - id: HP-S011
+    title: create and activate a second view
+    requires: [view.create, view.activate]
+    given: one open active view
+    when: chrome creates and activates another view
+    then:
+      - both views remain open
+      - exactly one view is active
+      - activation changes do not mutate navigation state
+
+  - id: HP-S012
+    title: close inactive and active views
+    requires: [view.close]
+    given: two open views with one active
+    when: chrome closes the inactive view and then the active view
+    then:
+      - each close request receives exactly one terminal response
+      - no normalized state mutation targets a view after view.closed
+      - active_view_id becomes null when no open view remains
+
+  - id: HP-S020
+    title: navigate and observe metadata
+    requires: [navigation.navigate, view.observe]
+    given: an open active view and fixture /title-a
+    when: chrome navigates to /title-a
+    then:
+      - navigation.started precedes the terminal navigation event
+      - visible_url and title eventually match the fixture
+      - load_state eventually returns to idle
+      - terminal outcome is success
+
+  - id: HP-S021
+    title: report navigation failure
+    requires: [navigation.navigate, view.observe]
+    given: an open active view and a fixture route that closes without a response
+    when: chrome navigates to that route
+    then:
+      - a navigation failure is visible without closing the view
+      - load_state eventually returns to idle
+      - the response and event correlation remains unambiguous
+
+  - id: HP-S022
+    title: stop in-flight navigation
+    requires: [navigation.navigate, navigation.stop]
+    given: an open view and fixture /slow that does not complete before cancellation
+    when: chrome navigates to /slow and requests navigation.stop after navigation.started
+    then:
+      - stop receives exactly one terminal response with accepted true
+      - navigation reaches the terminal outcome stopped
+      - load_state eventually returns to idle
+
+  - id: HP-S023
+    title: reload committed page
+    requires: [navigation.reload, view.observe]
+    given: an open view with /counter committed
+    when: chrome requests navigation.reload
+    then:
+      - a new navigation attempt is observable
+      - the fixture counter proves a new document load
+      - terminal outcome is success
+
+  - id: HP-S024
+    title: traverse back and forward
+    requires: [navigation.history]
+    given: /history-a followed by /history-b committed in one view
+    when: chrome requests back and then forward
+    then:
+      - can_go_back and can_go_forward reflect usable transitions
+      - each traversal settles on the expected fixture URL
+      - unsupported is valid only when declared during capability negotiation
+
+  - id: HP-S030
+    title: resolve content-requested new view
+    requires: [view.open_request]
+    given: fixture /opens-view and a declared decision deadline
+    when: content requests a new browsing context
+    then:
+      - chrome receives one view.open_requested event with decision_id
+      - resolving allow creates exactly one host-owned view
+      - late or duplicate decisions are rejected explicitly
+
+  - id: HP-S031
+    title: apply default to unanswered new-view request
+    requires: [view.open_request]
+    given: fixture /opens-view and no chrome decision before the deadline
+    when: the decision deadline expires
+    then:
+      - host applies the declared default deny policy
+      - expiry and applied default are visible in the normalized trace
+      - no view is created
+
+  - id: HP-S040
+    title: isolate unexpected view termination
+    requires: [view.termination]
+    given: two open views and an adapter test hook that terminates one view
+    when: the selected view becomes unavailable unexpectedly
+    then:
+      - view.terminated is emitted exactly once
+      - the terminated view cannot accept operational commands
+      - surviving view state remains valid
+
+  - id: HP-S050
+    title: ignore stale backend observation after close
+    requires: [view.close]
+    given: a view closed in canonical state and an adapter test hook emitting a late raw callback
+    when: the late callback is observed
+    then:
+      - raw trace retains the callback
+      - normalized trace records its suppression reason
+      - canonical state remains unchanged
+
+  - id: HP-S051
+    title: reject unsupported operation explicitly
+    requires: [host.handshake]
+    given: a capability declared unsupported
+    when: chrome invokes its associated method
+    then:
+      - request fails with capability_unsupported
+      - no backend operation is attempted
+      - no success-shaped event is emitted
+
+  - id: HP-S060
+    title: reconcile after chrome bridge reconnect
+    requires: [session.snapshot]
+    given: host state with two open views and a disconnected chrome bridge
+    when: the unchanged chrome reconnects and negotiates a new bridge session
+    then:
+      - session.get_state returns one authoritative snapshot
+      - replayed or live events cannot produce duplicate views
+      - chrome renders the same canonical state as the host reducer

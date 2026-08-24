@@ -1,0 +1,20 @@
+[package]
+name = "browser-workbench-webkitgtk-worker"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[features]
+default = ["source-audit"]
+source-audit = []
+native = ["dep:anyhow", "dep:gio", "dep:glib", "dep:gtk", "dep:serde", "dep:serde_json", "dep:webkit6"]
+
+[dependencies]
+anyhow = { workspace = true, optional = true }
+gio = { workspace = true, optional = true }
+glib = { workspace = true, optional = true }
+gtk = { workspace = true, optional = true }
+serde = { workspace = true, optional = true }
+serde_json = { workspace = true, optional = true }
+webkit6 = { workspace = true, optional = true }

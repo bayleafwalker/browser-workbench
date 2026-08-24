@@ -1,0 +1,32 @@
+{
+  "schema_version": "browser-workbench.upstream-pins/v1",
+  "observed_at": "2026-08-24",
+  "pins": {
+    "webkitgtk": {
+      "release": "2.52.6",
+      "api_line": "6.0",
+      "source": "https://webkitgtk.org/2026/08/19/webkitgtk2.52.6-released.html"
+    },
+    "webkit6-rs": {
+      "crate": "0.6.1",
+      "feature": "v2_52",
+      "source": "https://docs.rs/webkit6/0.6.1/webkit6/"
+    },
+    "gtk4-rs": {
+      "crate": "0.11.4",
+      "source": "https://crates.io/crates/gtk4"
+    },
+    "servo-gtk": {
+      "repository": "https://github.com/nacho/servo-gtk",
+      "revision": "d366e11a41e042cc08f94004f28dba67f83b11a5",
+      "servo_revision": "e8dbc1dfbf6f58621346a5f61ab7a17d01387873",
+      "classification": "experimental-research-non-gating"
+    },
+    "playwright": {
+      "package": "@playwright/test",
+      "version": "1.62.1",
+      "source": "https://github.com/microsoft/playwright/releases/tag/v1.62.1",
+      "classification": "external-oracle"
+    }
+  }
+}
