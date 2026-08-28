@@ -53,11 +53,19 @@ def main() -> int:
         # A differing oracle is a finding to review, not something to waive:
         # only `blocked` (no host can run it) is accepted here.
         run("oracle-differential", [python, "scripts/oracle_differential.py", "--output", str(EVIDENCE / "oracle-differential")], accept={0, 78}),
+        # The whole denominator against the oracle, every scenario classified.
+        # `different` is never accepted; `blocked` (no oracle host) is.
+        run("oracle-corpus-differential", [python, "scripts/oracle_corpus_differential.py", "--output", str(EVIDENCE / "oracle-corpus-differential")], accept={0, 78}),
+        # Mock denominator versus the native corpora just produced above:
+        # matching digests are not a differential report, this is.
+        run("corpus-differential", [python, "scripts/corpus_differential.py", "--output", str(EVIDENCE / "corpus-differential"), "--native", str(EVIDENCE / "native-corpus"), "--native", str(EVIDENCE / "native-corpus-persistent")], accept={0, 78}),
     ]
     required = checks[:5]
     passed = all(item["status"] == "passed" for item in required)
     native_blocked = [item["name"] for item in checks[5:] if item["exit_code"] == 78]
     differential = next(item for item in checks if item["name"] == "oracle-differential")
+    oracle_corpus = next(item for item in checks if item["name"] == "oracle-corpus-differential")
+    corpus_differential = next(item for item in checks if item["name"] == "corpus-differential")
     e2e_checks = [item for item in checks if item["name"].startswith("webkitgtk-native-e2e")]
     corpus_checks = [item for item in checks if item["name"].startswith("webkitgtk-native-corpus")]
     corpus_passed = all(item["exit_code"] == 0 for item in corpus_checks)
@@ -81,6 +89,8 @@ def main() -> int:
         "native_runtime_claim": corpus_passed,
         "native_corpus_claim": corpus_passed,
         "oracle_differential": differential["status"],
+        "oracle_corpus_differential": oracle_corpus["status"],
+        "corpus_differential": corpus_differential["status"],
         "native_corpus_variants": {
             item["name"].rsplit("-", 1)[-1]: item["status"] for item in corpus_checks
         },
@@ -88,7 +98,7 @@ def main() -> int:
         "checks": checks,
     }
     (EVIDENCE / "release-gate.json").write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    print(json.dumps({key: report[key] for key in ("status", "claim", "native_vertical_proof", "native_runtime_claim", "native_corpus_claim", "native_or_oracle_blocked")}, indent=2))
+    print(json.dumps({key: report[key] for key in ("status", "claim", "native_vertical_proof", "native_runtime_claim", "native_corpus_claim", "oracle_differential", "oracle_corpus_differential", "corpus_differential", "native_or_oracle_blocked")}, indent=2))
     return 0 if passed else 1
 
 

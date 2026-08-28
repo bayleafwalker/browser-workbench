@@ -17,6 +17,8 @@ jobs:
       # The whole denominator on a real engine: 12 scenarios x 3 repetitions.
       - run: xvfb-run -a python scripts/native_corpus.py --output evidence/native-corpus
       - run: xvfb-run -a python scripts/native_corpus.py --variant stable-persistent --output evidence/native-corpus-persistent
+      # Matching digests are not a differential report; this is.
+      - run: python scripts/corpus_differential.py --output evidence/corpus-differential --native evidence/native-corpus --native evidence/native-corpus-persistent
       - uses: actions/upload-artifact@v4
         with:
           name: native-evidence
@@ -42,8 +44,12 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y libgtk-4-dev libwebkitgtk-6.0-dev xvfb
       - run: cargo build -p browser-workbench-webkitgtk-worker --no-default-features --features native
       - run: xvfb-run -a python scripts/oracle_differential.py --oracle-runner local --output evidence/oracle-differential
+      # The whole denominator, every scenario classified; different is a finding.
+      - run: xvfb-run -a python scripts/oracle_corpus_differential.py --oracle-runner local --output evidence/oracle-corpus-differential
       - uses: actions/upload-artifact@v4
         with: {name: oracle-differential-evidence, path: evidence/oracle-differential}
+      - uses: actions/upload-artifact@v4
+        with: {name: oracle-corpus-differential-evidence, path: evidence/oracle-corpus-differential}
 
   servo-gtk:
     runs-on: ubuntu-24.04

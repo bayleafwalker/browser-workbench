@@ -1,0 +1,144 @@
+{
+  "schema_version": "browser-workbench.result/v1",
+  "run_id": "oracle-corpus-WB-S005-playwright",
+  "status": "passed",
+  "backend": {
+    "kind": "playwright",
+    "variant": "webkit"
+  },
+  "steps": [
+    {
+      "step_id": "create",
+      "method": "session.create",
+      "status": "passed",
+      "result": {
+        "session_id": "oracle-session",
+        "page_id": "oracle-page-1",
+        "profile": {
+          "mode": "ephemeral",
+          "name": "oracle-corpus"
+        },
+        "backend": {
+          "kind": "playwright",
+          "variant": "webkit"
+        }
+      },
+      "error": null
+    },
+    {
+      "step_id": "navigate",
+      "method": "page.navigate",
+      "status": "passed",
+      "result": {
+        "accepted": true,
+        "url": "http://127.0.0.1:38775/index.html",
+        "provider": "oracle"
+      },
+      "error": null
+    },
+    {
+      "step_id": "await",
+      "method": "page.await",
+      "status": "passed",
+      "result": {
+        "satisfied": true,
+        "conditions": [
+          {
+            "equals": "idle",
+            "kind": "load_state"
+          },
+          {
+            "equals": "Workbench Fixture Index",
+            "kind": "title"
+          }
+        ],
+        "event_cursor": 4
+      },
+      "error": null
+    },
+    {
+      "step_id": "screenshot",
+      "method": "page.observe",
+      "status": "passed",
+      "result": {
+        "page_id": "oracle-page-1",
+        "generation": 2,
+        "since_event": 0,
+        "next_event": 4,
+        "returned_projections": [
+          "screenshot"
+        ],
+        "provider": "oracle",
+        "data": {
+          "screenshot": {
+            "media_type": "image/png",
+            "size_bytes": 16716,
+            "sha256": "07196117683780dd74395f58cba8519f82cfb676b695075ab3475c3c7a26886b",
+            "path": "screenshot-000004.png"
+          }
+        }
+      },
+      "error": null
+    },
+    {
+      "step_id": "set-title",
+      "method": "page.act",
+      "status": "passed",
+      "result": {
+        "attempted": true,
+        "accepted": true,
+        "executed": true,
+        "provider": "oracle",
+        "effects": [
+          {
+            "kind": "javascript",
+            "value": "Declared"
+          }
+        ]
+      },
+      "error": null
+    },
+    {
+      "step_id": "read-title",
+      "method": "page.act",
+      "status": "passed",
+      "result": {
+        "attempted": true,
+        "accepted": true,
+        "executed": true,
+        "provider": "oracle",
+        "effects": [
+          {
+            "kind": "javascript",
+            "value": "Declared"
+          }
+        ]
+      },
+      "error": null
+    },
+    {
+      "step_id": "await-title",
+      "method": "page.await",
+      "status": "passed",
+      "result": {
+        "satisfied": true,
+        "conditions": [
+          {
+            "equals": "Declared",
+            "kind": "title"
+          }
+        ],
+        "event_cursor": 4
+      },
+      "error": null
+    }
+  ],
+  "terminal_reason": {
+    "code": "completed"
+  },
+  "retry_count": 0,
+  "oracle": {
+    "playwright": "1.62.1",
+    "engine": "26.5"
+  }
+}

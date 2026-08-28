@@ -1,0 +1,162 @@
+{
+  "allowed_providers": [
+    "engine",
+    "host",
+    "injected"
+  ],
+  "backend": {
+    "kind": "playwright",
+    "variant": "webkit"
+  },
+  "evidence": {
+    "max_artifact_bytes": 1048576,
+    "normalized": true,
+    "raw": true,
+    "redaction_profile": "default"
+  },
+  "gates": [],
+  "policy": {
+    "mutation": "forbid",
+    "profile": "ephemeral",
+    "redaction_profile": "default",
+    "single_writer": true
+  },
+  "required_capabilities": [
+    "session.create",
+    "page.navigate",
+    "page.await",
+    "page.observe.state"
+  ],
+  "run_id": "oracle-corpus-WB-S005-playwright",
+  "schema_version": "browser-workbench.run/v1",
+  "workflow": [
+    {
+      "deadline_ms": 60000,
+      "method": "session.create",
+      "params": {
+        "client": {
+          "id": "oracle-client",
+          "kind": "agent"
+        },
+        "profile": {
+          "mode": "ephemeral",
+          "name": "oracle-corpus"
+        },
+        "viewport": {
+          "height": 768,
+          "width": 1024
+        }
+      },
+      "step_id": "create"
+    },
+    {
+      "deadline_ms": 60000,
+      "method": "page.navigate",
+      "params": {
+        "client_id": "oracle-client",
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        },
+        "url": "http://127.0.0.1:39835/index.html"
+      },
+      "step_id": "navigate"
+    },
+    {
+      "deadline_ms": 60000,
+      "method": "page.await",
+      "params": {
+        "conditions": [
+          {
+            "equals": "idle",
+            "kind": "load_state"
+          },
+          {
+            "equals": "Workbench Fixture Index",
+            "kind": "title"
+          }
+        ],
+        "deadline_ms": 30000,
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        }
+      },
+      "step_id": "await"
+    },
+    {
+      "deadline_ms": 60000,
+      "expect": {
+        "equals": "image/png",
+        "path": "data.screenshot.media_type"
+      },
+      "method": "page.observe",
+      "params": {
+        "max_bytes": 262144,
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        },
+        "projection": [
+          "screenshot"
+        ],
+        "since_event": 0
+      },
+      "step_id": "screenshot"
+    },
+    {
+      "deadline_ms": 60000,
+      "method": "page.act",
+      "params": {
+        "client_id": "oracle-client",
+        "intent": {
+          "kind": "javascript",
+          "value": "document.title = 'Declared';"
+        },
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        }
+      },
+      "step_id": "set-title"
+    },
+    {
+      "deadline_ms": 60000,
+      "expect": {
+        "equals": "Declared",
+        "path": "effects.0.value"
+      },
+      "method": "page.act",
+      "params": {
+        "client_id": "oracle-client",
+        "intent": {
+          "kind": "javascript",
+          "value": "document.title"
+        },
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        }
+      },
+      "step_id": "read-title"
+    },
+    {
+      "deadline_ms": 60000,
+      "method": "page.await",
+      "params": {
+        "conditions": [
+          {
+            "equals": "Declared",
+            "kind": "title"
+          }
+        ],
+        "deadline_ms": 5000,
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        }
+      },
+      "step_id": "await-title"
+    }
+  ]
+}

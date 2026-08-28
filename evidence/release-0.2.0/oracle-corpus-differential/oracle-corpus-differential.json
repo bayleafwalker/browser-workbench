@@ -1,0 +1,293 @@
+{
+  "corpus": {
+    "id": "browser-workbench-denominator",
+    "version": "1.0.0"
+  },
+  "counts": {
+    "blocked": 0,
+    "different": 0,
+    "equivalent": 6,
+    "inapplicable": 6,
+    "invalid": 0
+  },
+  "oracle_is_not_proof": "The oracle cross-checks observable behaviour on the scenarios it can express. It is not evidence that WebKitGTK is correct, it never gates the native lane, and an inapplicable scenario is neither a pass nor a fail.",
+  "runner": "podman",
+  "scenario_count": 12,
+  "scenarios": [
+    {
+      "applicability": "inapplicable",
+      "reason": "single-writer lease and lease-epoch semantics are host-side; the oracle has no lease",
+      "scenario_id": "WB-S001",
+      "status": "inapplicable"
+    },
+    {
+      "applicability": "inapplicable",
+      "reason": "max_bytes bounding, explicit loss and content-addressed raw refs are host-side observation policy; the oracle returns whatever the driver returns",
+      "scenario_id": "WB-S002",
+      "status": "inapplicable"
+    },
+    {
+      "applicability": "applicable",
+      "covers": [
+        "fresh target executes",
+        "navigation increments generation"
+      ],
+      "declared_suppressions": {
+        "capability_differences": true,
+        "fields": [
+          "gates"
+        ],
+        "step_fields": [
+          "verified"
+        ]
+      },
+      "differences": [],
+      "expected_terminal_code": "completed",
+      "omitted_assertions": {
+        "receipt names causal events": "the oracle emits no receipts",
+        "stale target fails before backend invocation": "generation-scoped target rejection is a host precondition"
+      },
+      "playwright": {
+        "exit_code": 0,
+        "oracle": {
+          "engine": "26.5",
+          "playwright": "1.62.1"
+        },
+        "status": "passed",
+        "terminal_code": "completed"
+      },
+      "scenario_id": "WB-S003",
+      "status": "equivalent",
+      "webkitgtk": {
+        "run_id": "oracle-corpus-WB-S003-webkitgtk",
+        "status": "passed",
+        "terminal_code": "completed"
+      }
+    },
+    {
+      "applicability": "applicable",
+      "covers": [
+        "scheduled event satisfies condition",
+        "deadline reports unsatisfied predicates"
+      ],
+      "declared_suppressions": {
+        "capability_differences": true,
+        "fields": [
+          "gates"
+        ],
+        "step_fields": [
+          "verified"
+        ]
+      },
+      "differences": [],
+      "expected_terminal_code": "deadline_exceeded",
+      "omitted_assertions": {
+        "virtual clock is deterministic": "already declared engine-specific on the native lane; the oracle has no clock claim either"
+      },
+      "playwright": {
+        "exit_code": 1,
+        "oracle": {
+          "engine": "26.5",
+          "playwright": "1.62.1"
+        },
+        "status": "failed",
+        "terminal_code": "deadline_exceeded"
+      },
+      "scenario_id": "WB-S004",
+      "status": "equivalent",
+      "webkitgtk": {
+        "run_id": "oracle-corpus-WB-S004-webkitgtk",
+        "status": "failed",
+        "terminal_code": "deadline_exceeded"
+      }
+    },
+    {
+      "applicability": "applicable",
+      "covers": [
+        "screenshot is an artifact",
+        "script result is bounded"
+      ],
+      "declared_suppressions": {
+        "capability_differences": true,
+        "fields": [
+          "gates"
+        ],
+        "step_fields": [
+          "verified"
+        ]
+      },
+      "differences": [],
+      "expected_terminal_code": "completed",
+      "omitted_assertions": {
+        "provider class is recorded": "the oracle has a single provider class, oracle",
+        "state digest changes only when declared": "host page-projection digests"
+      },
+      "playwright": {
+        "exit_code": 0,
+        "oracle": {
+          "engine": "26.5",
+          "playwright": "1.62.1"
+        },
+        "status": "passed",
+        "terminal_code": "completed"
+      },
+      "scenario_id": "WB-S005",
+      "status": "equivalent",
+      "webkitgtk": {
+        "run_id": "oracle-corpus-WB-S005-webkitgtk",
+        "status": "passed",
+        "terminal_code": "completed"
+      }
+    },
+    {
+      "applicability": "applicable",
+      "covers": [
+        "console record has event identity",
+        "network request and response correlate"
+      ],
+      "declared_suppressions": {
+        "capability_differences": true,
+        "fields": [
+          "gates"
+        ],
+        "step_fields": [
+          "verified"
+        ]
+      },
+      "differences": [],
+      "expected_terminal_code": "completed",
+      "omitted_assertions": {
+        "raw and normalized records are linked": "the oracle keeps one event stream, not raw plus normalized"
+      },
+      "playwright": {
+        "exit_code": 0,
+        "oracle": {
+          "engine": "26.5",
+          "playwright": "1.62.1"
+        },
+        "status": "passed",
+        "terminal_code": "completed"
+      },
+      "scenario_id": "WB-S006",
+      "status": "equivalent",
+      "webkitgtk": {
+        "run_id": "oracle-corpus-WB-S006-webkitgtk",
+        "status": "passed",
+        "terminal_code": "completed"
+      }
+    },
+    {
+      "applicability": "applicable",
+      "covers": [
+        "decision token is required",
+        "duplicate decision is rejected",
+        "receipt records applied decision"
+      ],
+      "declared_suppressions": {
+        "capability_differences": true,
+        "fields": [
+          "gates"
+        ],
+        "step_fields": [
+          "verified"
+        ]
+      },
+      "differences": [],
+      "expected_terminal_code": "precondition_failed",
+      "omitted_assertions": {
+        "default is deny": "the permission half cannot run: Playwright exposes no permission-request event for WebKit; permissions are granted per context in advance"
+      },
+      "playwright": {
+        "exit_code": 1,
+        "oracle": {
+          "engine": "26.5",
+          "playwright": "1.62.1"
+        },
+        "status": "failed",
+        "terminal_code": "precondition_failed"
+      },
+      "scenario_id": "WB-S007",
+      "status": "equivalent",
+      "webkitgtk": {
+        "run_id": "oracle-corpus-WB-S007-webkitgtk",
+        "status": "failed",
+        "terminal_code": "precondition_failed"
+      }
+    },
+    {
+      "applicability": "applicable",
+      "covers": [
+        "upload uses an allowed fixture",
+        "download remains quarantined",
+        "artifact hash is recorded"
+      ],
+      "declared_suppressions": {
+        "capability_differences": true,
+        "fields": [
+          "gates"
+        ],
+        "step_fields": [
+          "verified"
+        ]
+      },
+      "differences": [],
+      "expected_terminal_code": "completed",
+      "omitted_assertions": {
+        "undeclared path is rejected": "the fixture-tree allowlist is host policy"
+      },
+      "playwright": {
+        "exit_code": 0,
+        "oracle": {
+          "engine": "26.5",
+          "playwright": "1.62.1"
+        },
+        "status": "passed",
+        "terminal_code": "completed"
+      },
+      "scenario_id": "WB-S008",
+      "status": "equivalent",
+      "webkitgtk": {
+        "run_id": "oracle-corpus-WB-S008-webkitgtk",
+        "status": "passed",
+        "terminal_code": "completed"
+      }
+    },
+    {
+      "applicability": "inapplicable",
+      "reason": "checkpoint, lease release and handover are host session semantics; the oracle has no checkpoint",
+      "scenario_id": "WB-S009",
+      "status": "inapplicable"
+    },
+    {
+      "applicability": "inapplicable",
+      "reason": "Playwright exposes no web-process termination for WebKit (page.crash is Chromium/CDP only), and checkpoint restore and redacted export are host-side",
+      "scenario_id": "WB-S010",
+      "status": "inapplicable"
+    },
+    {
+      "applicability": "inapplicable",
+      "reason": "exercises the host comparison engine itself; no browser is opened",
+      "scenario_id": "WB-S011",
+      "status": "inapplicable"
+    },
+    {
+      "applicability": "inapplicable",
+      "reason": "exercises host input-integrity checks; no browser is opened",
+      "scenario_id": "WB-S012",
+      "status": "inapplicable"
+    }
+  ],
+  "schema_version": "browser-workbench.oracle-corpus-differential/v1",
+  "status": "equivalent",
+  "tolerances": {
+    "_rationale": "The oracle is an external cross-check of observable behaviour, not a second implementation of the runner contract. It evaluates no gates, produces no capability report, and emits no receipts, so those three surfaces are declared tolerable here and nowhere else: they are structurally absent, not behaviourally different. Step identity, method, per-step status and the terminal code are compared strictly — those are what the two lanes must agree on.",
+    "allow_capability_differences": true,
+    "ignore_fields": [
+      "gates"
+    ],
+    "ignore_step_fields": [
+      "verified"
+    ],
+    "step_order": "by_step_id"
+  }
+}

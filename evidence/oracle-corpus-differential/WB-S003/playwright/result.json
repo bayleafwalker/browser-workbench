@@ -1,0 +1,173 @@
+{
+  "schema_version": "browser-workbench.result/v1",
+  "run_id": "oracle-corpus-WB-S003-playwright",
+  "status": "passed",
+  "backend": {
+    "kind": "playwright",
+    "variant": "webkit"
+  },
+  "steps": [
+    {
+      "step_id": "create",
+      "method": "session.create",
+      "status": "passed",
+      "result": {
+        "session_id": "oracle-session",
+        "page_id": "oracle-page-1",
+        "profile": {
+          "mode": "ephemeral",
+          "name": "oracle-corpus"
+        },
+        "backend": {
+          "kind": "playwright",
+          "variant": "webkit"
+        }
+      },
+      "error": null
+    },
+    {
+      "step_id": "navigate",
+      "method": "page.navigate",
+      "status": "passed",
+      "result": {
+        "accepted": true,
+        "url": "http://127.0.0.1:39835/index.html",
+        "provider": "oracle"
+      },
+      "error": null
+    },
+    {
+      "step_id": "await",
+      "method": "page.await",
+      "status": "passed",
+      "result": {
+        "satisfied": true,
+        "conditions": [
+          {
+            "equals": "idle",
+            "kind": "load_state"
+          },
+          {
+            "equals": "Workbench Fixture Index",
+            "kind": "title"
+          }
+        ],
+        "event_cursor": 4
+      },
+      "error": null
+    },
+    {
+      "step_id": "targets",
+      "method": "page.observe",
+      "status": "passed",
+      "result": {
+        "page_id": "oracle-page-1",
+        "generation": 2,
+        "since_event": 0,
+        "next_event": 4,
+        "returned_projections": [
+          "targets"
+        ],
+        "provider": "oracle",
+        "data": {
+          "targets": [
+            {
+              "target_id": "target-1",
+              "role": "link",
+              "name": "Next",
+              "actions": [
+                "click"
+              ],
+              "generation": 2
+            },
+            {
+              "target_id": "target-2",
+              "role": "textbox",
+              "name": "query",
+              "actions": [
+                "type",
+                "click"
+              ],
+              "generation": 2
+            }
+          ]
+        }
+      },
+      "error": null
+    },
+    {
+      "step_id": "click",
+      "method": "page.act",
+      "status": "passed",
+      "result": {
+        "attempted": true,
+        "accepted": true,
+        "executed": true,
+        "provider": "oracle",
+        "effects": [
+          {
+            "kind": "click",
+            "target_id": "target-1"
+          }
+        ]
+      },
+      "error": null
+    },
+    {
+      "step_id": "await-next",
+      "method": "page.await",
+      "status": "passed",
+      "result": {
+        "satisfied": true,
+        "conditions": [
+          {
+            "equals": "idle",
+            "kind": "load_state"
+          },
+          {
+            "equals": "http://127.0.0.1:39835/next.html",
+            "kind": "url"
+          },
+          {
+            "equals": "Workbench Fixture Next",
+            "kind": "title"
+          }
+        ],
+        "event_cursor": 8
+      },
+      "error": null
+    },
+    {
+      "step_id": "state",
+      "method": "page.observe",
+      "status": "passed",
+      "result": {
+        "page_id": "oracle-page-1",
+        "generation": 3,
+        "since_event": 0,
+        "next_event": 8,
+        "returned_projections": [
+          "state"
+        ],
+        "provider": "oracle",
+        "data": {
+          "state": {
+            "page_id": "oracle-page-1",
+            "url": "http://127.0.0.1:39835/next.html",
+            "title": "Workbench Fixture Next",
+            "generation": 3
+          }
+        }
+      },
+      "error": null
+    }
+  ],
+  "terminal_reason": {
+    "code": "completed"
+  },
+  "retry_count": 0,
+  "oracle": {
+    "playwright": "1.62.1",
+    "engine": "26.5"
+  }
+}

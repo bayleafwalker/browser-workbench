@@ -1,0 +1,77 @@
+{
+  "artifacts": [
+    {
+      "media_type": "application/json",
+      "path": "contract/run-spec.json",
+      "sha256": "5af1109594d0157f915e072a6dd4582d95c2d3d525882a51d739850bc01cdbfc",
+      "size_bytes": 3636,
+      "source_refs": [],
+      "surface": "contract"
+    },
+    {
+      "media_type": "application/json",
+      "path": "diagnostics/adapter-identity.json",
+      "sha256": "4802e025e1a991fe95ee96a82e2bc5c134616af2bbb0bb30afbd37a0e9c8ed45",
+      "size_bytes": 226,
+      "source_refs": [],
+      "surface": "diagnostic"
+    },
+    {
+      "media_type": "application/json",
+      "path": "diagnostics/capabilities-runtime.json",
+      "sha256": "053355f83a7edc514b58852d384f538aa7d8ed4e0be59a2024e9f1ae0e7a1590",
+      "size_bytes": 6703,
+      "source_refs": [],
+      "surface": "diagnostic"
+    },
+    {
+      "media_type": "application/json",
+      "path": "diagnostics/capabilities.json",
+      "sha256": "b60f7aa48a901808fa28c0a63653e1b6c3acfe1bed1d1c3c4b4056ab0a4fe0cc",
+      "size_bytes": 6403,
+      "source_refs": [],
+      "surface": "diagnostic"
+    },
+    {
+      "media_type": "application/json",
+      "path": "result.json",
+      "sha256": "8b9cb1ad891cea7f6cc828638218152681c8bf3232fc7beabcd62f98563b225a",
+      "size_bytes": 15807,
+      "source_refs": [],
+      "surface": "contract"
+    },
+    {
+      "media_type": "text/plain",
+      "path": "traces/adapter-stderr.log",
+      "sha256": "5dbf7444262b3b139d1bcbf1ace8f07195f34a38e3679e98ce18353366d2c53c",
+      "size_bytes": 502,
+      "source_refs": [],
+      "surface": "raw"
+    },
+    {
+      "media_type": "application/x-ndjson",
+      "path": "traces/normalized.ndjson",
+      "sha256": "f7b6b1f394ff912640cf1d2e599d06a45d64c80df3900d46fc3df095b38d9c03",
+      "size_bytes": 4774,
+      "source_refs": [],
+      "surface": "normalized"
+    },
+    {
+      "media_type": "application/x-ndjson",
+      "path": "traces/raw.ndjson",
+      "sha256": "dbe9d3bab861434f9081b567fc8fe2ab3b0ecfc140bf49a99d6a15325eb7bfa4",
+      "size_bytes": 2382,
+      "source_refs": [],
+      "surface": "raw"
+    }
+  ],
+  "complete": false,
+  "created_at": "2026-08-28T10:09:15+00:00",
+  "redaction": {
+    "count": 0,
+    "rule_ids": []
+  },
+  "root_digest": "f143f9c2d7b54229560faeffc7d0a3f3088dc00d76e385b71982102cafc58d24",
+  "run_id": "oracle-corpus-WB-S007-webkitgtk",
+  "schema_version": "browser-workbench.evidence-manifest/v1"
+}

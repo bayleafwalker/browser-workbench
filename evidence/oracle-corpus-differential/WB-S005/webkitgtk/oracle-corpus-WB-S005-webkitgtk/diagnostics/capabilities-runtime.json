@@ -1,0 +1,260 @@
+{
+  "backend": "webkitgtk",
+  "capabilities": {
+    "page.act.javascript": {
+      "availability": "supported",
+      "notes": [],
+      "provider": "engine",
+      "runtime_executions": 2,
+      "semantics": "exact",
+      "verification": "runtime"
+    },
+    "page.act.keyboard": {
+      "availability": "supported",
+      "notes": [],
+      "provider": "injected",
+      "semantics": "normalized",
+      "verification": "source-audit"
+    },
+    "page.act.pointer": {
+      "availability": "supported",
+      "notes": [],
+      "provider": "injected",
+      "semantics": "normalized",
+      "verification": "source-audit"
+    },
+    "page.await": {
+      "availability": "supported",
+      "notes": [],
+      "provider": "host",
+      "runtime_executions": 2,
+      "semantics": "normalized",
+      "verification": "runtime"
+    },
+    "page.dialog": {
+      "availability": "supported",
+      "notes": [],
+      "provider": "engine",
+      "semantics": "exact",
+      "verification": "source-audit"
+    },
+    "page.download": {
+      "availability": "supported",
+      "notes": [],
+      "provider": "engine",
+      "semantics": "normalized",
+      "verification": "source-audit"
+    },
+    "page.navigate": {
+      "availability": "supported",
+      "notes": [],
+      "provider": "engine",
+      "runtime_executions": 1,
+      "semantics": "exact",
+      "verification": "runtime"
+    },
+    "page.navigation.history": {
+      "availability": "supported",
+      "notes": [],
+      "provider": "engine",
+      "semantics": "exact",
+      "verification": "source-audit"
+    },
+    "page.navigation.stop": {
+      "availability": "supported",
+      "notes": [],
+      "provider": "engine",
+      "semantics": "normalized",
+      "verification": "source-audit"
+    },
+    "page.observe.accessibility": {
+      "availability": "partial",
+      "notes": [
+        "partial semantics must not satisfy an exact-capability gate"
+      ],
+      "provider": "injected",
+      "semantics": "partial",
+      "verification": "source-audit"
+    },
+    "page.observe.console": {
+      "availability": "supported",
+      "notes": [],
+      "provider": "injected",
+      "semantics": "normalized",
+      "verification": "source-audit"
+    },
+    "page.observe.dom": {
+      "availability": "supported",
+      "notes": [],
+      "provider": "injected",
+      "semantics": "normalized",
+      "verification": "source-audit"
+    },
+    "page.observe.network": {
+      "availability": "partial",
+      "notes": [
+        "partial semantics must not satisfy an exact-capability gate"
+      ],
+      "provider": "engine",
+      "semantics": "partial",
+      "verification": "source-audit"
+    },
+    "page.observe.screenshot": {
+      "availability": "supported",
+      "notes": [],
+      "provider": "engine",
+      "runtime_executions": 1,
+      "semantics": "exact",
+      "verification": "runtime"
+    },
+    "page.observe.state": {
+      "availability": "supported",
+      "notes": [],
+      "provider": "engine",
+      "semantics": "normalized",
+      "verification": "source-audit"
+    },
+    "page.permission": {
+      "availability": "supported",
+      "notes": [],
+      "provider": "engine",
+      "semantics": "exact",
+      "verification": "source-audit"
+    },
+    "page.tabs": {
+      "availability": "supported",
+      "notes": [],
+      "provider": "host",
+      "semantics": "normalized",
+      "verification": "source-audit"
+    },
+    "page.termination": {
+      "availability": "supported",
+      "notes": [],
+      "provider": "engine",
+      "semantics": "exact",
+      "verification": "source-audit"
+    },
+    "page.upload": {
+      "availability": "supported",
+      "notes": [],
+      "provider": "engine",
+      "semantics": "exact",
+      "verification": "source-audit"
+    },
+    "run.compare": {
+      "availability": "supported",
+      "notes": [],
+      "provider": "host",
+      "semantics": "exact",
+      "verification": "source-audit"
+    },
+    "session.checkpoint": {
+      "availability": "supported",
+      "notes": [],
+      "provider": "host",
+      "semantics": "normalized",
+      "verification": "source-audit"
+    },
+    "session.create": {
+      "availability": "supported",
+      "notes": [],
+      "provider": "host",
+      "runtime_executions": 1,
+      "semantics": "normalized",
+      "verification": "runtime"
+    },
+    "session.export": {
+      "availability": "supported",
+      "notes": [],
+      "provider": "host",
+      "semantics": "exact",
+      "verification": "source-audit"
+    },
+    "session.profile.ephemeral": {
+      "availability": "supported",
+      "notes": [],
+      "provider": "engine",
+      "runtime_executions": 1,
+      "semantics": "exact",
+      "verification": "runtime"
+    },
+    "session.profile.persistent": {
+      "availability": "supported",
+      "notes": [],
+      "provider": "engine",
+      "semantics": "exact",
+      "verification": "source-audit"
+    }
+  },
+  "identity": {
+    "probe": {
+      "backend": "webkitgtk",
+      "checks": {
+        "cargo": {
+          "argv": [
+            "cargo",
+            "--version"
+          ],
+          "exit_code": 0,
+          "output": "cargo 1.97.1 (c980f4866 2026-06-30)",
+          "present": true
+        },
+        "gtk4": {
+          "argv": [
+            "pkg-config",
+            "--modversion",
+            "gtk4"
+          ],
+          "exit_code": 0,
+          "module": "gtk4",
+          "output": "4.22.4",
+          "present": true
+        },
+        "rustc": {
+          "argv": [
+            "rustc",
+            "--version",
+            "--verbose"
+          ],
+          "exit_code": 0,
+          "output": "rustc 1.97.1 (8bab26f4f 2026-07-14)\nbinary: rustc\ncommit-hash: 8bab26f4f68e0e26f0bb7960be334d5b520ea452\ncommit-date: 2026-07-14\nhost: x86_64-unknown-linux-gnu\nrelease: 1.97.1\nLLVM version: 22.1.6",
+          "present": true
+        },
+        "webkitgtk_6": {
+          "argv": [
+            "pkg-config",
+            "--modversion",
+            "webkitgtk-6.0"
+          ],
+          "exit_code": 0,
+          "expected": "2.52.6",
+          "matches_pin": true,
+          "module": "webkitgtk-6.0",
+          "output": "2.52.6",
+          "present": true
+        }
+      },
+      "display": {
+        "wayland": true,
+        "x11": true
+      },
+      "machine": "x86_64",
+      "os": "Linux-7.1.9-arch1-2-x86_64-with-glibc2.44",
+      "python": "3.14.7",
+      "ready": true,
+      "reasons": []
+    }
+  },
+  "runtime_unexplained": [],
+  "runtime_verified": [
+    "page.act.javascript",
+    "page.await",
+    "page.navigate",
+    "page.observe.screenshot",
+    "session.create",
+    "session.profile.ephemeral"
+  ],
+  "schema_version": "browser-workbench.capabilities/v1",
+  "variant": "stable-ephemeral"
+}

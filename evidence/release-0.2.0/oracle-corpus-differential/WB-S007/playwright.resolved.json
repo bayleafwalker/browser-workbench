@@ -1,0 +1,148 @@
+{
+  "allowed_providers": [
+    "engine",
+    "host",
+    "injected"
+  ],
+  "backend": {
+    "kind": "playwright",
+    "variant": "webkit"
+  },
+  "evidence": {
+    "max_artifact_bytes": 1048576,
+    "normalized": true,
+    "raw": true,
+    "redaction_profile": "default"
+  },
+  "gates": [],
+  "policy": {
+    "mutation": "forbid",
+    "profile": "ephemeral",
+    "redaction_profile": "default",
+    "single_writer": true
+  },
+  "required_capabilities": [
+    "session.create",
+    "page.navigate",
+    "page.await",
+    "page.observe.state"
+  ],
+  "run_id": "oracle-corpus-WB-S007-playwright",
+  "schema_version": "browser-workbench.run/v1",
+  "workflow": [
+    {
+      "deadline_ms": 60000,
+      "method": "session.create",
+      "params": {
+        "client": {
+          "id": "oracle-client",
+          "kind": "agent"
+        },
+        "profile": {
+          "mode": "ephemeral",
+          "name": "oracle-corpus"
+        },
+        "viewport": {
+          "height": 768,
+          "width": 1024
+        }
+      },
+      "step_id": "create"
+    },
+    {
+      "deadline_ms": 60000,
+      "method": "page.navigate",
+      "params": {
+        "client_id": "oracle-client",
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        },
+        "url": "http://127.0.0.1:38775/prompts.html"
+      },
+      "step_id": "navigate"
+    },
+    {
+      "deadline_ms": 60000,
+      "method": "page.await",
+      "params": {
+        "conditions": [
+          {
+            "equals": "dialog.opened",
+            "kind": "event_kind"
+          }
+        ],
+        "deadline_ms": 15000,
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        }
+      },
+      "step_id": "await-dialog"
+    },
+    {
+      "deadline_ms": 60000,
+      "expect": {
+        "equals": "pending",
+        "path": "data.dialogs.0.status"
+      },
+      "method": "page.observe",
+      "params": {
+        "max_bytes": 32768,
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        },
+        "projection": [
+          "dialogs"
+        ],
+        "since_event": 0
+      },
+      "step_id": "dialogs"
+    },
+    {
+      "deadline_ms": 60000,
+      "expect": {
+        "equals": "dismiss",
+        "path": "effects.0.decision"
+      },
+      "method": "page.act",
+      "params": {
+        "client_id": "oracle-client",
+        "intent": {
+          "decision": "dismiss",
+          "decision_token": {
+            "$step": "dialogs",
+            "path": "data.dialogs.0.token"
+          },
+          "kind": "dialog.resolve"
+        },
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        }
+      },
+      "step_id": "dismiss"
+    },
+    {
+      "deadline_ms": 60000,
+      "method": "page.act",
+      "params": {
+        "client_id": "oracle-client",
+        "intent": {
+          "decision": "accept",
+          "decision_token": {
+            "$step": "dialogs",
+            "path": "data.dialogs.0.token"
+          },
+          "kind": "dialog.resolve"
+        },
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        }
+      },
+      "step_id": "duplicate"
+    }
+  ]
+}

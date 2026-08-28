@@ -146,23 +146,101 @@ The release gate accepts only `equivalent` or `blocked` from this check. A
 differing oracle is a finding to review, never waived — and it is still never
 evidence that WebKitGTK is wrong.
 
+## Slice 6 — verification is earned, and the whole denominator meets the oracle
+
+Date: 2026-08-28.
+
+### Runtime verification, per capability
+
+`capabilities.py` no longer grants `verification: runtime` to the mock by
+fiat and `source-audit` to everything else. Every backend starts at
+`source-audit`; a `RuntimeLedger` counts successful executions and upgrades
+only the capabilities that actually ran (ADR-S6-01). The native corpus, both
+variants, earns 17 capabilities:
+
+```
+page.act.javascript 6   page.act.pointer 6      page.await 30
+page.dialog 3           page.download 3         page.navigate 27
+page.observe.console 3  page.observe.dom 3      page.observe.network 3 (partial, verified as partial)
+page.observe.screenshot 3  page.observe.state 6 page.permission 3
+page.termination 3      page.upload 3           session.checkpoint 6
+session.create 30       session.profile.ephemeral 30   (persistent variant: .persistent 27)
+```
+
+Not earned by anything yet, and truthfully still `source-audit`: `page.tabs`,
+`page.navigation.history`, `page.navigation.stop`, `page.act.keyboard`,
+`page.observe.accessibility`, `session.export` on the primary backend (it runs
+on the successor, which is not wrapped), `run.compare`.
+
+### The mock-versus-native differential report
+
+`scripts/corpus_differential.py` produces what the slice 3 handoff said did
+not exist. Against both native variants:
+
+```
+native-corpus:            equivalent  digests_match=True  12/12  declared_divergences=5
+native-corpus-persistent: equivalent  digests_match=True  12/12  declared_divergences=5
+```
+
+The five declared divergences are the five `assertion_semantics` entries from
+slice 3, now listed per scenario beside the assertion they apply to rather
+than only in a summary block.
+
+### The whole denominator against the oracle
+
+`spec/ORACLE_CORPUS_V1.json` classifies all twelve scenarios (ADR-S6-02), and
+`scripts/oracle_corpus_differential.py` runs them, WebKitGTK 2.52.6 against
+Playwright 1.62.1 / WebKit 26.5 in the pinned container:
+
+| Scenario | Class | Note |
+| --- | --- | --- |
+| WB-S001 | inapplicable | lease semantics are host-side |
+| WB-S002 | inapplicable | byte-bounded observation is host policy |
+| WB-S003 | **equivalent** | same target enumerated, real pointer click, same URL after |
+| WB-S004 | **equivalent** | both end in the declared `deadline_exceeded` |
+| WB-S005 | **equivalent** | PNG on both; `document.title` round-trips |
+| WB-S006 | **equivalent** | console and network records on both |
+| WB-S007 | **equivalent** | dialog held open, dismissed, duplicate rejected `precondition_failed` on both; permission half omitted, Playwright has no request event |
+| WB-S008 | **equivalent** | upload accepted; download quarantined, **identical bytes** `sha256:83412944…` on both lanes |
+| WB-S009 | inapplicable | checkpoint and handover are host session semantics |
+| WB-S010 | inapplicable | Playwright cannot terminate a WebKit web process |
+| WB-S011 | inapplicable | tests the comparison engine itself |
+| WB-S012 | inapplicable | tests input integrity itself |
+
+Six equivalent, six inapplicable, zero different, zero blocked. Every omitted
+assertion within an applicable scenario is named in the spec with its reason.
+
+### A blocked result that was hiding a defect
+
+The slice 5 differential's `oracle-stdout.log` was empty and its report said
+`runner: podman`, but the corpus-wide run failed on every applicable scenario
+with "the oracle produced no result": the container saw the repo only at
+`/work` while being handed host-absolute paths (ADR-S6-03). The gate had
+accepted that as `blocked`, which is the correct class — it never claimed
+equivalence — but nobody had read the reason. Fixed by self-mounting the repo;
+the slice 5 differential now genuinely runs in-repo and is equivalent.
+
 ## What is still not true
 
-- The oracle differential covers **one** five-step workflow, not the twelve
-  scenario corpus. The oracle runner implements five operations; it has no
-  targets, dialogs, permissions, uploads, downloads, or checkpoints, so a
-  corpus-wide differential would need that runner extended first.
+(Corrected 2026-08-28: earlier revisions of this list still said
+`stable-persistent` was unimplemented and the oracle unexecuted; slices 4
+and 5 above invalidated both. Items below are current after slice 6.)
+
+- The oracle differential reaches six of twelve scenarios. The other six test
+  host mechanisms an external oracle does not have, and within the six it
+  reaches, the assertions it omits are named per scenario. It is a
+  cross-check on observable engine behaviour, nothing wider.
 - The oracle cannot run natively on this host, only in the pinned container.
   On a Debian host `npx playwright install --with-deps webkit` is enough.
 - ServoGTK has never run. It builds in its own workspace and remains
-  experimental and non-gating — Wave 3, not Wave 2.
-- `stable-persistent` is not implemented. `session.create` rejects persistent
-  profiles as `capability_unsupported`.
+  experimental and non-gating — Wave 3, not Wave 2. It is the natural
+  generality test for the adapter contract once WebKitGTK is frozen.
 - The `accessibility` projection is still unwired; the matrix already declares
   it `partial`.
-- No differential report has been produced between the mock and native corpora.
-  Matching semantic digests are not a differential report.
-- Playwright oracle and ServoGTK remain unexecuted.
+- Seven capabilities remain `source-audit` on WebKitGTK because no run has
+  exercised them: `page.tabs`, `page.navigation.history`, `page.navigation.stop`,
+  `page.act.keyboard`, `page.observe.accessibility`, `session.export` on a
+  primary backend, and `run.compare` through a run spec.
 - **Wave 2 is not complete.** This is one session.
 
 ## Files changed
@@ -191,6 +269,23 @@ Added:
 - `docs/DECISIONS_NATIVE_SLICE1.md`
 - `Cargo.lock` — now meaningful, because the workspace actually builds
 - `evidence/native-slice1/`, `evidence/native-webkitgtk-smoke.json`
+
+Slice 6 added:
+
+- `src/workbench/corpus_compare.py`, `scripts/corpus_differential.py`, `tests/test_corpus_compare.py`
+- `scripts/oracle_corpus_differential.py`, `spec/ORACLE_CORPUS_V1.json`, `examples/oracle-corpus/WB-S00{3..8}.json`
+- `evidence/corpus-differential/`, `evidence/oracle-corpus-differential/`
+
+Slice 6 modified:
+
+- `src/workbench/capabilities.py` — `RuntimeLedger`, `exercised_capabilities`, `with_runtime_verification`; no backend starts at `runtime`
+- `src/workbench/runner.py` — records the ledger per passed step; writes `diagnostics/capabilities-runtime.json`; result gains `runtime_verification`
+- `src/workbench/corpus.py` — forwarding recorder around each backend; summary and `runtime-verification.json` gain the ledger
+- `src/workbench/cli.py` — `capabilities --runtime-ledger`
+- `oracle/playwright/runner.mjs` — rewritten from five operations to the declared surface
+- `scripts/oracle_differential.py` — repo self-mounted into the container
+- `scripts/release_gate.py` — two new checks and report fields
+- `tests/test_capabilities.py`, `docs/DECISIONS_NATIVE_SLICE1.md` (ADR-S6-01..03), `docs/CAPABILITY_TRUTH.md`, `docs/DIFFERENTIAL_RUNNER.md`, `oracle/playwright/README.md`, `CHANGELOG.md`
 
 ## Architecture and contract changes
 
@@ -242,6 +337,14 @@ Run on this host unless noted. Unabridged.
 | `python3 -m workbench.cli corpus` (mock, 12x3) | **passed** — 36/36, digest unchanged at `a8d0c478…` |
 | `node oracle/playwright/probe.mjs --launch` (in the pinned image) | **passed** — Playwright 1.62.1, WebKit 26.5 |
 | `python3 scripts/oracle_differential.py` | **equivalent** — both lanes passed, zero differences |
+| *slice 6, 2026-08-28:* | |
+| `PYTHONPATH=src python3 -m unittest discover -s tests` | **passed** — 34 tests (was 25) |
+| `xvfb-run -a python3 scripts/native_corpus.py` (both variants, re-run) | **passed** — 36/36 each, deterministic, digest unchanged `a8d0c478…`, ledger written |
+| `python3 scripts/corpus_differential.py` | **equivalent** — both native variants vs mock, 12/12, 5 declared divergences each |
+| `xvfb-run -a python3 scripts/oracle_corpus_differential.py` | **equivalent** — 6 equivalent, 6 inapplicable, 0 different, 0 blocked |
+| `xvfb-run -a python3 scripts/oracle_differential.py` (re-run, in-repo) | **equivalent** — previously silently blocked (ADR-S6-03) |
+| `PYTHONPATH=src xvfb-run -a python3 scripts/release_gate.py` | **passed** — 15/15 checks; `oracle_corpus_differential: passed`, `corpus_differential: passed`; blocked only servo-gtk and the local playwright probe |
+| `python3 scripts/validate_source.py`, `python3 scripts/disclosure_scan.py .` | **passed** |
 
 `cargo test --workspace --all-features` reporting zero tests is not a silent
 pass: neither Rust crate defines a test. The adapter is covered by the Python
@@ -288,12 +391,13 @@ under Xvfb, expected, not a finding.
 
 ## Capability reporting deviation
 
-`capabilities.py` marks `verification: runtime` only for the mock backend, so
-every WebKitGTK capability still reports `source-audit` even for operations
-this run genuinely executed. This **understates** what happened and is left
-in place deliberately: a runtime verification class should be earned per
-capability by execution, which is its own slice of work, not granted
-wholesale because an adapter connected.
+Through slice 5, `capabilities.py` marked `verification: runtime` only for
+the mock backend, so every WebKitGTK capability reported `source-audit` even
+for operations a run genuinely executed. That understated what happened and
+was left in place deliberately, on the principle that a runtime class should
+be earned per capability by execution rather than granted because an adapter
+connected. Slice 6 implemented exactly that (ADR-S6-01); the deviation is
+closed, and the same rule now applies to the mock.
 
 ## A guard that was rewritten, not removed
 
@@ -346,14 +450,19 @@ the evidence records observed dimensions alongside declared ones.
 
 ## Next eligible slice
 
-Slice 6: widen the differential from one workflow to the corpus. That means
-extending `oracle/playwright/runner.mjs` beyond its five operations — targets,
-dialogs, permissions, uploads, downloads, checkpoints — so the same scenarios
-can be posed to both lanes. Each addition should be posed as a question the
-oracle can answer, not as a reimplementation of the runner contract.
+Slice 6 is done: the differential covers the corpus, verification is earned,
+and the mock-versus-native report exists. The WebKitGTK lane should now be
+**frozen** as a milestone rather than polished further.
 
-Then ServoGTK, for its declared supported surface only, recording gaps as
-unsupported or as findings rather than as failures. That is Wave 3.
+The next question is generality, not more WebKitGTK: does a second engine
+satisfy the same adapter contract? ServoGTK is the candidate, for its declared
+supported surface only, recording gaps as unsupported or as findings rather
+than as failures. It stays non-gating. That is Wave 3.
 
-Do not raise the release claim past `native_vertical_proof` until those runs
-exist. Wave 2 means real WebKitGTK corpus evidence, and it does not exist yet.
+Two smaller things are worth doing on the way, in this order:
+
+1. exercise the seven capabilities still at `source-audit` (above) through
+   declared run specs, so the matrix's runtime column is complete or its gaps
+   are the engine's, not ours;
+2. wire the `accessibility` projection, which the matrix already declares
+   `partial`.

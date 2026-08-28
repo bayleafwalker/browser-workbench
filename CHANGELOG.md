@@ -55,3 +55,14 @@
 - added `examples/parity-webkitgtk.json`, `examples/parity-playwright.json`, and `examples/tolerances-oracle.json`;
 - the release gate runs the differential and accepts only equivalent or blocked: a differing oracle is a finding to review, never waived;
 - rewrote the oracle lane README, which documented a run spec that never existed and an install command that fails on any non-Debian host.
+
+## Unreleased — native slice 6 (verification is earned, and the whole denominator meets the oracle)
+
+- runtime verification is now earned per capability by execution on every backend, including the mock: `RuntimeLedger`, `exercised_capabilities`, `with_runtime_verification`; each run writes `diagnostics/capabilities-runtime.json`, each corpus writes `runtime-verification.json`, and `capabilities --runtime-ledger` applies a corpus ledger to a fresh report (ADR-S6-01);
+- added `spec/ORACLE_CORPUS_V1.json` classifying all twelve scenarios against the oracle, six applicable with declared workflows in `examples/oracle-corpus/` and named omitted assertions, six inapplicable with the missing host mechanism named (ADR-S6-02);
+- extended `oracle/playwright/runner.mjs` from five operations to the declared surface: `$step` resolution, `expect`, targets, real pointer clicks and typing, held-open script dialogs, uploads, quarantined downloads, screenshots, event-driven awaits, and host-equivalent error codes; permissions and process termination are refused as unsupported, not faked;
+- added `scripts/oracle_corpus_differential.py`: every scenario ends as exactly one of equivalent, different, blocked, or inapplicable, and the report always lists twelve;
+- added `workbench.corpus_compare` and `scripts/corpus_differential.py`: the mock-versus-native differential report, assertion by assertion, listing declared semantic divergences and structural differences that a matching digest hides;
+- the oracle container now also mounts the repository at its own path; an in-repo evidence root previously left the oracle unable to read its spec, and the slice 5 differential had in fact been blocked (ADR-S6-03);
+- the release gate runs both new differentials and reports `oracle_corpus_differential` and `corpus_differential`;
+- corrected HANDOFF's "what is still not true" list, which still claimed persistent profiles were unimplemented and the oracle unexecuted after slices 4 and 5 had done both.

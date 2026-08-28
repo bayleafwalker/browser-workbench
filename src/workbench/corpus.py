@@ -5,12 +5,51 @@ import json
 from pathlib import Path
 from typing import Any, Callable
 
+from .capabilities import RuntimeLedger
 from .compare import compare_runs
 from .errors import WorkbenchError
 from .evidence import ArtifactStore
 from .corpus_profiles import Profile, fixture_path, load_corpus, profile_for
 from .mock_backend import MockBackend
 from .util import canonical_bytes, pretty_json, repo_root, sha256_bytes, sha256_file, tree_digest
+
+
+class _RecordingBackend:
+    """Forward every call to the real backend; count what actually completed.
+
+    The corpus drivers call backend methods directly rather than through a
+    declared workflow, so this is where runtime verification is earned for
+    them. Only a call that returned records anything: a raised operation
+    exercised nothing.
+    """
+
+    _OPERATIONS = {
+        "session_create": "session.create",
+        "page_navigate": "page.navigate",
+        "page_observe": "page.observe",
+        "page_await": "page.await",
+        "page_act": "page.act",
+        "page_tabs": "page.tabs",
+        "session_checkpoint": "session.checkpoint",
+        "session_export": "session.export",
+    }
+
+    def __init__(self, backend: Any, ledger: RuntimeLedger) -> None:
+        self._backend = backend
+        self._ledger = ledger
+
+    def __getattr__(self, name: str) -> Any:
+        attribute = getattr(self._backend, name)
+        method = self._OPERATIONS.get(name)
+        if method is None:
+            return attribute
+
+        def call(params: dict[str, Any]) -> Any:
+            result = attribute(params)
+            self._ledger.record(method, params)
+            return result
+
+        return call
 
 
 def _error_code(call: Callable[[], Any]) -> str | None:
@@ -315,6 +354,7 @@ def run_corpus(
     if repetitions < 1:
         raise WorkbenchError("invalid_request", "repetitions must be positive")
     records: list[dict[str, Any]] = []
+    ledger = RuntimeLedger()
     for scenario in corpus["scenarios"]:
         driver = DRIVERS[scenario["driver"]]
         for repetition in range(1, repetitions + 1):
@@ -324,9 +364,11 @@ def run_corpus(
             checks: dict[str, bool] = {}
             deviations: list[dict[str, Any]] = []
             backend = None
+            run_ledger = RuntimeLedger()
             try:
                 backend = profile.make_backend(store)
-                checks = driver(backend, store, profile)
+                recording = _RecordingBackend(backend, run_ledger)
+                checks = driver(recording, store, profile)
             except Exception as exception:  # corpus must preserve a diagnostic record
                 if isinstance(exception, WorkbenchError):
                     error = exception.as_dict()
@@ -338,6 +380,10 @@ def run_corpus(
             missing = sorted(set(scenario["assertions"]) - set(checks))
             unexpected = sorted(set(checks) - set(scenario["assertions"]))
             passed = error is None and not missing and not unexpected and all(checks.values())
+            if passed:
+                # Only a passed scenario contributes: a failed run may have
+                # executed operations, but it did not verify them.
+                ledger.merge(run_ledger)
             result = {
                 "schema_version": "browser-workbench.corpus-result/v1",
                 "run_id": run_id,
@@ -351,6 +397,7 @@ def run_corpus(
                 "error": error,
                 "deviations": deviations,
                 "backend": {"kind": profile.backend_kind, "variant": profile.variant},
+                "runtime_verification": run_ledger.as_dict(),
                 "retry_count": 0,
             }
             store.write_json("result.json", result, "contract")
@@ -394,8 +441,24 @@ def run_corpus(
                 ]
             )
         ),
+        # Capabilities earned `runtime` verification by passed scenarios.
+        "runtime_verification": ledger.as_dict(),
         "records": records,
     }
     output_root.mkdir(parents=True, exist_ok=True)
     (output_root / "corpus-summary.json").write_text(pretty_json(summary), encoding="utf-8")
+    (output_root / "runtime-verification.json").write_text(
+        pretty_json(
+            {
+                "schema_version": "browser-workbench.runtime-verification/v1",
+                "backend": {"kind": profile.backend_kind, "variant": profile.variant},
+                "corpus_id": corpus["id"],
+                "corpus_version": corpus["version"],
+                "status": summary["status"],
+                "semantic_digest": summary["semantic_digest"],
+                "executions": ledger.as_dict(),
+            }
+        ),
+        encoding="utf-8",
+    )
     return summary

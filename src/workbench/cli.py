@@ -26,6 +26,11 @@ def _parser() -> argparse.ArgumentParser:
     cap = sub.add_parser("capabilities", help="emit a truthful capability report")
     cap.add_argument("backend", choices=["mock", "webkitgtk", "playwright", "servo-gtk"])
     cap.add_argument("--variant", default="default")
+    cap.add_argument(
+        "--runtime-ledger",
+        type=Path,
+        help="a runtime-verification.json produced by a corpus run; upgrades verification only where it shows execution",
+    )
     probe = sub.add_parser("probe", help="probe backend prerequisites")
     probe.add_argument("backend", choices=["mock", "webkitgtk", "playwright", "servo-gtk"])
     compare = sub.add_parser("compare", help="compare two evidence results")
@@ -48,7 +53,17 @@ def main(argv: list[str] | None = None) -> int:
             print(pretty_json(result), end="")
             return EXIT.get(result["status"], 1)
         if args.command == "capabilities":
-            report = capability_report(args.backend, args.variant)
+            ledger = None
+            if args.runtime_ledger:
+                ledger_file = json.loads(args.runtime_ledger.read_text(encoding="utf-8"))
+                if ledger_file.get("backend", {}).get("kind") != args.backend:
+                    raise WorkbenchError(
+                        "invalid_request",
+                        "the runtime ledger belongs to a different backend",
+                        {"ledger_backend": ledger_file.get("backend"), "requested": args.backend},
+                    )
+                ledger = ledger_file["executions"]
+            report = capability_report(args.backend, args.variant, runtime_ledger=ledger)
             print(pretty_json(report), end="")
             return 0 if report["identity"]["probe"]["ready"] else 78
         if args.command == "probe":

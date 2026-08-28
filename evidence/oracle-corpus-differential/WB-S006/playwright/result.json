@@ -1,0 +1,180 @@
+{
+  "schema_version": "browser-workbench.result/v1",
+  "run_id": "oracle-corpus-WB-S006-playwright",
+  "status": "passed",
+  "backend": {
+    "kind": "playwright",
+    "variant": "webkit"
+  },
+  "steps": [
+    {
+      "step_id": "create",
+      "method": "session.create",
+      "status": "passed",
+      "result": {
+        "session_id": "oracle-session",
+        "page_id": "oracle-page-1",
+        "profile": {
+          "mode": "ephemeral",
+          "name": "oracle-corpus"
+        },
+        "backend": {
+          "kind": "playwright",
+          "variant": "webkit"
+        }
+      },
+      "error": null
+    },
+    {
+      "step_id": "navigate",
+      "method": "page.navigate",
+      "status": "passed",
+      "result": {
+        "accepted": true,
+        "url": "http://127.0.0.1:39835/console.html",
+        "provider": "oracle"
+      },
+      "error": null
+    },
+    {
+      "step_id": "await",
+      "method": "page.await",
+      "status": "passed",
+      "result": {
+        "satisfied": true,
+        "conditions": [
+          {
+            "equals": "idle",
+            "kind": "load_state"
+          },
+          {
+            "equals": "Workbench Fixture Console",
+            "kind": "title"
+          }
+        ],
+        "event_cursor": 8
+      },
+      "error": null
+    },
+    {
+      "step_id": "console",
+      "method": "page.observe",
+      "status": "passed",
+      "result": {
+        "page_id": "oracle-page-1",
+        "generation": 2,
+        "since_event": 0,
+        "next_event": 8,
+        "returned_projections": [
+          "console"
+        ],
+        "provider": "oracle",
+        "data": {
+          "console": [
+            {
+              "schema_version": "browser-workbench.event/v1",
+              "event_id": "oracle-000005",
+              "event_seq": 5,
+              "kind": "console.message",
+              "source": "oracle",
+              "generation": 2,
+              "payload": {
+                "level": "log",
+                "text": "fixture console record"
+              }
+            },
+            {
+              "schema_version": "browser-workbench.event/v1",
+              "event_id": "oracle-000006",
+              "event_seq": 6,
+              "kind": "console.message",
+              "source": "oracle",
+              "generation": 2,
+              "payload": {
+                "level": "warning",
+                "text": "fixture console warning"
+              }
+            }
+          ]
+        }
+      },
+      "error": null
+    },
+    {
+      "step_id": "network",
+      "method": "page.observe",
+      "status": "passed",
+      "result": {
+        "page_id": "oracle-page-1",
+        "generation": 2,
+        "since_event": 0,
+        "next_event": 8,
+        "returned_projections": [
+          "network"
+        ],
+        "provider": "oracle",
+        "data": {
+          "network": [
+            {
+              "schema_version": "browser-workbench.event/v1",
+              "event_id": "oracle-000001",
+              "event_seq": 1,
+              "kind": "network.request",
+              "source": "oracle",
+              "generation": 1,
+              "payload": {
+                "url": "http://127.0.0.1:39835/console.html",
+                "method": "GET"
+              }
+            },
+            {
+              "schema_version": "browser-workbench.event/v1",
+              "event_id": "oracle-000002",
+              "event_seq": 2,
+              "kind": "network.response",
+              "source": "oracle",
+              "generation": 1,
+              "payload": {
+                "url": "http://127.0.0.1:39835/console.html",
+                "status": 200
+              }
+            },
+            {
+              "schema_version": "browser-workbench.event/v1",
+              "event_id": "oracle-000004",
+              "event_seq": 4,
+              "kind": "network.request",
+              "source": "oracle",
+              "generation": 2,
+              "payload": {
+                "url": "http://127.0.0.1:39835/pixel.txt",
+                "method": "GET"
+              }
+            },
+            {
+              "schema_version": "browser-workbench.event/v1",
+              "event_id": "oracle-000007",
+              "event_seq": 7,
+              "kind": "network.response",
+              "source": "oracle",
+              "generation": 2,
+              "payload": {
+                "url": "http://127.0.0.1:39835/pixel.txt",
+                "status": 200
+              }
+            }
+          ]
+        }
+      },
+      "error": null
+    }
+  ],
+  "terminal_reason": {
+    "code": "completed"
+  },
+  "retry_count": 0,
+  "oracle": {
+    "playwright": "1.62.1",
+    "engine": "26.5"
+  }
+}

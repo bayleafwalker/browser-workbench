@@ -1,0 +1,96 @@
+[
+  {
+    "schema_version": "browser-workbench.event/v1",
+    "event_id": "oracle-000001",
+    "event_seq": 1,
+    "kind": "network.request",
+    "source": "oracle",
+    "generation": 1,
+    "payload": {
+      "url": "http://127.0.0.1:38775/console.html",
+      "method": "GET"
+    }
+  },
+  {
+    "schema_version": "browser-workbench.event/v1",
+    "event_id": "oracle-000002",
+    "event_seq": 2,
+    "kind": "network.response",
+    "source": "oracle",
+    "generation": 1,
+    "payload": {
+      "url": "http://127.0.0.1:38775/console.html",
+      "status": 200
+    }
+  },
+  {
+    "schema_version": "browser-workbench.event/v1",
+    "event_id": "oracle-000003",
+    "event_seq": 3,
+    "kind": "navigation.committed",
+    "source": "oracle",
+    "generation": 2,
+    "payload": {
+      "url": "http://127.0.0.1:38775/console.html"
+    }
+  },
+  {
+    "schema_version": "browser-workbench.event/v1",
+    "event_id": "oracle-000004",
+    "event_seq": 4,
+    "kind": "network.request",
+    "source": "oracle",
+    "generation": 2,
+    "payload": {
+      "url": "http://127.0.0.1:38775/pixel.txt",
+      "method": "GET"
+    }
+  },
+  {
+    "schema_version": "browser-workbench.event/v1",
+    "event_id": "oracle-000005",
+    "event_seq": 5,
+    "kind": "console.message",
+    "source": "oracle",
+    "generation": 2,
+    "payload": {
+      "level": "log",
+      "text": "fixture console record"
+    }
+  },
+  {
+    "schema_version": "browser-workbench.event/v1",
+    "event_id": "oracle-000006",
+    "event_seq": 6,
+    "kind": "console.message",
+    "source": "oracle",
+    "generation": 2,
+    "payload": {
+      "level": "warning",
+      "text": "fixture console warning"
+    }
+  },
+  {
+    "schema_version": "browser-workbench.event/v1",
+    "event_id": "oracle-000007",
+    "event_seq": 7,
+    "kind": "network.response",
+    "source": "oracle",
+    "generation": 2,
+    "payload": {
+      "url": "http://127.0.0.1:38775/pixel.txt",
+      "status": 200
+    }
+  },
+  {
+    "schema_version": "browser-workbench.event/v1",
+    "event_id": "oracle-000008",
+    "event_seq": 8,
+    "kind": "navigation.finished",
+    "source": "oracle",
+    "generation": 2,
+    "payload": {
+      "url": "http://127.0.0.1:38775/console.html"
+    }
+  }
+]

@@ -6,7 +6,7 @@ import platform
 from pathlib import Path
 from typing import Any
 
-from .capabilities import capability_report, require_capabilities
+from .capabilities import RuntimeLedger, capability_report, require_capabilities, with_runtime_verification
 from .compare import compare_runs
 from .errors import WorkbenchError
 from .evidence import ArtifactStore
@@ -79,6 +79,7 @@ class Runner:
         terminal_error: WorkbenchError | None = None
         capability: dict[str, Any] = {}
         backend: MockBackend | WebKitGtkBackend | None = None
+        ledger = RuntimeLedger()
 
         store.write_json("contract/run-spec.json", spec, "contract")
         try:
@@ -150,6 +151,7 @@ class Runner:
                     if isinstance(result, dict) and "receipt_id" in result:
                         step_record["receipt"] = result
                     outputs[declaration["step_id"]] = result
+                    step_record["exercised"] = ledger.record(declaration["method"], params)
                 except WorkbenchError as error:
                     terminal_error = error
                     step_record["status"] = error.status
@@ -175,6 +177,11 @@ class Runner:
             backend.flush_traces()
 
         status = terminal_status(terminal_error)
+        if capability:
+            # The pre-run report stays as written: it is what the run was
+            # admitted on. The post-run report carries what was then earned.
+            capability = with_runtime_verification(capability, ledger)
+            store.write_json("diagnostics/capabilities-runtime.json", capability, "diagnostic")
         for gate in spec.get("gates", []):
             kind = gate["kind"]
             if kind == "native":
@@ -225,6 +232,7 @@ class Runner:
             "status": status,
             "backend": spec.get("backend", {}),
             "capabilities": capability,
+            "runtime_verification": ledger.as_dict(),
             "steps": steps,
             "gates": gates,
             "artifacts": sorted(store.artifacts, key=lambda item: item["path"]),

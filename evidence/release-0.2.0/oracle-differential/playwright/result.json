@@ -1,0 +1,115 @@
+{
+  "schema_version": "browser-workbench.result/v1",
+  "run_id": "parity-playwright",
+  "status": "passed",
+  "backend": {
+    "kind": "playwright",
+    "variant": "webkit"
+  },
+  "steps": [
+    {
+      "step_id": "create",
+      "method": "session.create",
+      "status": "passed",
+      "result": {
+        "session_id": "oracle-session",
+        "page_id": "oracle-page-1",
+        "profile": {
+          "mode": "ephemeral",
+          "name": "parity"
+        },
+        "backend": {
+          "kind": "playwright",
+          "variant": "webkit"
+        }
+      },
+      "error": null
+    },
+    {
+      "step_id": "navigate",
+      "method": "page.navigate",
+      "status": "passed",
+      "result": {
+        "accepted": true,
+        "url": "http://127.0.0.1:40453/console.html",
+        "provider": "oracle"
+      },
+      "error": null
+    },
+    {
+      "step_id": "await",
+      "method": "page.await",
+      "status": "passed",
+      "result": {
+        "satisfied": true,
+        "conditions": [
+          {
+            "equals": "idle",
+            "kind": "load_state"
+          },
+          {
+            "equals": "Workbench Fixture Console",
+            "kind": "title"
+          }
+        ],
+        "event_cursor": 8
+      },
+      "error": null
+    },
+    {
+      "step_id": "javascript",
+      "method": "page.act",
+      "status": "passed",
+      "result": {
+        "attempted": true,
+        "accepted": true,
+        "executed": true,
+        "provider": "oracle",
+        "effects": [
+          {
+            "kind": "javascript",
+            "value": "deterministic-fixture-console"
+          }
+        ]
+      },
+      "error": null
+    },
+    {
+      "step_id": "observe",
+      "method": "page.observe",
+      "status": "passed",
+      "result": {
+        "page_id": "oracle-page-1",
+        "generation": 2,
+        "since_event": 0,
+        "next_event": 8,
+        "returned_projections": [
+          "state",
+          "dom"
+        ],
+        "provider": "oracle",
+        "data": {
+          "state": {
+            "page_id": "oracle-page-1",
+            "url": "http://127.0.0.1:40453/console.html",
+            "title": "Workbench Fixture Console",
+            "generation": 2
+          },
+          "dom": {
+            "html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\">\n<title>Workbench Fixture Console</title>\n</head><body><main>\n  <h1>Workbench Fixture Console</h1>\n  <p id=\"marker\">deterministic-fixture-console</p>\n  <img id=\"pixel\" alt=\"\" src=\"pixel.txt\">\n</main>\n<script>\n  console.log('fixture console record');\n  console.warn('fixture console warning');\n</script>\n</body></html>",
+            "sha256": "147d95b1fd816fe1136459d7b2f8231d0d44f53f74654bb3a8b1ea36df6d4824"
+          }
+        }
+      },
+      "error": null
+    }
+  ],
+  "terminal_reason": {
+    "code": "completed"
+  },
+  "retry_count": 0,
+  "oracle": {
+    "playwright": "1.62.1",
+    "engine": "26.5"
+  }
+}

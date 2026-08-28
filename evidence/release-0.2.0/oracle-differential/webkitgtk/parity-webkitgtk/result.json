@@ -1,0 +1,576 @@
+{
+  "artifacts": [
+    {
+      "media_type": "application/json",
+      "path": "contract/run-spec.json",
+      "sha256": "a46f99e3ef7cdfbd1e56470852420bac2726dda71c9f2a05505b5264ebc1880f",
+      "size_bytes": 3029,
+      "source_refs": [],
+      "surface": "contract"
+    },
+    {
+      "media_type": "application/json",
+      "path": "diagnostics/adapter-identity.json",
+      "sha256": "4802e025e1a991fe95ee96a82e2bc5c134616af2bbb0bb30afbd37a0e9c8ed45",
+      "size_bytes": 226,
+      "source_refs": [],
+      "surface": "diagnostic"
+    },
+    {
+      "media_type": "application/json",
+      "path": "diagnostics/capabilities-runtime.json",
+      "sha256": "07f3dfb086ac529933b3db11a715b3e2a0c47f943ed73fcaa62a84a6d8d924a4",
+      "size_bytes": 6813,
+      "source_refs": [],
+      "surface": "diagnostic"
+    },
+    {
+      "media_type": "application/json",
+      "path": "diagnostics/capabilities.json",
+      "sha256": "b60f7aa48a901808fa28c0a63653e1b6c3acfe1bed1d1c3c4b4056ab0a4fe0cc",
+      "size_bytes": 6403,
+      "source_refs": [],
+      "surface": "diagnostic"
+    },
+    {
+      "media_type": "application/x-ndjson",
+      "path": "traces/normalized.ndjson",
+      "sha256": "4b2d49b36ff602b4c83238cf8e4330498670b925b0737878ee3afaacf2ed45a9",
+      "size_bytes": 5037,
+      "source_refs": [],
+      "surface": "normalized"
+    },
+    {
+      "media_type": "application/x-ndjson",
+      "path": "traces/raw.ndjson",
+      "sha256": "10e5164e2253e2e4a49cd484dbee19c66f8cf2fb9c2f283443592194a99c5f8a",
+      "size_bytes": 2901,
+      "source_refs": [],
+      "surface": "raw"
+    }
+  ],
+  "backend": {
+    "kind": "webkitgtk",
+    "variant": "stable-ephemeral"
+  },
+  "capabilities": {
+    "backend": "webkitgtk",
+    "capabilities": {
+      "page.act.javascript": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "engine",
+        "runtime_executions": 1,
+        "semantics": "exact",
+        "verification": "runtime"
+      },
+      "page.act.keyboard": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "injected",
+        "semantics": "normalized",
+        "verification": "source-audit"
+      },
+      "page.act.pointer": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "injected",
+        "semantics": "normalized",
+        "verification": "source-audit"
+      },
+      "page.await": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "host",
+        "runtime_executions": 1,
+        "semantics": "normalized",
+        "verification": "runtime"
+      },
+      "page.dialog": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "engine",
+        "semantics": "exact",
+        "verification": "source-audit"
+      },
+      "page.download": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "engine",
+        "semantics": "normalized",
+        "verification": "source-audit"
+      },
+      "page.navigate": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "engine",
+        "runtime_executions": 1,
+        "semantics": "exact",
+        "verification": "runtime"
+      },
+      "page.navigation.history": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "engine",
+        "semantics": "exact",
+        "verification": "source-audit"
+      },
+      "page.navigation.stop": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "engine",
+        "semantics": "normalized",
+        "verification": "source-audit"
+      },
+      "page.observe.accessibility": {
+        "availability": "partial",
+        "notes": [
+          "partial semantics must not satisfy an exact-capability gate"
+        ],
+        "provider": "injected",
+        "semantics": "partial",
+        "verification": "source-audit"
+      },
+      "page.observe.console": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "injected",
+        "semantics": "normalized",
+        "verification": "source-audit"
+      },
+      "page.observe.dom": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "injected",
+        "runtime_executions": 1,
+        "semantics": "normalized",
+        "verification": "runtime"
+      },
+      "page.observe.network": {
+        "availability": "partial",
+        "notes": [
+          "partial semantics must not satisfy an exact-capability gate"
+        ],
+        "provider": "engine",
+        "semantics": "partial",
+        "verification": "source-audit"
+      },
+      "page.observe.screenshot": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "engine",
+        "semantics": "exact",
+        "verification": "source-audit"
+      },
+      "page.observe.state": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "engine",
+        "runtime_executions": 1,
+        "semantics": "normalized",
+        "verification": "runtime"
+      },
+      "page.permission": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "engine",
+        "semantics": "exact",
+        "verification": "source-audit"
+      },
+      "page.tabs": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "host",
+        "semantics": "normalized",
+        "verification": "source-audit"
+      },
+      "page.termination": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "engine",
+        "semantics": "exact",
+        "verification": "source-audit"
+      },
+      "page.upload": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "engine",
+        "semantics": "exact",
+        "verification": "source-audit"
+      },
+      "run.compare": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "host",
+        "semantics": "exact",
+        "verification": "source-audit"
+      },
+      "session.checkpoint": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "host",
+        "semantics": "normalized",
+        "verification": "source-audit"
+      },
+      "session.create": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "host",
+        "runtime_executions": 1,
+        "semantics": "normalized",
+        "verification": "runtime"
+      },
+      "session.export": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "host",
+        "semantics": "exact",
+        "verification": "source-audit"
+      },
+      "session.profile.ephemeral": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "engine",
+        "runtime_executions": 1,
+        "semantics": "exact",
+        "verification": "runtime"
+      },
+      "session.profile.persistent": {
+        "availability": "supported",
+        "notes": [],
+        "provider": "engine",
+        "semantics": "exact",
+        "verification": "source-audit"
+      }
+    },
+    "identity": {
+      "probe": {
+        "backend": "webkitgtk",
+        "checks": {
+          "cargo": {
+            "argv": [
+              "cargo",
+              "--version"
+            ],
+            "exit_code": 0,
+            "output": "cargo 1.97.1 (c980f4866 2026-06-30)",
+            "present": true
+          },
+          "gtk4": {
+            "argv": [
+              "pkg-config",
+              "--modversion",
+              "gtk4"
+            ],
+            "exit_code": 0,
+            "module": "gtk4",
+            "output": "4.22.4",
+            "present": true
+          },
+          "rustc": {
+            "argv": [
+              "rustc",
+              "--version",
+              "--verbose"
+            ],
+            "exit_code": 0,
+            "output": "rustc 1.97.1 (8bab26f4f 2026-07-14)\nbinary: rustc\ncommit-hash: 8bab26f4f68e0e26f0bb7960be334d5b520ea452\ncommit-date: 2026-07-14\nhost: x86_64-unknown-linux-gnu\nrelease: 1.97.1\nLLVM version: 22.1.6",
+            "present": true
+          },
+          "webkitgtk_6": {
+            "argv": [
+              "pkg-config",
+              "--modversion",
+              "webkitgtk-6.0"
+            ],
+            "exit_code": 0,
+            "expected": "2.52.6",
+            "matches_pin": true,
+            "module": "webkitgtk-6.0",
+            "output": "2.52.6",
+            "present": true
+          }
+        },
+        "display": {
+          "wayland": true,
+          "x11": true
+        },
+        "machine": "x86_64",
+        "os": "Linux-7.1.9-arch1-2-x86_64-with-glibc2.44",
+        "python": "3.14.7",
+        "ready": true,
+        "reasons": []
+      }
+    },
+    "runtime_unexplained": [],
+    "runtime_verified": [
+      "page.act.javascript",
+      "page.await",
+      "page.navigate",
+      "page.observe.dom",
+      "page.observe.state",
+      "session.create",
+      "session.profile.ephemeral"
+    ],
+    "schema_version": "browser-workbench.capabilities/v1",
+    "variant": "stable-ephemeral"
+  },
+  "deviations": [],
+  "environment": {
+    "platform": "Linux-7.1.9-arch1-2-x86_64-with-glibc2.44",
+    "python": "3.14.7",
+    "retry_count": 0,
+    "runner": "browser-workbench/0.2.0"
+  },
+  "gates": [
+    {
+      "details": {
+        "run_status": "passed"
+      },
+      "id": "contract",
+      "kind": "contract",
+      "required": true,
+      "status": "passed"
+    },
+    {
+      "details": {
+        "run_status": "passed"
+      },
+      "id": "capabilities",
+      "kind": "capability",
+      "required": true,
+      "status": "passed"
+    },
+    {
+      "details": {
+        "run_status": "passed"
+      },
+      "id": "execution",
+      "kind": "execution",
+      "required": true,
+      "status": "passed"
+    },
+    {
+      "details": {
+        "run_status": "passed"
+      },
+      "id": "evidence",
+      "kind": "evidence",
+      "required": true,
+      "status": "passed"
+    },
+    {
+      "details": {
+        "run_status": "passed"
+      },
+      "id": "native",
+      "kind": "native",
+      "required": true,
+      "status": "passed"
+    }
+  ],
+  "run_id": "parity-webkitgtk",
+  "runtime_verification": {
+    "page.act.javascript": 1,
+    "page.await": 1,
+    "page.navigate": 1,
+    "page.observe.dom": 1,
+    "page.observe.state": 1,
+    "session.create": 1,
+    "session.profile.ephemeral": 1
+  },
+  "schema_version": "browser-workbench.result/v1",
+  "status": "passed",
+  "steps": [
+    {
+      "error": null,
+      "exercised": [
+        "session.create",
+        "session.profile.ephemeral"
+      ],
+      "method": "session.create",
+      "receipt": null,
+      "result": {
+        "backend": {
+          "identity": {
+            "adapter": "browser-workbench-webkitgtk-worker",
+            "adapter_version": "0.2.0",
+            "display_backend": "GdkWaylandDisplay",
+            "engine": "2.52.6",
+            "engine_api": "webkitgtk-6.0",
+            "gtk": "4.22.4",
+            "transport_version": 1
+          },
+          "kind": "webkitgtk",
+          "variant": "stable-ephemeral"
+        },
+        "event_id": "event-000002",
+        "lease": {
+          "lease_epoch": 1,
+          "lease_id": "lease-0001",
+          "mode": "single-writer",
+          "writer_id": "parity-client"
+        },
+        "page_id": "page-1",
+        "profile": {
+          "mode": "ephemeral",
+          "name": "parity"
+        },
+        "resumed_from": null,
+        "session_id": "session-0001"
+      },
+      "status": "passed",
+      "step_id": "create"
+    },
+    {
+      "error": null,
+      "exercised": [
+        "page.navigate"
+      ],
+      "method": "page.navigate",
+      "receipt": {
+        "accepted": true,
+        "caused_event_ids": [],
+        "navigation_id": "navigation-0001",
+        "provider": "engine",
+        "receipt_id": "receipt-navigation-0001",
+        "state_after": "1b55889134bcd5b2e5fe1efe7f61f7f54c978553ce307806bf24165bb1116d5d",
+        "state_before": "f2aa8e2e682e2d064e2100b9c607e6244ddf51654e7eb8b543ee7b7dab0d8b9e"
+      },
+      "result": {
+        "accepted": true,
+        "caused_event_ids": [],
+        "navigation_id": "navigation-0001",
+        "provider": "engine",
+        "receipt_id": "receipt-navigation-0001",
+        "state_after": "1b55889134bcd5b2e5fe1efe7f61f7f54c978553ce307806bf24165bb1116d5d",
+        "state_before": "f2aa8e2e682e2d064e2100b9c607e6244ddf51654e7eb8b543ee7b7dab0d8b9e"
+      },
+      "status": "passed",
+      "step_id": "navigate"
+    },
+    {
+      "error": null,
+      "exercised": [
+        "page.await"
+      ],
+      "method": "page.await",
+      "receipt": null,
+      "result": {
+        "conditions": [
+          {
+            "equals": "idle",
+            "kind": "load_state"
+          },
+          {
+            "equals": "Workbench Fixture Console",
+            "kind": "title"
+          }
+        ],
+        "event_cursor": 12,
+        "monotonic_ms": 451,
+        "satisfied": true
+      },
+      "status": "passed",
+      "step_id": "await"
+    },
+    {
+      "error": null,
+      "exercised": [
+        "page.act.javascript"
+      ],
+      "method": "page.act",
+      "receipt": {
+        "accepted": true,
+        "action_id": "action-0001",
+        "attempted": true,
+        "caused_event_ids": [],
+        "effects": [
+          {
+            "kind": "javascript.result",
+            "value": "deterministic-fixture-console"
+          }
+        ],
+        "executed": true,
+        "provider": "engine",
+        "receipt_id": "receipt-0001",
+        "state_after": "a3afaf1e797872e97bb88596c0c7faabe6a14edf8e8ce456ef170ea23f5ab0e9",
+        "state_before": "a3afaf1e797872e97bb88596c0c7faabe6a14edf8e8ce456ef170ea23f5ab0e9",
+        "verified": true
+      },
+      "result": {
+        "accepted": true,
+        "action_id": "action-0001",
+        "attempted": true,
+        "caused_event_ids": [],
+        "effects": [
+          {
+            "kind": "javascript.result",
+            "value": "deterministic-fixture-console"
+          }
+        ],
+        "executed": true,
+        "provider": "engine",
+        "receipt_id": "receipt-0001",
+        "state_after": "a3afaf1e797872e97bb88596c0c7faabe6a14edf8e8ce456ef170ea23f5ab0e9",
+        "state_before": "a3afaf1e797872e97bb88596c0c7faabe6a14edf8e8ce456ef170ea23f5ab0e9",
+        "verified": true
+      },
+      "status": "passed",
+      "step_id": "javascript"
+    },
+    {
+      "error": null,
+      "exercised": [
+        "page.observe.dom",
+        "page.observe.state"
+      ],
+      "method": "page.observe",
+      "receipt": null,
+      "result": {
+        "data": {
+          "dom": {
+            "html": "<html><head><meta charset=\"utf-8\">\n<title>Workbench Fixture Console</title>\n</head><body><main>\n  <h1>Workbench Fixture Console</h1>\n  <p id=\"marker\">deterministic-fixture-console</p>\n  <img id=\"pixel\" alt=\"\" src=\"pixel.txt\">\n</main>\n<script>\n  console.log('fixture console record');\n  console.warn('fixture console warning');\n</script>\n</body></html>",
+            "sha256": "9942f784a45707207dc6e3250d2be4550231d91c86cb014d18d1a4b9290c0cb5"
+          },
+          "state": {
+            "engine": {
+              "can_go_back": false,
+              "can_go_forward": false,
+              "estimated_load_progress": 1.0,
+              "is_loading": false,
+              "page_id": "page-1",
+              "title": "Workbench Fixture Console",
+              "url": "http://127.0.0.1:40453/console.html"
+            },
+            "generation": 2,
+            "last_navigation_outcome": "success",
+            "lifecycle": "open",
+            "load_state": "idle",
+            "page_id": "page-1",
+            "title": "Workbench Fixture Console",
+            "url": "http://127.0.0.1:40453/console.html"
+          }
+        },
+        "generation": 2,
+        "lossy": false,
+        "max_bytes": 262144,
+        "next_event": 12,
+        "omitted": {},
+        "page_id": "page-1",
+        "provider": "engine",
+        "raw_ref": null,
+        "returned_projections": [
+          "state",
+          "dom"
+        ],
+        "since_event": 0
+      },
+      "status": "passed",
+      "step_id": "observe"
+    }
+  ],
+  "terminal_reason": {
+    "code": "completed"
+  }
+}

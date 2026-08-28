@@ -86,7 +86,7 @@
           "$step": "create",
           "path": "page_id"
         },
-        "url": "http://127.0.0.1:40461/console.html"
+        "url": "http://127.0.0.1:43367/console.html"
       },
       "step_id": "navigate"
     },

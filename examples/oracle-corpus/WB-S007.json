@@ -1,0 +1,142 @@
+{
+  "schema_version": "browser-workbench.run/v1",
+  "required_capabilities": [
+    "session.create",
+    "page.navigate",
+    "page.await",
+    "page.observe.state"
+  ],
+  "allowed_providers": [
+    "engine",
+    "host",
+    "injected"
+  ],
+  "workflow": [
+    {
+      "step_id": "create",
+      "method": "session.create",
+      "deadline_ms": 60000,
+      "params": {
+        "client": {
+          "id": "oracle-client",
+          "kind": "agent"
+        },
+        "profile": {
+          "mode": "ephemeral",
+          "name": "oracle-corpus"
+        },
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        }
+      }
+    },
+    {
+      "step_id": "navigate",
+      "method": "page.navigate",
+      "deadline_ms": 60000,
+      "params": {
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        },
+        "client_id": "oracle-client",
+        "url": "${FIXTURE_BASE_URL}prompts.html"
+      }
+    },
+    {
+      "step_id": "await-dialog",
+      "method": "page.await",
+      "deadline_ms": 60000,
+      "params": {
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        },
+        "conditions": [
+          {
+            "kind": "event_kind",
+            "equals": "dialog.opened"
+          }
+        ],
+        "deadline_ms": 15000
+      }
+    },
+    {
+      "step_id": "dialogs",
+      "method": "page.observe",
+      "deadline_ms": 60000,
+      "params": {
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        },
+        "projection": [
+          "dialogs"
+        ],
+        "since_event": 0,
+        "max_bytes": 32768
+      },
+      "expect": {
+        "path": "data.dialogs.0.status",
+        "equals": "pending"
+      }
+    },
+    {
+      "step_id": "dismiss",
+      "method": "page.act",
+      "deadline_ms": 60000,
+      "params": {
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        },
+        "client_id": "oracle-client",
+        "intent": {
+          "kind": "dialog.resolve",
+          "decision_token": {
+            "$step": "dialogs",
+            "path": "data.dialogs.0.token"
+          },
+          "decision": "dismiss"
+        }
+      },
+      "expect": {
+        "path": "effects.0.decision",
+        "equals": "dismiss"
+      }
+    },
+    {
+      "step_id": "duplicate",
+      "method": "page.act",
+      "deadline_ms": 60000,
+      "params": {
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        },
+        "client_id": "oracle-client",
+        "intent": {
+          "kind": "dialog.resolve",
+          "decision_token": {
+            "$step": "dialogs",
+            "path": "data.dialogs.0.token"
+          },
+          "decision": "accept"
+        }
+      }
+    }
+  ],
+  "policy": {
+    "mutation": "forbid",
+    "profile": "ephemeral",
+    "redaction_profile": "default",
+    "single_writer": true
+  },
+  "evidence": {
+    "raw": true,
+    "normalized": true,
+    "max_artifact_bytes": 1048576,
+    "redaction_profile": "default"
+  }
+}

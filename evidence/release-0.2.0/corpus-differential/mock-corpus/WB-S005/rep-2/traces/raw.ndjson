@@ -1,0 +1,2 @@
+{"causes": [], "kind": "action.invoked", "monotonic_ms": 0, "ordinal": 1, "page_id": "page-1", "payload": {"kind": "javascript", "value": "set-title:Declared"}, "raw_id": "raw-000001", "source": "mock"}
+{"causes": [], "kind": "action.invoked", "monotonic_ms": 0, "ordinal": 2, "page_id": "page-1", "payload": {"kind": "javascript", "value": "return-title"}, "raw_id": "raw-000002", "source": "mock"}

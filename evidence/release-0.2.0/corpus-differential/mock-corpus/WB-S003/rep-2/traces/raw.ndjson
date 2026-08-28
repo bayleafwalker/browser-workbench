@@ -1,0 +1,5 @@
+{"causes": [], "kind": "action.invoked", "monotonic_ms": 0, "ordinal": 1, "page_id": "page-1", "payload": {"kind": "click"}, "raw_id": "raw-000001", "source": "mock"}
+{"causes": [], "kind": "navigate.invoked", "monotonic_ms": 0, "ordinal": 2, "page_id": "page-1", "payload": {"navigation_id": "navigation-0001", "url": "https://fixture.invalid/next"}, "raw_id": "raw-000002", "source": "mock"}
+{"causes": ["event-000004"], "kind": "resource.request", "monotonic_ms": 5, "ordinal": 3, "page_id": "page-1", "payload": {"method": "GET", "request_id": "navigation-0001", "url": "https://fixture.invalid/next"}, "raw_id": "raw-000003", "source": "mock"}
+{"causes": ["event-000005"], "kind": "resource.response", "monotonic_ms": 5, "ordinal": 4, "page_id": "page-1", "payload": {"request_id": "navigation-0001", "status": 200, "url": "https://fixture.invalid/next"}, "raw_id": "raw-000004", "source": "mock"}
+{"causes": ["event-000004"], "kind": "load.committed", "monotonic_ms": 5, "ordinal": 5, "page_id": "page-1", "payload": {"navigation_id": "navigation-0001", "title": "Next", "url": "https://fixture.invalid/next"}, "raw_id": "raw-000005", "source": "mock"}

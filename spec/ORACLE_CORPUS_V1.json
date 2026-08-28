@@ -1,0 +1,104 @@
+{
+  "schema_version": "browser-workbench.oracle-corpus/v1",
+  "corpus_id": "browser-workbench-denominator",
+  "corpus_version": "1.0.0",
+  "_rationale": "Every one of the twelve frozen scenarios is classified here. An applicable scenario has a declared workflow that both lanes execute; assertions the oracle cannot express are listed as omitted, per scenario, so the denominator never shrinks silently. An inapplicable scenario names the host-side mechanism the oracle structurally lacks. Neither class is a pass.",
+  "scenarios": {
+    "WB-S001": {
+      "applicability": "inapplicable",
+      "reason": "single-writer lease and lease-epoch semantics are host-side; the oracle has no lease"
+    },
+    "WB-S002": {
+      "applicability": "inapplicable",
+      "reason": "max_bytes bounding, explicit loss and content-addressed raw refs are host-side observation policy; the oracle returns whatever the driver returns"
+    },
+    "WB-S003": {
+      "applicability": "applicable",
+      "workflow": "examples/oracle-corpus/WB-S003.json",
+      "covers": [
+        "fresh target executes",
+        "navigation increments generation"
+      ],
+      "omitted": {
+        "receipt names causal events": "the oracle emits no receipts",
+        "stale target fails before backend invocation": "generation-scoped target rejection is a host precondition"
+      }
+    },
+    "WB-S004": {
+      "applicability": "applicable",
+      "workflow": "examples/oracle-corpus/WB-S004.json",
+      "expected_terminal_code": "deadline_exceeded",
+      "covers": [
+        "scheduled event satisfies condition",
+        "deadline reports unsatisfied predicates"
+      ],
+      "omitted": {
+        "virtual clock is deterministic": "already declared engine-specific on the native lane; the oracle has no clock claim either"
+      }
+    },
+    "WB-S005": {
+      "applicability": "applicable",
+      "workflow": "examples/oracle-corpus/WB-S005.json",
+      "covers": [
+        "screenshot is an artifact",
+        "script result is bounded"
+      ],
+      "omitted": {
+        "provider class is recorded": "the oracle has a single provider class, oracle",
+        "state digest changes only when declared": "host page-projection digests"
+      }
+    },
+    "WB-S006": {
+      "applicability": "applicable",
+      "workflow": "examples/oracle-corpus/WB-S006.json",
+      "covers": [
+        "console record has event identity",
+        "network request and response correlate"
+      ],
+      "omitted": {
+        "raw and normalized records are linked": "the oracle keeps one event stream, not raw plus normalized"
+      }
+    },
+    "WB-S007": {
+      "applicability": "applicable",
+      "workflow": "examples/oracle-corpus/WB-S007.json",
+      "expected_terminal_code": "precondition_failed",
+      "covers": [
+        "decision token is required",
+        "duplicate decision is rejected",
+        "receipt records applied decision"
+      ],
+      "omitted": {
+        "default is deny": "the permission half cannot run: Playwright exposes no permission-request event for WebKit; permissions are granted per context in advance"
+      }
+    },
+    "WB-S008": {
+      "applicability": "applicable",
+      "workflow": "examples/oracle-corpus/WB-S008.json",
+      "covers": [
+        "upload uses an allowed fixture",
+        "download remains quarantined",
+        "artifact hash is recorded"
+      ],
+      "omitted": {
+        "undeclared path is rejected": "the fixture-tree allowlist is host policy"
+      }
+    },
+    "WB-S009": {
+      "applicability": "inapplicable",
+      "reason": "checkpoint, lease release and handover are host session semantics; the oracle has no checkpoint"
+    },
+    "WB-S010": {
+      "applicability": "inapplicable",
+      "reason": "Playwright exposes no web-process termination for WebKit (page.crash is Chromium/CDP only), and checkpoint restore and redacted export are host-side"
+    },
+    "WB-S011": {
+      "applicability": "inapplicable",
+      "reason": "exercises the host comparison engine itself; no browser is opened"
+    },
+    "WB-S012": {
+      "applicability": "inapplicable",
+      "reason": "exercises host input-integrity checks; no browser is opened"
+    }
+  }
+}

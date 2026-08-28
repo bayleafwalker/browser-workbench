@@ -1,0 +1,4 @@
+
+** (browser-workbench-webkitgtk-worker:107591): CRITICAL **: 13:08:48.416: const char *webkit_script_dialog_prompt_get_default_text(WebKitScriptDialog *): assertion 'dialog->type == WEBKIT_SCRIPT_DIALOG_PROMPT' failed
+
+** (browser-workbench-webkitgtk-worker:107591): CRITICAL **: 13:08:48.667: void webkit_script_dialog_confirm_set_confirmed(WebKitScriptDialog *, gboolean): assertion 'dialog->type == WEBKIT_SCRIPT_DIALOG_CONFIRM || dialog->type == WEBKIT_SCRIPT_DIALOG_BEFORE_UNLOAD_CONFIRM' failed

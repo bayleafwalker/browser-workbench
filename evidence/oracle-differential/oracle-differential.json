@@ -2,10 +2,10 @@
   "capability_differences_ignored": true,
   "differences": [],
   "input_integrity": {
-    "baseline_after": "f3194994cd7e097640c94a9938a34353fde4f7f4cf885f970543793405a9089f",
-    "baseline_before": "f3194994cd7e097640c94a9938a34353fde4f7f4cf885f970543793405a9089f",
-    "candidate_after": "ec244fd800d599dc422393d56a154b86438098ac20dd2487ca019c93af702cc7",
-    "candidate_before": "ec244fd800d599dc422393d56a154b86438098ac20dd2487ca019c93af702cc7",
+    "baseline_after": "f9e92310071584d89ca633b846233b66cbce5d8ff691b85e078ef17cf56b2f0f",
+    "baseline_before": "f9e92310071584d89ca633b846233b66cbce5d8ff691b85e078ef17cf56b2f0f",
+    "candidate_after": "69e6bb32aa43c6f2c2af9fac2c12d8b65da7e055fec777ba038d007cb33282cf",
+    "candidate_before": "69e6bb32aa43c6f2c2af9fac2c12d8b65da7e055fec777ba038d007cb33282cf",
     "unchanged": true
   },
   "oracle_is_not_proof": "The oracle cross-checks observable behaviour. It is not evidence that WebKitGTK is correct, and it never gates the native lane.",

@@ -3,8 +3,8 @@
     {
       "media_type": "application/json",
       "path": "result.json",
-      "sha256": "a8a293e4c47cc9f0f1aaa87df10d90cf9b9fac6b3c280a7228be946fea7ea93c",
-      "size_bytes": 578,
+      "sha256": "ff5696100f6c1a8664802657b6f705ea11cd1cc87a00b86fdc399b5dd17f3763",
+      "size_bytes": 867,
       "source_refs": [],
       "surface": "contract"
     },
@@ -26,12 +26,12 @@
     }
   ],
   "complete": true,
-  "created_at": "2026-08-24T16:04:31+00:00",
+  "created_at": "2026-08-28T10:07:53+00:00",
   "redaction": {
     "count": 0,
     "rule_ids": []
   },
-  "root_digest": "2e33d9c01569250089ae4c64d3b2a6ef852748c693ca04028c0746b7ba1e007d",
+  "root_digest": "0d702ae86fd7e6ead2e1d36b5c5831e4add7846c2192753535e1326e845ee9b8",
   "run_id": "WB-S006-r3",
   "schema_version": "browser-workbench.evidence-manifest/v1"
 }

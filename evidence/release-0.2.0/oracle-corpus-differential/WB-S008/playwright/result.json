@@ -1,0 +1,208 @@
+{
+  "schema_version": "browser-workbench.result/v1",
+  "run_id": "oracle-corpus-WB-S008-playwright",
+  "status": "passed",
+  "backend": {
+    "kind": "playwright",
+    "variant": "webkit"
+  },
+  "steps": [
+    {
+      "step_id": "create",
+      "method": "session.create",
+      "status": "passed",
+      "result": {
+        "session_id": "oracle-session",
+        "page_id": "oracle-page-1",
+        "profile": {
+          "mode": "ephemeral",
+          "name": "oracle-corpus"
+        },
+        "backend": {
+          "kind": "playwright",
+          "variant": "webkit"
+        }
+      },
+      "error": null
+    },
+    {
+      "step_id": "navigate",
+      "method": "page.navigate",
+      "status": "passed",
+      "result": {
+        "accepted": true,
+        "url": "http://127.0.0.1:38775/upload.html",
+        "provider": "oracle"
+      },
+      "error": null
+    },
+    {
+      "step_id": "await",
+      "method": "page.await",
+      "status": "passed",
+      "result": {
+        "satisfied": true,
+        "conditions": [
+          {
+            "equals": "idle",
+            "kind": "load_state"
+          },
+          {
+            "equals": "Workbench Fixture Upload",
+            "kind": "title"
+          }
+        ],
+        "event_cursor": 4
+      },
+      "error": null
+    },
+    {
+      "step_id": "targets",
+      "method": "page.observe",
+      "status": "passed",
+      "result": {
+        "page_id": "oracle-page-1",
+        "generation": 2,
+        "since_event": 0,
+        "next_event": 4,
+        "returned_projections": [
+          "targets"
+        ],
+        "provider": "oracle",
+        "data": {
+          "targets": [
+            {
+              "target_id": "target-1",
+              "role": "file",
+              "name": "Attachment",
+              "actions": [
+                "click"
+              ],
+              "generation": 2
+            },
+            {
+              "target_id": "target-2",
+              "role": "link",
+              "name": "Download",
+              "actions": [
+                "click"
+              ],
+              "generation": 2
+            }
+          ]
+        }
+      },
+      "error": null
+    },
+    {
+      "step_id": "upload",
+      "method": "page.act",
+      "status": "passed",
+      "result": {
+        "attempted": true,
+        "accepted": true,
+        "executed": true,
+        "provider": "oracle",
+        "effects": [
+          {
+            "kind": "upload",
+            "path": "/projects/dev/browser-workbench/examples/fixtures/upload.txt",
+            "file_name": "upload.txt",
+            "sha256": "6e7bb0cbe1df5467ada596c6099949280e7164f28b40e248bc0341d55d76b393"
+          }
+        ]
+      },
+      "error": null
+    },
+    {
+      "step_id": "click-download",
+      "method": "page.act",
+      "status": "passed",
+      "result": {
+        "attempted": true,
+        "accepted": true,
+        "executed": true,
+        "provider": "oracle",
+        "effects": [
+          {
+            "kind": "click",
+            "target_id": "target-2"
+          }
+        ]
+      },
+      "error": null
+    },
+    {
+      "step_id": "await-download",
+      "method": "page.await",
+      "status": "passed",
+      "result": {
+        "satisfied": true,
+        "conditions": [
+          {
+            "equals": "download.finished",
+            "kind": "event_kind"
+          }
+        ],
+        "event_cursor": 6
+      },
+      "error": null
+    },
+    {
+      "step_id": "downloads",
+      "method": "page.observe",
+      "status": "passed",
+      "result": {
+        "page_id": "oracle-page-1",
+        "generation": 2,
+        "since_event": 0,
+        "next_event": 6,
+        "returned_projections": [
+          "downloads"
+        ],
+        "provider": "oracle",
+        "data": {
+          "downloads": [
+            {
+              "token": "oracle-download-0001",
+              "download_id": "oracle-download-0001",
+              "url": "http://127.0.0.1:38775/download.bin",
+              "status": "completed",
+              "destination": "/tmp/playwright-artifacts-tNdJhc/80be37e3-8243-4505-a9b9-8776fe366eb3"
+            }
+          ]
+        }
+      },
+      "error": null
+    },
+    {
+      "step_id": "accept",
+      "method": "page.act",
+      "status": "passed",
+      "result": {
+        "attempted": true,
+        "accepted": true,
+        "executed": true,
+        "provider": "oracle",
+        "effects": [
+          {
+            "kind": "download",
+            "download_id": "oracle-download-0001",
+            "status": "quarantined",
+            "artifact_ref": "sha256:834129448807cc51edcd39a868c268510e968995a073d673fcb4ded2512e34e9",
+            "bytes": 31
+          }
+        ]
+      },
+      "error": null
+    }
+  ],
+  "terminal_reason": {
+    "code": "completed"
+  },
+  "retry_count": 0,
+  "oracle": {
+    "playwright": "1.62.1",
+    "engine": "26.5"
+  }
+}

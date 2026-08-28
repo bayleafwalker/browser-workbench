@@ -1,0 +1,30 @@
+{
+  "events": [
+    {
+      "causes": [],
+      "event_id": "event-000001",
+      "event_seq": 1,
+      "generation": null,
+      "kind": "session.created",
+      "monotonic_ms": 0,
+      "page_id": null,
+      "payload": {
+        "lease_epoch": 2,
+        "profile": {
+          "mode": "ephemeral"
+        },
+        "writer_id": "writer-b"
+      },
+      "raw_refs": [],
+      "schema_version": "browser-workbench.event/v1",
+      "session_id": "session-0001",
+      "source": "host"
+    }
+  ],
+  "metadata": {
+    "authorization": "[REDACTED]",
+    "note": "Bearer [REDACTED]"
+  },
+  "raw": [],
+  "session_id": "session-0001"
+}

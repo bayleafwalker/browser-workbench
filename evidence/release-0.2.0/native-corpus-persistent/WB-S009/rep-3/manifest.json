@@ -1,0 +1,45 @@
+{
+  "artifacts": [
+    {
+      "media_type": "application/json",
+      "path": "checkpoints/checkpoint-0001.json",
+      "sha256": "d852511e383940a208674ce599745c8244ce80254e5056139bbf2970af0ce7d0",
+      "size_bytes": 929,
+      "source_refs": [],
+      "surface": "normalized"
+    },
+    {
+      "media_type": "application/json",
+      "path": "result.json",
+      "sha256": "b62cbeee45ea66baef46641383bcf2381f1842a388c8dd1bcad8804e20590cc9",
+      "size_bytes": 862,
+      "source_refs": [],
+      "surface": "contract"
+    },
+    {
+      "media_type": "application/x-ndjson",
+      "path": "traces/normalized.ndjson",
+      "sha256": "efa229c28d447534074898c9b3ed6ed4b8724042120fe4281bbc266164eb4454",
+      "size_bytes": 1745,
+      "source_refs": [],
+      "surface": "normalized"
+    },
+    {
+      "media_type": "application/x-ndjson",
+      "path": "traces/raw.ndjson",
+      "sha256": "30b8067e77e0fff59a2c6e3d638467487f06a4b08e1f94b96fa9359fcb3bc188",
+      "size_bytes": 359,
+      "source_refs": [],
+      "surface": "raw"
+    }
+  ],
+  "complete": true,
+  "created_at": "2026-08-28T10:08:57+00:00",
+  "redaction": {
+    "count": 0,
+    "rule_ids": []
+  },
+  "root_digest": "f4864c2111177c98253e5f4486a19afffc0710f109d2882e7e0f0ad5007b6d3a",
+  "run_id": "WB-S009-r3",
+  "schema_version": "browser-workbench.evidence-manifest/v1"
+}

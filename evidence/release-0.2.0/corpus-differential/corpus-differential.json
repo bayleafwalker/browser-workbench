@@ -1,0 +1,165 @@
+{
+  "baseline": {
+    "backend": {
+      "kind": "mock",
+      "variant": "denominator"
+    },
+    "semantic_digest": "a8d0c478fcdca32bc9167425744d3a9c54969c7d9e497fc6a48f388399b8a74f",
+    "status": "passed"
+  },
+  "comparisons": [
+    {
+      "baseline": {
+        "backend": {
+          "kind": "mock",
+          "variant": "denominator"
+        },
+        "deterministic": true,
+        "failed": 0,
+        "passed": 36,
+        "run_count": 36,
+        "semantic_digest": "a8d0c478fcdca32bc9167425744d3a9c54969c7d9e497fc6a48f388399b8a74f",
+        "status": "passed"
+      },
+      "candidate": {
+        "backend": {
+          "kind": "webkitgtk",
+          "variant": "stable-ephemeral"
+        },
+        "deterministic": true,
+        "failed": 0,
+        "passed": 36,
+        "run_count": 36,
+        "semantic_digest": "a8d0c478fcdca32bc9167425744d3a9c54969c7d9e497fc6a48f388399b8a74f",
+        "status": "passed"
+      },
+      "candidate_source": {
+        "path": "evidence/release-0.2.0/native-corpus/corpus-summary.json",
+        "sha256": "fc62bd2575f43282412a3e5af471d37fa5acba4ffc4ea9b2ef9cccf3c2f4fb33"
+      },
+      "corpus": {
+        "id": "browser-workbench-denominator",
+        "version": "1.0.0"
+      },
+      "declared_semantic_divergences": [
+        {
+          "baseline": null,
+          "candidate": "targets are discovered by injected script because the engine exposes no host-side target API",
+          "scenario_id": "WB-S003",
+          "text": "fresh target executes"
+        },
+        {
+          "baseline": null,
+          "candidate": "no virtual clock on a real engine; asserted as event-driven satisfaction with an advanced event cursor",
+          "scenario_id": "WB-S004",
+          "text": "virtual clock is deterministic"
+        },
+        {
+          "baseline": null,
+          "candidate": "javascript runs through the engine API, so the provider is engine rather than the mock's injected",
+          "scenario_id": "WB-S005",
+          "text": "provider class is recorded"
+        },
+        {
+          "baseline": null,
+          "candidate": "WebKitGTK identifies a resource by URI; correlation is by URI, not request_id",
+          "scenario_id": "WB-S006",
+          "text": "network request and response correlate"
+        },
+        {
+          "baseline": null,
+          "candidate": "a real web process is started and then terminated; a page that never loaded has no process to kill",
+          "scenario_id": "WB-S010",
+          "text": "crash is visible"
+        }
+      ],
+      "differences": [],
+      "different_scenarios": 0,
+      "equivalent_scenarios": 12,
+      "name": "native-corpus",
+      "scenario_count": 12,
+      "schema_version": "browser-workbench.corpus-differential/v1",
+      "semantic_digests_match": true,
+      "status": "equivalent",
+      "what_this_means": "equivalent: every frozen assertion resolved identically on both lanes and both were deterministic. It does not mean the lanes produced identical evidence; the structural section shows where they differ in how."
+    },
+    {
+      "baseline": {
+        "backend": {
+          "kind": "mock",
+          "variant": "denominator"
+        },
+        "deterministic": true,
+        "failed": 0,
+        "passed": 36,
+        "run_count": 36,
+        "semantic_digest": "a8d0c478fcdca32bc9167425744d3a9c54969c7d9e497fc6a48f388399b8a74f",
+        "status": "passed"
+      },
+      "candidate": {
+        "backend": {
+          "kind": "webkitgtk",
+          "variant": "stable-persistent"
+        },
+        "deterministic": true,
+        "failed": 0,
+        "passed": 36,
+        "run_count": 36,
+        "semantic_digest": "a8d0c478fcdca32bc9167425744d3a9c54969c7d9e497fc6a48f388399b8a74f",
+        "status": "passed"
+      },
+      "candidate_source": {
+        "path": "evidence/release-0.2.0/native-corpus-persistent/corpus-summary.json",
+        "sha256": "e74526da4b850931a469d32e780ff30796c3a605ca3c3cefa38a9b075279b7a4"
+      },
+      "corpus": {
+        "id": "browser-workbench-denominator",
+        "version": "1.0.0"
+      },
+      "declared_semantic_divergences": [
+        {
+          "baseline": null,
+          "candidate": "targets are discovered by injected script because the engine exposes no host-side target API",
+          "scenario_id": "WB-S003",
+          "text": "fresh target executes"
+        },
+        {
+          "baseline": null,
+          "candidate": "no virtual clock on a real engine; asserted as event-driven satisfaction with an advanced event cursor",
+          "scenario_id": "WB-S004",
+          "text": "virtual clock is deterministic"
+        },
+        {
+          "baseline": null,
+          "candidate": "javascript runs through the engine API, so the provider is engine rather than the mock's injected",
+          "scenario_id": "WB-S005",
+          "text": "provider class is recorded"
+        },
+        {
+          "baseline": null,
+          "candidate": "WebKitGTK identifies a resource by URI; correlation is by URI, not request_id",
+          "scenario_id": "WB-S006",
+          "text": "network request and response correlate"
+        },
+        {
+          "baseline": null,
+          "candidate": "a real web process is started and then terminated; a page that never loaded has no process to kill",
+          "scenario_id": "WB-S010",
+          "text": "crash is visible"
+        }
+      ],
+      "differences": [],
+      "different_scenarios": 0,
+      "equivalent_scenarios": 12,
+      "name": "native-corpus-persistent",
+      "scenario_count": 12,
+      "schema_version": "browser-workbench.corpus-differential/v1",
+      "semantic_digests_match": true,
+      "status": "equivalent",
+      "what_this_means": "equivalent: every frozen assertion resolved identically on both lanes and both were deterministic. It does not mean the lanes produced identical evidence; the structural section shows where they differ in how."
+    }
+  ],
+  "not_proof": "Equivalence with the mock denominator shows the frozen assertions hold on the native engine. It is not evidence about the engine beyond those assertions.",
+  "schema_version": "browser-workbench.corpus-differential-set/v1",
+  "status": "equivalent"
+}

@@ -1,4 +1,9 @@
 {
+  "assertion_semantics": {},
+  "backend": {
+    "kind": "mock",
+    "variant": "denominator"
+  },
   "corpus_id": "browser-workbench-denominator",
   "corpus_version": "1.0.0",
   "deterministic": true,
@@ -24,14 +29,19 @@
           "text": "second writer is rejected"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "session_tabs_profiles",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:c5c562726536fa394c0412a21086872d1e6a4133e345056036a1be9f6a8ea5c6",
+        "artifact_ref": "sha256:ec30d050b016bfadb34319a9e28bae6e5a611312bd240ef47d23806cff8326b0",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "6ec2a319fc95405e8bead242d2fb043c0abeb4c0734f114fbeac27db469519bc",
-        "sha256": "c5c562726536fa394c0412a21086872d1e6a4133e345056036a1be9f6a8ea5c6",
+        "root_digest": "5ffb5a8ba785115a687fdc87ace5b783962c482830d7dcd684144bd1b18c286a",
+        "sha256": "ec30d050b016bfadb34319a9e28bae6e5a611312bd240ef47d23806cff8326b0",
         "size_bytes": 1073,
         "surface": "contract"
       },
@@ -39,6 +49,10 @@
       "repetition": 1,
       "retry_count": 0,
       "run_id": "WB-S001-r1",
+      "runtime_verification": {
+        "session.create": 1,
+        "session.profile.ephemeral": 1
+      },
       "scenario_id": "WB-S001",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -63,14 +77,19 @@
           "text": "second writer is rejected"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "session_tabs_profiles",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:d50d9c887b243acd00c2d6b9f3d79e1a50af94ebbb88c9f0099ef80a56c4013f",
+        "artifact_ref": "sha256:99198e3cb27b193aae7ba0d339e82049d069bba468b9e728e5645531eca136d9",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "40b7b5ef571cbf2306b17b1f00b55781e893aa4a8d4290d4600e9e47d2643ccf",
-        "sha256": "d50d9c887b243acd00c2d6b9f3d79e1a50af94ebbb88c9f0099ef80a56c4013f",
+        "root_digest": "d53655e3cd4e72b7faaa82f6890c2d32845b126b7a59174824782fcf9109ca55",
+        "sha256": "99198e3cb27b193aae7ba0d339e82049d069bba468b9e728e5645531eca136d9",
         "size_bytes": 1073,
         "surface": "contract"
       },
@@ -78,6 +97,10 @@
       "repetition": 2,
       "retry_count": 0,
       "run_id": "WB-S001-r2",
+      "runtime_verification": {
+        "session.create": 1,
+        "session.profile.ephemeral": 1
+      },
       "scenario_id": "WB-S001",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -102,14 +125,19 @@
           "text": "second writer is rejected"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "session_tabs_profiles",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:13b554ea56f0810aa5f2b90beae0147f06f97ebf26eea1f06ff2c192026c2d03",
+        "artifact_ref": "sha256:d17c7bd8f00570a490a9ee645101b7ce856da9e2e919261f647bed622f5f4193",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "4522892722ddd90bc3475976cdefce38750fddd74e62a4e0f61cda0d263ef9b1",
-        "sha256": "13b554ea56f0810aa5f2b90beae0147f06f97ebf26eea1f06ff2c192026c2d03",
+        "root_digest": "8118f8d0316e313afd240a1ee135bb129433584b013e6961a94c2ac26e9eb730",
+        "sha256": "d17c7bd8f00570a490a9ee645101b7ce856da9e2e919261f647bed622f5f4193",
         "size_bytes": 1073,
         "surface": "contract"
       },
@@ -117,6 +145,10 @@
       "repetition": 3,
       "retry_count": 0,
       "run_id": "WB-S001-r3",
+      "runtime_verification": {
+        "session.create": 1,
+        "session.profile.ephemeral": 1
+      },
       "scenario_id": "WB-S001",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -141,14 +173,19 @@
           "text": "event cursor advances"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "bounded_observation",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:ccefdca7a79f2df55bfc3fc93fea6e8638a376f5c3f019f6ca9ba6fe12b28e07",
+        "artifact_ref": "sha256:fdb453449743afeee2ec4b67de843681ad028feeccb688b8e26c6e8d04836011",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "f526fadb2fbfb9dbf977912faeafd2e02c7e33903d03ab76436acac9211ae918",
-        "sha256": "ccefdca7a79f2df55bfc3fc93fea6e8638a376f5c3f019f6ca9ba6fe12b28e07",
+        "root_digest": "f60d3f17bdaccf40dffc28e97f0220697685fd4d9dfb9b6bf9407c88b0e68c66",
+        "sha256": "fdb453449743afeee2ec4b67de843681ad028feeccb688b8e26c6e8d04836011",
         "size_bytes": 1340,
         "surface": "contract"
       },
@@ -156,6 +193,14 @@
       "repetition": 1,
       "retry_count": 0,
       "run_id": "WB-S002-r1",
+      "runtime_verification": {
+        "page.await": 1,
+        "page.navigate": 1,
+        "page.observe.dom": 1,
+        "page.observe.state": 1,
+        "session.create": 1,
+        "session.profile.ephemeral": 1
+      },
       "scenario_id": "WB-S002",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -180,14 +225,19 @@
           "text": "event cursor advances"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "bounded_observation",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:76167b82c5fdaa8811c65d6aa7bf1a9faa2e0e44a3d3e4472f8780373194b3d9",
+        "artifact_ref": "sha256:101ea525e7cfb16e82d9ab70b2dd44759e772d0b25fc760cc7d69d0524ef6885",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "33b46cb17054f36adac9b9007aba5c13a283639038ae108a7b75ee91a563bf9c",
-        "sha256": "76167b82c5fdaa8811c65d6aa7bf1a9faa2e0e44a3d3e4472f8780373194b3d9",
+        "root_digest": "cfa58e7fcafa27c8f7c2269c1abb6623b96eeae8b8d05e3fffcf6c796a526ddc",
+        "sha256": "101ea525e7cfb16e82d9ab70b2dd44759e772d0b25fc760cc7d69d0524ef6885",
         "size_bytes": 1340,
         "surface": "contract"
       },
@@ -195,6 +245,14 @@
       "repetition": 2,
       "retry_count": 0,
       "run_id": "WB-S002-r2",
+      "runtime_verification": {
+        "page.await": 1,
+        "page.navigate": 1,
+        "page.observe.dom": 1,
+        "page.observe.state": 1,
+        "session.create": 1,
+        "session.profile.ephemeral": 1
+      },
       "scenario_id": "WB-S002",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -219,14 +277,19 @@
           "text": "event cursor advances"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "bounded_observation",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:d1aa3c687897f64b9ab858c743526791bba128d21a9b0616eb03a9c720bf37e3",
+        "artifact_ref": "sha256:a2ba47bd63c73ef86e1f84dd849f2b0182774ec5f9b477dd0b6b2520f7e2c8c3",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "de90a2dfcbb10726fd13f7c64f3e04808b9ca96d566718df87fd34c95874ed4b",
-        "sha256": "d1aa3c687897f64b9ab858c743526791bba128d21a9b0616eb03a9c720bf37e3",
+        "root_digest": "75a4dd58e6b3c66b0e687f0e7506eddea418f9c3af675d40f08062a4b085ffd7",
+        "sha256": "a2ba47bd63c73ef86e1f84dd849f2b0182774ec5f9b477dd0b6b2520f7e2c8c3",
         "size_bytes": 1340,
         "surface": "contract"
       },
@@ -234,6 +297,14 @@
       "repetition": 3,
       "retry_count": 0,
       "run_id": "WB-S002-r3",
+      "runtime_verification": {
+        "page.await": 1,
+        "page.navigate": 1,
+        "page.observe.dom": 1,
+        "page.observe.state": 1,
+        "session.create": 1,
+        "session.profile.ephemeral": 1
+      },
       "scenario_id": "WB-S002",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -258,14 +329,19 @@
           "text": "stale target fails before backend invocation"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "generation_targets_receipts",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:5b13429c996b864c30211934156b806ac1b6563b8c4641d5a9feb07ad0ef38c6",
+        "artifact_ref": "sha256:1f231bb5263c2d010cbb42adbdca817ce5899a0b2adfcd16d808d01bb5e4fdfb",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "753434404a3201b07b6ee2dcc66fb3d3dee57c10640c153853617b7e6bff8ab9",
-        "sha256": "5b13429c996b864c30211934156b806ac1b6563b8c4641d5a9feb07ad0ef38c6",
+        "root_digest": "b508d423994d70664b0924755243da1256cc58b5e338971b30b00b00ccbadae6",
+        "sha256": "1f231bb5263c2d010cbb42adbdca817ce5899a0b2adfcd16d808d01bb5e4fdfb",
         "size_bytes": 1077,
         "surface": "contract"
       },
@@ -273,6 +349,12 @@
       "repetition": 1,
       "retry_count": 0,
       "run_id": "WB-S003-r1",
+      "runtime_verification": {
+        "page.act.pointer": 1,
+        "page.navigate": 1,
+        "session.create": 1,
+        "session.profile.ephemeral": 1
+      },
       "scenario_id": "WB-S003",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -297,14 +379,19 @@
           "text": "stale target fails before backend invocation"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "generation_targets_receipts",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:72b81145667090e617e4850490c2382c07eb3ef07aa8c11835a1da1f6f3d3b5c",
+        "artifact_ref": "sha256:6f2aa3e5c4656956876a351d815e67611f6ad6cf38c3634b72dcf3f5d297a928",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "b3e3de6d6739a18b72b0efeb73ab51f7c865d9cb083d32a2643e17b43cbcbf67",
-        "sha256": "72b81145667090e617e4850490c2382c07eb3ef07aa8c11835a1da1f6f3d3b5c",
+        "root_digest": "0495459657a1dcce1daecb7f99ef1c8ebe61eb93afa763410131298922cbabe4",
+        "sha256": "6f2aa3e5c4656956876a351d815e67611f6ad6cf38c3634b72dcf3f5d297a928",
         "size_bytes": 1077,
         "surface": "contract"
       },
@@ -312,6 +399,12 @@
       "repetition": 2,
       "retry_count": 0,
       "run_id": "WB-S003-r2",
+      "runtime_verification": {
+        "page.act.pointer": 1,
+        "page.navigate": 1,
+        "session.create": 1,
+        "session.profile.ephemeral": 1
+      },
       "scenario_id": "WB-S003",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -336,14 +429,19 @@
           "text": "stale target fails before backend invocation"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "generation_targets_receipts",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:e2510828b42330fa73488843f6cf942198b0503a4fc551e9036f1a33443ff491",
+        "artifact_ref": "sha256:46ac08f1a4dd9aed3afe658289f2d487931e88afb3a80f1ce0f1edc123e6eb4a",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "30cbd10da37ae88e74e841b6d33cf278dab4b1eaf2fe8e0b3f64f1b48c31d5e5",
-        "sha256": "e2510828b42330fa73488843f6cf942198b0503a4fc551e9036f1a33443ff491",
+        "root_digest": "967bdf69fcff87cf19133816430031df9ee7282de8dc7bb68ddce1874da93a17",
+        "sha256": "46ac08f1a4dd9aed3afe658289f2d487931e88afb3a80f1ce0f1edc123e6eb4a",
         "size_bytes": 1077,
         "surface": "contract"
       },
@@ -351,6 +449,12 @@
       "repetition": 3,
       "retry_count": 0,
       "run_id": "WB-S003-r3",
+      "runtime_verification": {
+        "page.act.pointer": 1,
+        "page.navigate": 1,
+        "session.create": 1,
+        "session.profile.ephemeral": 1
+      },
       "scenario_id": "WB-S003",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -371,14 +475,19 @@
           "text": "deadline reports unsatisfied predicates"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "event_driven_await",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:9c228ddaa6cd5c367f7b87e6d7ca509f2d9adcf7a30075395458f67a75731d69",
+        "artifact_ref": "sha256:3ab47d4abc056028d47d0dfb5936fafe465270ef406f3024c16cb2eb3dbae263",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "d46035f7428e1578ce9c2a5cafd927b02fe4c932662ca6d688816e1f71260fb6",
-        "sha256": "9c228ddaa6cd5c367f7b87e6d7ca509f2d9adcf7a30075395458f67a75731d69",
+        "root_digest": "fdbc9c006c1a1d1150c70368a0d85cbe5185ce5d1086fc803c5e89e8b3838735",
+        "sha256": "3ab47d4abc056028d47d0dfb5936fafe465270ef406f3024c16cb2eb3dbae263",
         "size_bytes": 1077,
         "surface": "contract"
       },
@@ -386,6 +495,12 @@
       "repetition": 1,
       "retry_count": 0,
       "run_id": "WB-S004-r1",
+      "runtime_verification": {
+        "page.await": 1,
+        "page.navigate": 1,
+        "session.create": 1,
+        "session.profile.ephemeral": 1
+      },
       "scenario_id": "WB-S004",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -406,14 +521,19 @@
           "text": "deadline reports unsatisfied predicates"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "event_driven_await",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:ed207bad2d5c6793ac77f9cb20bb18c3b71109583b6a481062f68e30b5cf4b34",
+        "artifact_ref": "sha256:f73325d3f25745f617cc7c9124fca638875f32a5cebe35e73733ea950fbd1707",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "e54131b46d70e33d5e5c9bf98c440bb265b20aa615710ce0aba00737d23a22da",
-        "sha256": "ed207bad2d5c6793ac77f9cb20bb18c3b71109583b6a481062f68e30b5cf4b34",
+        "root_digest": "127ac2a0dc944c06d96a05f28ad33166d8cd446eb9aeb07f90c328ef0cdd1117",
+        "sha256": "f73325d3f25745f617cc7c9124fca638875f32a5cebe35e73733ea950fbd1707",
         "size_bytes": 1077,
         "surface": "contract"
       },
@@ -421,6 +541,12 @@
       "repetition": 2,
       "retry_count": 0,
       "run_id": "WB-S004-r2",
+      "runtime_verification": {
+        "page.await": 1,
+        "page.navigate": 1,
+        "session.create": 1,
+        "session.profile.ephemeral": 1
+      },
       "scenario_id": "WB-S004",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -441,14 +567,19 @@
           "text": "deadline reports unsatisfied predicates"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "event_driven_await",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:3459ed9a2c84e2653c86fec1075688dbfb2b37eefb0c0800f2e7acb3fd64daae",
+        "artifact_ref": "sha256:7e31cb56beda75c48160c8585411c9b80e61c1f044d68c4c69133a0a637f3ad6",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "761fd868928c0b53e64de25981416604b3d3a33a0ad3e63a9f24a29e10cb916a",
-        "sha256": "3459ed9a2c84e2653c86fec1075688dbfb2b37eefb0c0800f2e7acb3fd64daae",
+        "root_digest": "787c0f7bb00233bbd1312c23d81210c5330c7b71ad825606227069b3dfaf55eb",
+        "sha256": "7e31cb56beda75c48160c8585411c9b80e61c1f044d68c4c69133a0a637f3ad6",
         "size_bytes": 1077,
         "surface": "contract"
       },
@@ -456,6 +587,12 @@
       "repetition": 3,
       "retry_count": 0,
       "run_id": "WB-S004-r3",
+      "runtime_verification": {
+        "page.await": 1,
+        "page.navigate": 1,
+        "session.create": 1,
+        "session.profile.ephemeral": 1
+      },
       "scenario_id": "WB-S004",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -480,14 +617,19 @@
           "text": "state digest changes only when declared"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "snapshot_screenshot_javascript",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:a5eda61b40f8025d1a1d58af4639749c1b69d3ca13468f540257bdbf0b6f9b1d",
+        "artifact_ref": "sha256:78200f05627cf5ed1aaaacff1d07919154c5091e3d7aed27e1a606679fbae41d",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "83145192beaca69520b8aa78f34b94722ce574f79905d47d9e513813256ca607",
-        "sha256": "a5eda61b40f8025d1a1d58af4639749c1b69d3ca13468f540257bdbf0b6f9b1d",
+        "root_digest": "a7147a7bbc69a60033c4951a68f82d3d98da751f281f4224a5e61f1697d22cd1",
+        "sha256": "78200f05627cf5ed1aaaacff1d07919154c5091e3d7aed27e1a606679fbae41d",
         "size_bytes": 1321,
         "surface": "contract"
       },
@@ -495,6 +637,12 @@
       "repetition": 1,
       "retry_count": 0,
       "run_id": "WB-S005-r1",
+      "runtime_verification": {
+        "page.act.javascript": 2,
+        "page.observe.screenshot": 1,
+        "session.create": 1,
+        "session.profile.ephemeral": 1
+      },
       "scenario_id": "WB-S005",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -519,14 +667,19 @@
           "text": "state digest changes only when declared"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "snapshot_screenshot_javascript",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:ef9ef32ab360d3867ed636f6ce477d73be4e7d35435b685eb343cbf2b812a824",
+        "artifact_ref": "sha256:4b58bae90f380868c2e98eef1b9c7a59b7860bc62dba2fb2cdb20447a2d6a26c",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "b6ea6c1038220603cce269536f6c4085bbcd3c2ef6c5698ac9062d845a6030d6",
-        "sha256": "ef9ef32ab360d3867ed636f6ce477d73be4e7d35435b685eb343cbf2b812a824",
+        "root_digest": "98458d63f296c3d065f824b5f11317ab63c351a9b1a699230ade51f033cdc052",
+        "sha256": "4b58bae90f380868c2e98eef1b9c7a59b7860bc62dba2fb2cdb20447a2d6a26c",
         "size_bytes": 1321,
         "surface": "contract"
       },
@@ -534,6 +687,12 @@
       "repetition": 2,
       "retry_count": 0,
       "run_id": "WB-S005-r2",
+      "runtime_verification": {
+        "page.act.javascript": 2,
+        "page.observe.screenshot": 1,
+        "session.create": 1,
+        "session.profile.ephemeral": 1
+      },
       "scenario_id": "WB-S005",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -558,14 +717,19 @@
           "text": "state digest changes only when declared"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "snapshot_screenshot_javascript",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:3af1ecc0fb93469546f7e007c2bebeb6a5c63fccb4f027bb631751ec423d56f1",
+        "artifact_ref": "sha256:44d25d45a9181c90a60b4059c0140568b9b51bd7c64bd3e724062e2d16b8a677",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "f8d17532331865f481f408dda7b863af4fdf3e2db87b36bf48cb52942e5709ff",
-        "sha256": "3af1ecc0fb93469546f7e007c2bebeb6a5c63fccb4f027bb631751ec423d56f1",
+        "root_digest": "893e39f31eb3eb98404a42d88df0023b47ebd30ffe1aea946aa7e46707468336",
+        "sha256": "44d25d45a9181c90a60b4059c0140568b9b51bd7c64bd3e724062e2d16b8a677",
         "size_bytes": 1321,
         "surface": "contract"
       },
@@ -573,6 +737,12 @@
       "repetition": 3,
       "retry_count": 0,
       "run_id": "WB-S005-r3",
+      "runtime_verification": {
+        "page.act.javascript": 2,
+        "page.observe.screenshot": 1,
+        "session.create": 1,
+        "session.profile.ephemeral": 1
+      },
       "scenario_id": "WB-S005",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -593,14 +763,19 @@
           "text": "raw and normalized records are linked"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "console_network_evidence",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:602bc58c535b707f06dfd5efbaed729b6caf53ed9d4637fbecccbf9a0d9e7c45",
+        "artifact_ref": "sha256:a3dc9e2f67c4b9e315f5c0f977e2e465d41eda1b1009f5f48dcd7c5f7b7aac41",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "9fe42142dcfa9154f5360f04aaa80f926cf70c597f46eb11f03a7debf339bec6",
-        "sha256": "602bc58c535b707f06dfd5efbaed729b6caf53ed9d4637fbecccbf9a0d9e7c45",
+        "root_digest": "dabf881bde8f9d2d8d5f1be6b83cfc2ee464d3b621f518ea01788a4ef6e11a54",
+        "sha256": "a3dc9e2f67c4b9e315f5c0f977e2e465d41eda1b1009f5f48dcd7c5f7b7aac41",
         "size_bytes": 1077,
         "surface": "contract"
       },
@@ -608,6 +783,14 @@
       "repetition": 1,
       "retry_count": 0,
       "run_id": "WB-S006-r1",
+      "runtime_verification": {
+        "page.await": 1,
+        "page.navigate": 1,
+        "page.observe.console": 1,
+        "page.observe.network": 1,
+        "session.create": 1,
+        "session.profile.ephemeral": 1
+      },
       "scenario_id": "WB-S006",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -628,14 +811,19 @@
           "text": "raw and normalized records are linked"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "console_network_evidence",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:62a03822fde9b4b2d73582f74bcf82969a617631e3932fd3648ef41fbaef0fd6",
+        "artifact_ref": "sha256:7d10c284c1a0420857454296b81bc5d6f078486c1ac0f2bc1c7eafb583be1fa3",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "89aa92e3d257e3b9603234dcccf16b05782d6c763d85426dc8bf4b972fae24b8",
-        "sha256": "62a03822fde9b4b2d73582f74bcf82969a617631e3932fd3648ef41fbaef0fd6",
+        "root_digest": "7724589af4ba891db3c728c90c57b46e20e252ff7634bb2825f12574ac20242a",
+        "sha256": "7d10c284c1a0420857454296b81bc5d6f078486c1ac0f2bc1c7eafb583be1fa3",
         "size_bytes": 1077,
         "surface": "contract"
       },
@@ -643,6 +831,14 @@
       "repetition": 2,
       "retry_count": 0,
       "run_id": "WB-S006-r2",
+      "runtime_verification": {
+        "page.await": 1,
+        "page.navigate": 1,
+        "page.observe.console": 1,
+        "page.observe.network": 1,
+        "session.create": 1,
+        "session.profile.ephemeral": 1
+      },
       "scenario_id": "WB-S006",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -663,14 +859,19 @@
           "text": "raw and normalized records are linked"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "console_network_evidence",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:4c449c72fff4f2522c383a760768856ee0d0b4cd7f90aae8772a91196dbdafc3",
+        "artifact_ref": "sha256:09cc27b4c1e180299c0c46ee69d705500c7369e782c3e863c5b4a452789b88c4",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "2e33d9c01569250089ae4c64d3b2a6ef852748c693ca04028c0746b7ba1e007d",
-        "sha256": "4c449c72fff4f2522c383a760768856ee0d0b4cd7f90aae8772a91196dbdafc3",
+        "root_digest": "0d702ae86fd7e6ead2e1d36b5c5831e4add7846c2192753535e1326e845ee9b8",
+        "sha256": "09cc27b4c1e180299c0c46ee69d705500c7369e782c3e863c5b4a452789b88c4",
         "size_bytes": 1077,
         "surface": "contract"
       },
@@ -678,6 +879,14 @@
       "repetition": 3,
       "retry_count": 0,
       "run_id": "WB-S006-r3",
+      "runtime_verification": {
+        "page.await": 1,
+        "page.navigate": 1,
+        "page.observe.console": 1,
+        "page.observe.network": 1,
+        "session.create": 1,
+        "session.profile.ephemeral": 1
+      },
       "scenario_id": "WB-S006",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -702,14 +911,19 @@
           "text": "receipt records applied decision"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "dialog_permission",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:c7a09d6edfcb8bb7b1bc3256a4a85749633aa1b5936533dc11cd106d144819a4",
+        "artifact_ref": "sha256:a4d569a1a1887853c2ab63cece0670213522587455485c5aef3273412a4ecb15",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "e018018d9532dc2cc1bf3dc67a247b09dfad89dca9221cce2c0f71e5db2da79f",
-        "sha256": "c7a09d6edfcb8bb7b1bc3256a4a85749633aa1b5936533dc11cd106d144819a4",
+        "root_digest": "360650a955e26631a9c4e0f4d6c30399cafffc0612f95e0a02ef76ab16880480",
+        "sha256": "a4d569a1a1887853c2ab63cece0670213522587455485c5aef3273412a4ecb15",
         "size_bytes": 1077,
         "surface": "contract"
       },
@@ -717,6 +931,14 @@
       "repetition": 1,
       "retry_count": 0,
       "run_id": "WB-S007-r1",
+      "runtime_verification": {
+        "page.await": 1,
+        "page.dialog": 1,
+        "page.navigate": 1,
+        "page.permission": 1,
+        "session.create": 1,
+        "session.profile.ephemeral": 1
+      },
       "scenario_id": "WB-S007",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -741,14 +963,19 @@
           "text": "receipt records applied decision"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "dialog_permission",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:31b53c55410b01f0ca3739d53bff600faab3f539983d42de74b583e882f559b6",
+        "artifact_ref": "sha256:9ea927c51005b48ed1f2339671c22fb4e55e8481fc57e43113144cac28415090",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "fb78e916598db487aead1c24fca704b47cd7f6d5855f3b0c1c3df993f3108703",
-        "sha256": "31b53c55410b01f0ca3739d53bff600faab3f539983d42de74b583e882f559b6",
+        "root_digest": "65104b9ccd57599e6d15ddec6a2b3f286a42a426da16447bcf8619c76113af53",
+        "sha256": "9ea927c51005b48ed1f2339671c22fb4e55e8481fc57e43113144cac28415090",
         "size_bytes": 1077,
         "surface": "contract"
       },
@@ -756,6 +983,14 @@
       "repetition": 2,
       "retry_count": 0,
       "run_id": "WB-S007-r2",
+      "runtime_verification": {
+        "page.await": 1,
+        "page.dialog": 1,
+        "page.navigate": 1,
+        "page.permission": 1,
+        "session.create": 1,
+        "session.profile.ephemeral": 1
+      },
       "scenario_id": "WB-S007",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -780,14 +1015,19 @@
           "text": "receipt records applied decision"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "dialog_permission",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:aa71495c92bf164d97bc691db40e88044fa60ce70682679aa9a91c3502f0f732",
+        "artifact_ref": "sha256:2724e21c34cfb24280d850751f87978e64b17480cb18860e994ef87fa81c1dae",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "c5c84a898ffbb41d0672bc68e471a9d36101f0e125cc241b9832a2cfeb250902",
-        "sha256": "aa71495c92bf164d97bc691db40e88044fa60ce70682679aa9a91c3502f0f732",
+        "root_digest": "8490da5e5244824803481a8c2cc47c29543b479b72a6202c14f337f924cba09c",
+        "sha256": "2724e21c34cfb24280d850751f87978e64b17480cb18860e994ef87fa81c1dae",
         "size_bytes": 1077,
         "surface": "contract"
       },
@@ -795,6 +1035,14 @@
       "repetition": 3,
       "retry_count": 0,
       "run_id": "WB-S007-r3",
+      "runtime_verification": {
+        "page.await": 1,
+        "page.dialog": 1,
+        "page.navigate": 1,
+        "page.permission": 1,
+        "session.create": 1,
+        "session.profile.ephemeral": 1
+      },
       "scenario_id": "WB-S007",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -819,14 +1067,19 @@
           "text": "undeclared path is rejected"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "upload_download",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:cfde2980df9092b0cd2c7becde2ba409223b574c01f4fcd68e4876bfe8f8564c",
+        "artifact_ref": "sha256:03ae0bd357f561f1fa1d4015b37f5050bbccd2929cf1c1f02136e79e0c3b30bc",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "76f29d6e474cbc01d0034c62a0c88f37a92317cb010307d7a0665ccd23118259",
-        "sha256": "cfde2980df9092b0cd2c7becde2ba409223b574c01f4fcd68e4876bfe8f8564c",
+        "root_digest": "92312eade3e93ea8678c27a9d15f3d33c0d3527cf7e557003cca21c3bec171d3",
+        "sha256": "03ae0bd357f561f1fa1d4015b37f5050bbccd2929cf1c1f02136e79e0c3b30bc",
         "size_bytes": 1582,
         "surface": "contract"
       },
@@ -834,6 +1087,12 @@
       "repetition": 1,
       "retry_count": 0,
       "run_id": "WB-S008-r1",
+      "runtime_verification": {
+        "page.download": 1,
+        "page.upload": 1,
+        "session.create": 1,
+        "session.profile.ephemeral": 1
+      },
       "scenario_id": "WB-S008",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -858,14 +1117,19 @@
           "text": "undeclared path is rejected"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "upload_download",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:fcc0a048a5e672bb1cfbb8ec8ac715261cd42fc3b3227c0f8ebd33a8ca59230b",
+        "artifact_ref": "sha256:eaca29aaa3e5c47333e2a74fea360c1097702d7ad1f5d38108542eaf081fdf01",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "0c89dd0ac06102210496f280ef206a4cd21d956a2c1cceedd795089f0b060ae0",
-        "sha256": "fcc0a048a5e672bb1cfbb8ec8ac715261cd42fc3b3227c0f8ebd33a8ca59230b",
+        "root_digest": "bc6f720fdb328301dd5a12c22ad664b96ae390e68a638a434e4dd8701fffe939",
+        "sha256": "eaca29aaa3e5c47333e2a74fea360c1097702d7ad1f5d38108542eaf081fdf01",
         "size_bytes": 1582,
         "surface": "contract"
       },
@@ -873,6 +1137,12 @@
       "repetition": 2,
       "retry_count": 0,
       "run_id": "WB-S008-r2",
+      "runtime_verification": {
+        "page.download": 1,
+        "page.upload": 1,
+        "session.create": 1,
+        "session.profile.ephemeral": 1
+      },
       "scenario_id": "WB-S008",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -897,14 +1167,19 @@
           "text": "undeclared path is rejected"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "upload_download",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:c109c9e70e48c8dcfaca1f2340796bf9470a277643ccc79b39f287348e5aa8b4",
+        "artifact_ref": "sha256:5f0ab211b4c2a4d5b9b3a66d19a8f2dfcb5f37697d1a917021a7eb7777d8f35c",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "44b1d3253033fd444f6b694c38f8bb171fd31cca8f30b788e5980fca3436bed5",
-        "sha256": "c109c9e70e48c8dcfaca1f2340796bf9470a277643ccc79b39f287348e5aa8b4",
+        "root_digest": "3f005629f92ccb6f5e17dd3adbd9308b85c2ded187da26fa7d4f2e86c4b32e6d",
+        "sha256": "5f0ab211b4c2a4d5b9b3a66d19a8f2dfcb5f37697d1a917021a7eb7777d8f35c",
         "size_bytes": 1582,
         "surface": "contract"
       },
@@ -912,6 +1187,12 @@
       "repetition": 3,
       "retry_count": 0,
       "run_id": "WB-S008-r3",
+      "runtime_verification": {
+        "page.download": 1,
+        "page.upload": 1,
+        "session.create": 1,
+        "session.profile.ephemeral": 1
+      },
       "scenario_id": "WB-S008",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -936,14 +1217,19 @@
           "text": "handover does not grant approval"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "checkpoint_handover",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:b5d39a003fa789efd7a47035663ddf6c1d97cdf5aab85864a502c9962c130721",
+        "artifact_ref": "sha256:3d4f6ffedbecb2194681671313646b3da0e5919c212920acc7e0ce31748ffa20",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "69fdbefcc3561ffa8200f0be045a769cd1204f8cf70627abbcd1867973661de2",
-        "sha256": "b5d39a003fa789efd7a47035663ddf6c1d97cdf5aab85864a502c9962c130721",
+        "root_digest": "d3ec852387d8891287fff8dacbbdb69bf5579391c711f789fb4ff0996b329009",
+        "sha256": "3d4f6ffedbecb2194681671313646b3da0e5919c212920acc7e0ce31748ffa20",
         "size_bytes": 1340,
         "surface": "contract"
       },
@@ -951,6 +1237,11 @@
       "repetition": 1,
       "retry_count": 0,
       "run_id": "WB-S009-r1",
+      "runtime_verification": {
+        "session.checkpoint": 1,
+        "session.create": 1,
+        "session.profile.ephemeral": 1
+      },
       "scenario_id": "WB-S009",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -975,14 +1266,19 @@
           "text": "handover does not grant approval"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "checkpoint_handover",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:5244fd0dd125ffd1e78e48ae3df3c61fc511509b28b47c973ad80e04ecfb17d2",
+        "artifact_ref": "sha256:c6b19b6970256a911e9ca07edf3d5fc0c3ed1dc12643d893eefbed7dc75b44d3",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "589b0515cfe25c3d82406df8d2edf38ee976fd0c8c4c6b31917042025f4ae2cc",
-        "sha256": "5244fd0dd125ffd1e78e48ae3df3c61fc511509b28b47c973ad80e04ecfb17d2",
+        "root_digest": "58d37e0585d2ce3769a0dd12e331a9041b4266c103c709d4e7ce783420ea4b69",
+        "sha256": "c6b19b6970256a911e9ca07edf3d5fc0c3ed1dc12643d893eefbed7dc75b44d3",
         "size_bytes": 1340,
         "surface": "contract"
       },
@@ -990,6 +1286,11 @@
       "repetition": 2,
       "retry_count": 0,
       "run_id": "WB-S009-r2",
+      "runtime_verification": {
+        "session.checkpoint": 1,
+        "session.create": 1,
+        "session.profile.ephemeral": 1
+      },
       "scenario_id": "WB-S009",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -1014,14 +1315,19 @@
           "text": "handover does not grant approval"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "checkpoint_handover",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:49f399733aeb7091b3413e8320fe867b805899e12c477dfb4d769c4f7c8e614b",
+        "artifact_ref": "sha256:a6d9088ff67e82675ce703f65b1fc87125328e141e090a9a7c8e853aef5a5a18",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "bbbbb4e473ec4295936b2784fabc85dd2ce963e07d7dd43d31feb5bf0fec9f96",
-        "sha256": "49f399733aeb7091b3413e8320fe867b805899e12c477dfb4d769c4f7c8e614b",
+        "root_digest": "67919c11b1c6058c658c582a9313cce2cea83f617ec8563bddbf4695fbcc6a6b",
+        "sha256": "a6d9088ff67e82675ce703f65b1fc87125328e141e090a9a7c8e853aef5a5a18",
         "size_bytes": 1340,
         "surface": "contract"
       },
@@ -1029,6 +1335,11 @@
       "repetition": 3,
       "retry_count": 0,
       "run_id": "WB-S009-r3",
+      "runtime_verification": {
+        "session.checkpoint": 1,
+        "session.create": 1,
+        "session.profile.ephemeral": 1
+      },
       "scenario_id": "WB-S009",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -1053,14 +1364,19 @@
           "text": "sensitive fields are redacted before export"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "crash_recovery_redacted_export",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:4cac0d35c1794a313e3f90b3861ea12ca4ff8b46917e3bcafe277c035671f1c6",
+        "artifact_ref": "sha256:992827af917bbae049f911cc1dddd171baacadea33ec9a9c373eeeee9465f912",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "9da661ee78ee9f9447ec6b305b4a28e2d68ae677a5e3ddd13408dfd111de45b8",
-        "sha256": "4cac0d35c1794a313e3f90b3861ea12ca4ff8b46917e3bcafe277c035671f1c6",
+        "root_digest": "b95317f6f8a91c67b4e07f28c20ea5442c5b67c007c8c10168a170a406881c1c",
+        "sha256": "992827af917bbae049f911cc1dddd171baacadea33ec9a9c373eeeee9465f912",
         "size_bytes": 1600,
         "surface": "contract"
       },
@@ -1068,6 +1384,13 @@
       "repetition": 1,
       "retry_count": 0,
       "run_id": "WB-S010-r1",
+      "runtime_verification": {
+        "page.observe.state": 1,
+        "page.termination": 1,
+        "session.checkpoint": 1,
+        "session.create": 1,
+        "session.profile.ephemeral": 1
+      },
       "scenario_id": "WB-S010",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -1092,14 +1415,19 @@
           "text": "sensitive fields are redacted before export"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "crash_recovery_redacted_export",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:99d3a189ae34f021ab2c7a2bd7fbad29796f04aa461bf87697b3b1b41b3331bd",
+        "artifact_ref": "sha256:265ff6bc22d36064bb8d38dccd20bd89d6373a35f2714b54cbfb7825b6be97d6",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "921373a1387bbfbf1bab084610a2b72b0d95f4424f9c8b5fecf92b0af579119d",
-        "sha256": "99d3a189ae34f021ab2c7a2bd7fbad29796f04aa461bf87697b3b1b41b3331bd",
+        "root_digest": "cccee167d91bdafbe1ef6c11667230ad0c8f2205f84d2845e0b733d7c68ba070",
+        "sha256": "265ff6bc22d36064bb8d38dccd20bd89d6373a35f2714b54cbfb7825b6be97d6",
         "size_bytes": 1600,
         "surface": "contract"
       },
@@ -1107,6 +1435,13 @@
       "repetition": 2,
       "retry_count": 0,
       "run_id": "WB-S010-r2",
+      "runtime_verification": {
+        "page.observe.state": 1,
+        "page.termination": 1,
+        "session.checkpoint": 1,
+        "session.create": 1,
+        "session.profile.ephemeral": 1
+      },
       "scenario_id": "WB-S010",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -1131,14 +1466,19 @@
           "text": "sensitive fields are redacted before export"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "crash_recovery_redacted_export",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:ba5166d750113dd618c5111b9f5df597e19755f3370d578aa6d4b24bd1a666cd",
+        "artifact_ref": "sha256:dd08020123a4c90099fad019eec3c9ab06a7d449027584dc89b8abf5409a7148",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "aab6466637cbbdd352e45266d83940df234493b70a5559f6c1522c4e3769bb6a",
-        "sha256": "ba5166d750113dd618c5111b9f5df597e19755f3370d578aa6d4b24bd1a666cd",
+        "root_digest": "2ee007208858c49b5e109444685053995b394dbbaeae2f857c9d633eeef1c38d",
+        "sha256": "dd08020123a4c90099fad019eec3c9ab06a7d449027584dc89b8abf5409a7148",
         "size_bytes": 1600,
         "surface": "contract"
       },
@@ -1146,6 +1486,13 @@
       "repetition": 3,
       "retry_count": 0,
       "run_id": "WB-S010-r3",
+      "runtime_verification": {
+        "page.observe.state": 1,
+        "page.termination": 1,
+        "session.checkpoint": 1,
+        "session.create": 1,
+        "session.profile.ephemeral": 1
+      },
       "scenario_id": "WB-S010",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -1170,14 +1517,19 @@
           "text": "semantic mismatch fails"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "differential_compare",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:d70ff749b1ccfece0e87b60bea5a96c865181b35457fcbfa665b1661ab394d1c",
+        "artifact_ref": "sha256:016f350ffc71d6ab359c1f8ab0c28d454b6f72ca416315231d2565a63cab74dc",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "3d5722c69035cff6cd87b6b03705cd5253dcea10bb18faa5e1b16eb45da82751",
-        "sha256": "d70ff749b1ccfece0e87b60bea5a96c865181b35457fcbfa665b1661ab394d1c",
+        "root_digest": "a85fce858e5e919b18e6ddc506da3fb1b4a9371ddc406384493fc537ee4f3c8f",
+        "sha256": "016f350ffc71d6ab359c1f8ab0c28d454b6f72ca416315231d2565a63cab74dc",
         "size_bytes": 1071,
         "surface": "contract"
       },
@@ -1185,6 +1537,7 @@
       "repetition": 1,
       "retry_count": 0,
       "run_id": "WB-S011-r1",
+      "runtime_verification": {},
       "scenario_id": "WB-S011",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -1209,14 +1562,19 @@
           "text": "semantic mismatch fails"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "differential_compare",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:134c66b83057bab6d327edf66e6d9b0d80f6e0c90d06656dc454ab547d9d4d35",
+        "artifact_ref": "sha256:f1eca192752146323ba1b8c8b2596c0375d26563f250459546211b62ee476872",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "afdaea78717ebfaa9b177a86cc3d2cd7fae3cad6083a2adc692dd0009f0d4f64",
-        "sha256": "134c66b83057bab6d327edf66e6d9b0d80f6e0c90d06656dc454ab547d9d4d35",
+        "root_digest": "44aec987de894734c51ee5e80f39874238496c456061199505e83b289cc23061",
+        "sha256": "f1eca192752146323ba1b8c8b2596c0375d26563f250459546211b62ee476872",
         "size_bytes": 1071,
         "surface": "contract"
       },
@@ -1224,6 +1582,7 @@
       "repetition": 2,
       "retry_count": 0,
       "run_id": "WB-S011-r2",
+      "runtime_verification": {},
       "scenario_id": "WB-S011",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -1248,14 +1607,19 @@
           "text": "semantic mismatch fails"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "differential_compare",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:4ec7fd667cd2c6f91bec418f66ee92543967c57a0a29d5449744f9ced6d5740e",
+        "artifact_ref": "sha256:6675ee3b1bc3766afb8c2dc557b030848dcb1b5bc3b7479678aedb4fd50d0425",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "9e96b1f8c3c7d52e470709768f508f49c23beb57ed72ccb2e92c716d36b12833",
-        "sha256": "4ec7fd667cd2c6f91bec418f66ee92543967c57a0a29d5449744f9ced6d5740e",
+        "root_digest": "c75bc8da30939d93ee6e27f0df0196a608a42ae2bcdc35e9d0278a4582ce44fe",
+        "sha256": "6675ee3b1bc3766afb8c2dc557b030848dcb1b5bc3b7479678aedb4fd50d0425",
         "size_bytes": 1071,
         "surface": "contract"
       },
@@ -1263,6 +1627,7 @@
       "repetition": 3,
       "retry_count": 0,
       "run_id": "WB-S011-r3",
+      "runtime_verification": {},
       "scenario_id": "WB-S011",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -1287,14 +1652,19 @@
           "text": "baseline remains unchanged"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "candidate_mutation_block",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:93344dfe306c5d05344ca76fc680192673edc9cfe03a0d2640f9883d28d7b4cd",
+        "artifact_ref": "sha256:aa90124076121d7b7e0f9599c0937222262d57cf677948eee0dec5b54892dcf3",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "2332a78cf70b0c3fe4a7ff3200d3b4c8a3ab423cb3ede5e3f2115ec43662af11",
-        "sha256": "93344dfe306c5d05344ca76fc680192673edc9cfe03a0d2640f9883d28d7b4cd",
+        "root_digest": "163060b0c0f7dedf46caa35f1831574553789667c5ad7c8a13fac411bfd21895",
+        "sha256": "aa90124076121d7b7e0f9599c0937222262d57cf677948eee0dec5b54892dcf3",
         "size_bytes": 1071,
         "surface": "contract"
       },
@@ -1302,6 +1672,7 @@
       "repetition": 1,
       "retry_count": 0,
       "run_id": "WB-S012-r1",
+      "runtime_verification": {},
       "scenario_id": "WB-S012",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -1326,14 +1697,19 @@
           "text": "baseline remains unchanged"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "candidate_mutation_block",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:1683a42690c5db9768f124341e258205d6317a43d2df38015797bf83bd8b0cd6",
+        "artifact_ref": "sha256:6ba472560889a672ddba9676b88aa278ad02bcda56790fd06d9167a0454777f7",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "6e99b206ccb6f8ab8658dd6cc1de7c4c9e14012d826c73bb87f6390566536488",
-        "sha256": "1683a42690c5db9768f124341e258205d6317a43d2df38015797bf83bd8b0cd6",
+        "root_digest": "3981f4c52816ccf11eb578cb682c2b3874e934494c060c95ee28c1c245bb7bfd",
+        "sha256": "6ba472560889a672ddba9676b88aa278ad02bcda56790fd06d9167a0454777f7",
         "size_bytes": 1071,
         "surface": "contract"
       },
@@ -1341,6 +1717,7 @@
       "repetition": 2,
       "retry_count": 0,
       "run_id": "WB-S012-r2",
+      "runtime_verification": {},
       "scenario_id": "WB-S012",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -1365,14 +1742,19 @@
           "text": "baseline remains unchanged"
         }
       ],
+      "backend": {
+        "kind": "mock",
+        "variant": "denominator"
+      },
+      "deviations": [],
       "driver": "candidate_mutation_block",
       "error": null,
       "manifest": {
-        "artifact_ref": "sha256:318ce67129ecd697184b0e68b7ad58e29736b803c7f3b16f0bb4f5b28334fa13",
+        "artifact_ref": "sha256:0164d2b8a5f773cca830c85f465df01cef6ffe377e107b1a54fb8613b43231a3",
         "media_type": "application/json",
         "path": "manifest.json",
-        "root_digest": "f13a8fb3ef78b479bcb86f073a66e14d22ff9e305821beb43a8dbba4e866cdbc",
-        "sha256": "318ce67129ecd697184b0e68b7ad58e29736b803c7f3b16f0bb4f5b28334fa13",
+        "root_digest": "ab90a36e63a20a828e8813c929c83c0e87d752830e6b301fabe34dfa2617ad90",
+        "sha256": "0164d2b8a5f773cca830c85f465df01cef6ffe377e107b1a54fb8613b43231a3",
         "size_bytes": 1071,
         "surface": "contract"
       },
@@ -1380,6 +1762,7 @@
       "repetition": 3,
       "retry_count": 0,
       "run_id": "WB-S012-r3",
+      "runtime_verification": {},
       "scenario_id": "WB-S012",
       "schema_version": "browser-workbench.corpus-result/v1",
       "status": "passed",
@@ -1388,6 +1771,25 @@
   ],
   "repetitions": 3,
   "run_count": 36,
+  "runtime_verification": {
+    "page.act.javascript": 6,
+    "page.act.pointer": 3,
+    "page.await": 12,
+    "page.dialog": 3,
+    "page.download": 3,
+    "page.navigate": 15,
+    "page.observe.console": 3,
+    "page.observe.dom": 3,
+    "page.observe.network": 3,
+    "page.observe.screenshot": 3,
+    "page.observe.state": 6,
+    "page.permission": 3,
+    "page.termination": 3,
+    "page.upload": 3,
+    "session.checkpoint": 6,
+    "session.create": 30,
+    "session.profile.ephemeral": 30
+  },
   "scenario_count": 12,
   "scenario_semantic_signatures": {
     "WB-S001": [

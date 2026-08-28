@@ -3,43 +3,35 @@
     {
       "media_type": "application/json",
       "path": "result.json",
-      "sha256": "641cde687b6e36ee79baa596e37dd589e3f9c792ffe2bbcb016c963def9304ad",
-      "size_bytes": 737,
+      "sha256": "d9c28ac022e0c55a5daaa8a33670d1c5bf2523aa5bc77e207e08cc9da32f1ea5",
+      "size_bytes": 767,
       "source_refs": [],
       "surface": "contract"
     },
     {
-      "media_type": "text/plain",
-      "path": "traces/adapter-stderr.log",
-      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4",
-      "size_bytes": 140,
-      "source_refs": [],
-      "surface": "raw"
-    },
-    {
       "media_type": "application/x-ndjson",
       "path": "traces/normalized.ndjson",
-      "sha256": "3faffa770aa4d0686ae0db6917371d1a7c22fdc25d53ee1d09745ba0ba75cf9f",
-      "size_bytes": 801,
+      "sha256": "826c425f15af7d074a1f2b7d396a43d32f3ba31a26961833b1bd08ca8b6141c6",
+      "size_bytes": 805,
       "source_refs": [],
       "surface": "normalized"
     },
     {
       "media_type": "application/x-ndjson",
       "path": "traces/raw.ndjson",
-      "sha256": "ba5d91e16bb516dd7375e4628daaf9f70efa1f496a24ae72c6a913fdb8dfc340",
-      "size_bytes": 355,
+      "sha256": "30b8067e77e0fff59a2c6e3d638467487f06a4b08e1f94b96fa9359fcb3bc188",
+      "size_bytes": 359,
       "source_refs": [],
       "surface": "raw"
     }
   ],
   "complete": true,
-  "created_at": "2026-08-24T19:09:17+00:00",
+  "created_at": "2026-08-28T10:02:26+00:00",
   "redaction": {
     "count": 0,
     "rule_ids": []
   },
-  "root_digest": "3eb35c1e89e12bc3d03f3c71c6ff2e8ee9947a6418d9ab32194670e9539942aa",
+  "root_digest": "4d1f466ea15f100ab30acc4201a8a7c6b260fdd6fc469c8be52dc2daaef1836e",
   "run_id": "WB-S011-r1",
   "schema_version": "browser-workbench.evidence-manifest/v1"
 }

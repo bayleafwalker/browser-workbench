@@ -1,0 +1,31 @@
+{
+  "backend": {
+    "kind": "webkitgtk",
+    "variant": "stable-persistent"
+  },
+  "corpus_id": "browser-workbench-denominator",
+  "corpus_version": "1.0.0",
+  "executions": {
+    "page.act.javascript": 6,
+    "page.act.pointer": 6,
+    "page.await": 30,
+    "page.dialog": 3,
+    "page.download": 3,
+    "page.navigate": 27,
+    "page.observe.console": 3,
+    "page.observe.dom": 3,
+    "page.observe.network": 3,
+    "page.observe.screenshot": 3,
+    "page.observe.state": 6,
+    "page.permission": 3,
+    "page.termination": 3,
+    "page.upload": 3,
+    "session.checkpoint": 6,
+    "session.create": 30,
+    "session.profile.ephemeral": 3,
+    "session.profile.persistent": 27
+  },
+  "schema_version": "browser-workbench.runtime-verification/v1",
+  "semantic_digest": "a8d0c478fcdca32bc9167425744d3a9c54969c7d9e497fc6a48f388399b8a74f",
+  "status": "passed"
+}

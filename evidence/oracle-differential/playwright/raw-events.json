@@ -5,8 +5,9 @@
     "event_seq": 1,
     "kind": "network.request",
     "source": "oracle",
+    "generation": 1,
     "payload": {
-      "url": "http://127.0.0.1:40461/console.html",
+      "url": "http://127.0.0.1:43367/console.html",
       "method": "GET"
     }
   },
@@ -16,8 +17,9 @@
     "event_seq": 2,
     "kind": "network.response",
     "source": "oracle",
+    "generation": 1,
     "payload": {
-      "url": "http://127.0.0.1:40461/console.html",
+      "url": "http://127.0.0.1:43367/console.html",
       "status": 200
     }
   },
@@ -25,22 +27,23 @@
     "schema_version": "browser-workbench.event/v1",
     "event_id": "oracle-000003",
     "event_seq": 3,
-    "kind": "network.request",
+    "kind": "navigation.committed",
     "source": "oracle",
+    "generation": 2,
     "payload": {
-      "url": "http://127.0.0.1:40461/pixel.txt",
-      "method": "GET"
+      "url": "http://127.0.0.1:43367/console.html"
     }
   },
   {
     "schema_version": "browser-workbench.event/v1",
     "event_id": "oracle-000004",
     "event_seq": 4,
-    "kind": "console.message",
+    "kind": "network.request",
     "source": "oracle",
+    "generation": 2,
     "payload": {
-      "level": "log",
-      "text": "fixture console record"
+      "url": "http://127.0.0.1:43367/pixel.txt",
+      "method": "GET"
     }
   },
   {
@@ -49,6 +52,19 @@
     "event_seq": 5,
     "kind": "console.message",
     "source": "oracle",
+    "generation": 2,
+    "payload": {
+      "level": "log",
+      "text": "fixture console record"
+    }
+  },
+  {
+    "schema_version": "browser-workbench.event/v1",
+    "event_id": "oracle-000006",
+    "event_seq": 6,
+    "kind": "console.message",
+    "source": "oracle",
+    "generation": 2,
     "payload": {
       "level": "warning",
       "text": "fixture console warning"
@@ -56,13 +72,25 @@
   },
   {
     "schema_version": "browser-workbench.event/v1",
-    "event_id": "oracle-000006",
-    "event_seq": 6,
+    "event_id": "oracle-000007",
+    "event_seq": 7,
     "kind": "network.response",
     "source": "oracle",
+    "generation": 2,
     "payload": {
-      "url": "http://127.0.0.1:40461/pixel.txt",
+      "url": "http://127.0.0.1:43367/pixel.txt",
       "status": 200
+    }
+  },
+  {
+    "schema_version": "browser-workbench.event/v1",
+    "event_id": "oracle-000008",
+    "event_seq": 8,
+    "kind": "navigation.finished",
+    "source": "oracle",
+    "generation": 2,
+    "payload": {
+      "url": "http://127.0.0.1:43367/console.html"
     }
   }
 ]

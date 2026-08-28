@@ -20,3 +20,10 @@ PYTHONPATH=src python -m workbench.cli compare \
 ```
 
 `step_order: by_step_id` permits independent steps to arrive in a different order while retaining step identity. Wall-clock and raw callback cosmetics are outside the semantic projection. Status, step outcome/error/receipt verification, gates, terminal code, and capability declarations remain compared unless an explicit versioned tolerance says otherwise.
+
+## Corpus differentials
+
+Two further reports compare whole corpora rather than single runs:
+
+- `scripts/corpus_differential.py` compares the mock denominator with a native corpus assertion by assertion. A matching semantic digest says every assertion resolved the same way; this report additionally lists the assertions the native lane reaches by declared, different means (`assertion_semantics`) and the structural differences — errors, deviations, runtime-verified capabilities — a digest never covers. Non-determinism on either lane is a difference even when outcomes agree.
+- `scripts/oracle_corpus_differential.py` poses the corpus to WebKitGTK and the Playwright oracle per `spec/ORACLE_CORPUS_V1.json`, and classifies every scenario as exactly one of `equivalent`, `different`, `blocked`, or `inapplicable`. The denominator is always twelve.

@@ -1,0 +1,102 @@
+{
+  "artifact_count": 8,
+  "backend": {
+    "kind": "webkitgtk",
+    "variant": "stable-ephemeral"
+  },
+  "corpus_claim": null,
+  "deviations": [
+    {
+      "declared": 1024,
+      "kind": "viewport-width-divergence",
+      "observed": 1110
+    }
+  ],
+  "evidence_root": "/projects/dev/browser-workbench/evidence/release-0.2.0/native-slice2/native-webkitgtk-slice2-stable-ephemeral",
+  "gates": [
+    {
+      "details": {
+        "run_status": "passed"
+      },
+      "id": "contract",
+      "kind": "contract",
+      "required": true,
+      "status": "passed"
+    },
+    {
+      "details": {
+        "run_status": "passed"
+      },
+      "id": "capabilities",
+      "kind": "capability",
+      "required": true,
+      "status": "passed"
+    },
+    {
+      "details": {
+        "run_status": "passed"
+      },
+      "id": "execution",
+      "kind": "execution",
+      "required": true,
+      "status": "passed"
+    },
+    {
+      "details": {
+        "run_status": "passed"
+      },
+      "id": "evidence",
+      "kind": "evidence",
+      "required": true,
+      "status": "passed"
+    },
+    {
+      "details": {
+        "run_status": "passed"
+      },
+      "id": "native",
+      "kind": "native",
+      "required": true,
+      "status": "passed"
+    }
+  ],
+  "runtime_conformance_claim": false,
+  "schema_version": "browser-workbench.native-e2e/v1",
+  "slice": 1,
+  "status": "passed",
+  "steps": [
+    {
+      "method": "session.create",
+      "status": "passed",
+      "step_id": "create"
+    },
+    {
+      "method": "page.navigate",
+      "status": "passed",
+      "step_id": "navigate"
+    },
+    {
+      "method": "page.await",
+      "status": "passed",
+      "step_id": "await"
+    },
+    {
+      "method": "page.act",
+      "status": "passed",
+      "step_id": "javascript"
+    },
+    {
+      "method": "page.observe",
+      "status": "passed",
+      "step_id": "observe"
+    },
+    {
+      "method": "session.export",
+      "status": "passed",
+      "step_id": "export"
+    }
+  ],
+  "terminal_reason": {
+    "code": "completed"
+  }
+}

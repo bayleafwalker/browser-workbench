@@ -1,0 +1,72 @@
+[
+  {
+    "schema_version": "browser-workbench.event/v1",
+    "event_id": "oracle-000001",
+    "event_seq": 1,
+    "kind": "network.request",
+    "source": "oracle",
+    "generation": 1,
+    "payload": {
+      "url": "http://127.0.0.1:38775/prompts.html",
+      "method": "GET"
+    }
+  },
+  {
+    "schema_version": "browser-workbench.event/v1",
+    "event_id": "oracle-000002",
+    "event_seq": 2,
+    "kind": "network.response",
+    "source": "oracle",
+    "generation": 1,
+    "payload": {
+      "url": "http://127.0.0.1:38775/prompts.html",
+      "status": 200
+    }
+  },
+  {
+    "schema_version": "browser-workbench.event/v1",
+    "event_id": "oracle-000003",
+    "event_seq": 3,
+    "kind": "navigation.committed",
+    "source": "oracle",
+    "generation": 2,
+    "payload": {
+      "url": "http://127.0.0.1:38775/prompts.html"
+    }
+  },
+  {
+    "schema_version": "browser-workbench.event/v1",
+    "event_id": "oracle-000004",
+    "event_seq": 4,
+    "kind": "navigation.finished",
+    "source": "oracle",
+    "generation": 2,
+    "payload": {
+      "url": "http://127.0.0.1:38775/prompts.html"
+    }
+  },
+  {
+    "schema_version": "browser-workbench.event/v1",
+    "event_id": "oracle-000005",
+    "event_seq": 5,
+    "kind": "dialog.opened",
+    "source": "oracle",
+    "generation": 2,
+    "payload": {
+      "token": "oracle-dialog-0001",
+      "dialog_type": "alert"
+    }
+  },
+  {
+    "schema_version": "browser-workbench.event/v1",
+    "event_id": "oracle-000006",
+    "event_seq": 6,
+    "kind": "dialog.resolved",
+    "source": "oracle",
+    "generation": 2,
+    "payload": {
+      "token": "oracle-dialog-0001",
+      "decision": "dismiss"
+    }
+  }
+]

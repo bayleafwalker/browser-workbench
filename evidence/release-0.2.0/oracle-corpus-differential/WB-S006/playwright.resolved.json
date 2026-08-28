@@ -1,0 +1,128 @@
+{
+  "allowed_providers": [
+    "engine",
+    "host",
+    "injected"
+  ],
+  "backend": {
+    "kind": "playwright",
+    "variant": "webkit"
+  },
+  "evidence": {
+    "max_artifact_bytes": 1048576,
+    "normalized": true,
+    "raw": true,
+    "redaction_profile": "default"
+  },
+  "gates": [],
+  "policy": {
+    "mutation": "forbid",
+    "profile": "ephemeral",
+    "redaction_profile": "default",
+    "single_writer": true
+  },
+  "required_capabilities": [
+    "session.create",
+    "page.navigate",
+    "page.await",
+    "page.observe.state"
+  ],
+  "run_id": "oracle-corpus-WB-S006-playwright",
+  "schema_version": "browser-workbench.run/v1",
+  "workflow": [
+    {
+      "deadline_ms": 60000,
+      "method": "session.create",
+      "params": {
+        "client": {
+          "id": "oracle-client",
+          "kind": "agent"
+        },
+        "profile": {
+          "mode": "ephemeral",
+          "name": "oracle-corpus"
+        },
+        "viewport": {
+          "height": 768,
+          "width": 1024
+        }
+      },
+      "step_id": "create"
+    },
+    {
+      "deadline_ms": 60000,
+      "method": "page.navigate",
+      "params": {
+        "client_id": "oracle-client",
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        },
+        "url": "http://127.0.0.1:38775/console.html"
+      },
+      "step_id": "navigate"
+    },
+    {
+      "deadline_ms": 60000,
+      "method": "page.await",
+      "params": {
+        "conditions": [
+          {
+            "equals": "idle",
+            "kind": "load_state"
+          },
+          {
+            "equals": "Workbench Fixture Console",
+            "kind": "title"
+          }
+        ],
+        "deadline_ms": 30000,
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        }
+      },
+      "step_id": "await"
+    },
+    {
+      "deadline_ms": 60000,
+      "expect": {
+        "path": "data.console",
+        "truthy": true
+      },
+      "method": "page.observe",
+      "params": {
+        "max_bytes": 262144,
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        },
+        "projection": [
+          "console"
+        ],
+        "since_event": 0
+      },
+      "step_id": "console"
+    },
+    {
+      "deadline_ms": 60000,
+      "expect": {
+        "path": "data.network",
+        "truthy": true
+      },
+      "method": "page.observe",
+      "params": {
+        "max_bytes": 262144,
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        },
+        "projection": [
+          "network"
+        ],
+        "since_event": 0
+      },
+      "step_id": "network"
+    }
+  ]
+}

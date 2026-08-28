@@ -1,0 +1,2 @@
+Browser Workbench declared upload fixture.
+This file contains no credentials or user data.

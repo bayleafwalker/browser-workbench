@@ -1,0 +1,69 @@
+{
+  "artifacts": [
+    {
+      "media_type": "application/json",
+      "path": "contract/run-spec.json",
+      "sha256": "a46f99e3ef7cdfbd1e56470852420bac2726dda71c9f2a05505b5264ebc1880f",
+      "size_bytes": 3029,
+      "source_refs": [],
+      "surface": "contract"
+    },
+    {
+      "media_type": "application/json",
+      "path": "diagnostics/adapter-identity.json",
+      "sha256": "4802e025e1a991fe95ee96a82e2bc5c134616af2bbb0bb30afbd37a0e9c8ed45",
+      "size_bytes": 226,
+      "source_refs": [],
+      "surface": "diagnostic"
+    },
+    {
+      "media_type": "application/json",
+      "path": "diagnostics/capabilities-runtime.json",
+      "sha256": "07f3dfb086ac529933b3db11a715b3e2a0c47f943ed73fcaa62a84a6d8d924a4",
+      "size_bytes": 6813,
+      "source_refs": [],
+      "surface": "diagnostic"
+    },
+    {
+      "media_type": "application/json",
+      "path": "diagnostics/capabilities.json",
+      "sha256": "b60f7aa48a901808fa28c0a63653e1b6c3acfe1bed1d1c3c4b4056ab0a4fe0cc",
+      "size_bytes": 6403,
+      "source_refs": [],
+      "surface": "diagnostic"
+    },
+    {
+      "media_type": "application/json",
+      "path": "result.json",
+      "sha256": "21a37681d0c7ba747dbf14a8cec3c3b2ff3ab39f3a1984e31dbbea1590c39669",
+      "size_bytes": 16220,
+      "source_refs": [],
+      "surface": "contract"
+    },
+    {
+      "media_type": "application/x-ndjson",
+      "path": "traces/normalized.ndjson",
+      "sha256": "4b2d49b36ff602b4c83238cf8e4330498670b925b0737878ee3afaacf2ed45a9",
+      "size_bytes": 5037,
+      "source_refs": [],
+      "surface": "normalized"
+    },
+    {
+      "media_type": "application/x-ndjson",
+      "path": "traces/raw.ndjson",
+      "sha256": "10e5164e2253e2e4a49cd484dbee19c66f8cf2fb9c2f283443592194a99c5f8a",
+      "size_bytes": 2901,
+      "source_refs": [],
+      "surface": "raw"
+    }
+  ],
+  "complete": true,
+  "created_at": "2026-08-28T10:09:03+00:00",
+  "redaction": {
+    "count": 0,
+    "rule_ids": []
+  },
+  "root_digest": "e25f2f537765a330b3bb9efbd308e8061449b873d6910bc616b04d890d6e536c",
+  "run_id": "parity-webkitgtk",
+  "schema_version": "browser-workbench.evidence-manifest/v1"
+}

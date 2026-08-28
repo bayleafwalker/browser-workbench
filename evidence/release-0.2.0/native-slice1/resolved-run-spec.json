@@ -1,0 +1,159 @@
+{
+  "allowed_providers": [
+    "engine",
+    "host"
+  ],
+  "backend": {
+    "kind": "webkitgtk",
+    "variant": "stable-ephemeral"
+  },
+  "evidence": {
+    "max_artifact_bytes": 1048576,
+    "normalized": true,
+    "raw": true,
+    "redaction_profile": "default"
+  },
+  "gates": [
+    {
+      "id": "contract",
+      "kind": "contract",
+      "required": true
+    },
+    {
+      "id": "capabilities",
+      "kind": "capability",
+      "required": true
+    },
+    {
+      "id": "execution",
+      "kind": "execution",
+      "required": true
+    },
+    {
+      "id": "evidence",
+      "kind": "evidence",
+      "required": true
+    },
+    {
+      "id": "native",
+      "kind": "native",
+      "required": true
+    }
+  ],
+  "policy": {
+    "mutation": "forbid",
+    "profile": "ephemeral",
+    "redaction_profile": "default",
+    "single_writer": true
+  },
+  "required_capabilities": [
+    "session.create",
+    "page.navigate",
+    "page.observe.state",
+    "page.await",
+    "session.export"
+  ],
+  "run_id": "native-webkitgtk-slice1-stable-ephemeral",
+  "schema_version": "browser-workbench.run/v1",
+  "workflow": [
+    {
+      "deadline_ms": 60000,
+      "method": "session.create",
+      "params": {
+        "client": {
+          "id": "slice1-client",
+          "kind": "agent"
+        },
+        "profile": {
+          "mode": "ephemeral",
+          "name": "slice1"
+        },
+        "viewport": {
+          "height": 768,
+          "width": 1024
+        }
+      },
+      "step_id": "create"
+    },
+    {
+      "deadline_ms": 60000,
+      "expect": {
+        "equals": true,
+        "path": "accepted"
+      },
+      "method": "page.navigate",
+      "params": {
+        "client_id": "slice1-client",
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        },
+        "url": "http://127.0.0.1:44923/index.html"
+      },
+      "step_id": "navigate"
+    },
+    {
+      "deadline_ms": 60000,
+      "expect": {
+        "equals": true,
+        "path": "satisfied"
+      },
+      "method": "page.await",
+      "params": {
+        "conditions": [
+          {
+            "equals": "idle",
+            "kind": "load_state"
+          },
+          {
+            "equals": "http://127.0.0.1:44923/index.html",
+            "kind": "url"
+          },
+          {
+            "equals": "Workbench Fixture Index",
+            "kind": "title"
+          }
+        ],
+        "deadline_ms": 30000,
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        }
+      },
+      "step_id": "await"
+    },
+    {
+      "deadline_ms": 60000,
+      "expect": {
+        "equals": "Workbench Fixture Index",
+        "path": "data.state.title"
+      },
+      "method": "page.observe",
+      "params": {
+        "max_bytes": 65536,
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        },
+        "projection": [
+          "state",
+          "raw-events"
+        ],
+        "since_event": 0
+      },
+      "step_id": "observe"
+    },
+    {
+      "deadline_ms": 60000,
+      "method": "session.export",
+      "params": {
+        "include_raw": true,
+        "max_bytes": 1048576,
+        "metadata": {
+          "purpose": "native-slice-1"
+        }
+      },
+      "step_id": "export"
+    }
+  ]
+}

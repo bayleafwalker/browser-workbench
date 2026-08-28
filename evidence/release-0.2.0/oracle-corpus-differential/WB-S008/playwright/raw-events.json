@@ -1,0 +1,72 @@
+[
+  {
+    "schema_version": "browser-workbench.event/v1",
+    "event_id": "oracle-000001",
+    "event_seq": 1,
+    "kind": "network.request",
+    "source": "oracle",
+    "generation": 1,
+    "payload": {
+      "url": "http://127.0.0.1:38775/upload.html",
+      "method": "GET"
+    }
+  },
+  {
+    "schema_version": "browser-workbench.event/v1",
+    "event_id": "oracle-000002",
+    "event_seq": 2,
+    "kind": "network.response",
+    "source": "oracle",
+    "generation": 1,
+    "payload": {
+      "url": "http://127.0.0.1:38775/upload.html",
+      "status": 200
+    }
+  },
+  {
+    "schema_version": "browser-workbench.event/v1",
+    "event_id": "oracle-000003",
+    "event_seq": 3,
+    "kind": "navigation.committed",
+    "source": "oracle",
+    "generation": 2,
+    "payload": {
+      "url": "http://127.0.0.1:38775/upload.html"
+    }
+  },
+  {
+    "schema_version": "browser-workbench.event/v1",
+    "event_id": "oracle-000004",
+    "event_seq": 4,
+    "kind": "navigation.finished",
+    "source": "oracle",
+    "generation": 2,
+    "payload": {
+      "url": "http://127.0.0.1:38775/upload.html"
+    }
+  },
+  {
+    "schema_version": "browser-workbench.event/v1",
+    "event_id": "oracle-000005",
+    "event_seq": 5,
+    "kind": "download.started",
+    "source": "oracle",
+    "generation": 2,
+    "payload": {
+      "token": "oracle-download-0001",
+      "url": "http://127.0.0.1:38775/download.bin"
+    }
+  },
+  {
+    "schema_version": "browser-workbench.event/v1",
+    "event_id": "oracle-000006",
+    "event_seq": 6,
+    "kind": "download.finished",
+    "source": "oracle",
+    "generation": 2,
+    "payload": {
+      "token": "oracle-download-0001",
+      "destination": "/tmp/playwright-artifacts-tNdJhc/80be37e3-8243-4505-a9b9-8776fe366eb3"
+    }
+  }
+]

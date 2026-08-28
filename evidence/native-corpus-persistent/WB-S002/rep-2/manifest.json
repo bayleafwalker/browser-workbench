@@ -3,51 +3,43 @@
     {
       "media_type": "application/json",
       "path": "observations/observation-0001.json",
-      "sha256": "b31e9a777458e5a34f8d93968dca946fb38ef97577b564ec14903cb2dcc745f4",
-      "size_bytes": 19722,
+      "sha256": "419446330dbcee3845f4773dceec612b06447cd29381bd85fa60d6bfaa6b1987",
+      "size_bytes": 19726,
       "source_refs": [],
       "surface": "raw"
     },
     {
       "media_type": "application/json",
       "path": "result.json",
-      "sha256": "db93e8c5a2f6c5f0ddc345247bba3e51bc8857688557d6e1fe91e7d78e1cb252",
-      "size_bytes": 715,
+      "sha256": "4eb65b0bfed16754553ceee24ea0f9be5e11858f230d3780036ee8c91bf2a7c5",
+      "size_bytes": 910,
       "source_refs": [],
       "surface": "contract"
     },
     {
-      "media_type": "text/plain",
-      "path": "traces/adapter-stderr.log",
-      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4",
-      "size_bytes": 140,
-      "source_refs": [],
-      "surface": "raw"
-    },
-    {
       "media_type": "application/x-ndjson",
       "path": "traces/normalized.ndjson",
-      "sha256": "c2e27fadfd4e737dbb60762fb7bc552894b11c7f88e560269d78d59d5e3fa2f4",
-      "size_bytes": 3613,
+      "sha256": "0493d243cc4f141f17813fd5a81b1870ce61f8d0d05dc5075c11acfcc1ef883f",
+      "size_bytes": 3621,
       "source_refs": [],
       "surface": "normalized"
     },
     {
       "media_type": "application/x-ndjson",
       "path": "traces/raw.ndjson",
-      "sha256": "ba032e647e111df86627fb7301562be9a6ca435d46a3e88b412c7f5162a97194",
-      "size_bytes": 1810,
+      "sha256": "bcb8582ec516f8ca0871f52bad8b3f33343421f6c3f083e3c2d81db36538013a",
+      "size_bytes": 1814,
       "source_refs": [],
       "surface": "raw"
     }
   ],
   "complete": true,
-  "created_at": "2026-08-24T19:08:45+00:00",
+  "created_at": "2026-08-28T10:01:57+00:00",
   "redaction": {
     "count": 0,
     "rule_ids": []
   },
-  "root_digest": "84d8c3cae1e35b7a3dc2befa4d05a3b58054a66bf0c9d10549d22a0802cd999e",
+  "root_digest": "f267dacbc2dfff7432c1dd20b4cb6535d68f75eb1dd6d796dc920d11322c15e6",
   "run_id": "WB-S002-r2",
   "schema_version": "browser-workbench.evidence-manifest/v1"
 }

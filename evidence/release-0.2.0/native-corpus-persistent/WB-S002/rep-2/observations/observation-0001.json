@@ -1,0 +1,144 @@
+{
+  "data": {
+    "dom": {
+      "html": "<html><head><meta charset=\"utf-8\">\n<title>Workbench Fixture Large</title>\n</head><body><main>\n  <h1>Workbench Fixture Large</h1>\n  <p id=\"marker\">deterministic-fixture-large</p>\n  <p class=\"filler\" id=\"row-1\">deterministic filler row 1 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-2\">deterministic filler row 2 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-3\">deterministic filler row 3 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-4\">deterministic filler row 4 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-5\">deterministic filler row 5 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-6\">deterministic filler row 6 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-7\">deterministic filler row 7 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-8\">deterministic filler row 8 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-9\">deterministic filler row 9 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-10\">deterministic filler row 10 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-11\">deterministic filler row 11 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-12\">deterministic filler row 12 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-13\">deterministic filler row 13 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-14\">deterministic filler row 14 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-15\">deterministic filler row 15 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-16\">deterministic filler row 16 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-17\">deterministic filler row 17 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-18\">deterministic filler row 18 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-19\">deterministic filler row 19 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-20\">deterministic filler row 20 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-21\">deterministic filler row 21 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-22\">deterministic filler row 22 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-23\">deterministic filler row 23 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-24\">deterministic filler row 24 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-25\">deterministic filler row 25 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-26\">deterministic filler row 26 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-27\">deterministic filler row 27 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-28\">deterministic filler row 28 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-29\">deterministic filler row 29 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-30\">deterministic filler row 30 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-31\">deterministic filler row 31 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-32\">deterministic filler row 32 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-33\">deterministic filler row 33 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-34\">deterministic filler row 34 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-35\">deterministic filler row 35 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-36\">deterministic filler row 36 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-37\">deterministic filler row 37 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-38\">deterministic filler row 38 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-39\">deterministic filler row 39 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-40\">deterministic filler row 40 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-41\">deterministic filler row 41 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-42\">deterministic filler row 42 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-43\">deterministic filler row 43 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-44\">deterministic filler row 44 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-45\">deterministic filler row 45 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-46\">deterministic filler row 46 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-47\">deterministic filler row 47 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-48\">deterministic filler row 48 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-49\">deterministic filler row 49 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-50\">deterministic filler row 50 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-51\">deterministic filler row 51 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-52\">deterministic filler row 52 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-53\">deterministic filler row 53 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-54\">deterministic filler row 54 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-55\">deterministic filler row 55 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-56\">deterministic filler row 56 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-57\">deterministic filler row 57 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-58\">deterministic filler row 58 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-59\">deterministic filler row 59 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-60\">deterministic filler row 60 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-61\">deterministic filler row 61 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-62\">deterministic filler row 62 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-63\">deterministic filler row 63 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-64\">deterministic filler row 64 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-65\">deterministic filler row 65 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-66\">deterministic filler row 66 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-67\">deterministic filler row 67 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-68\">deterministic filler row 68 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-69\">deterministic filler row 69 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-70\">deterministic filler row 70 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-71\">deterministic filler row 71 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-72\">deterministic filler row 72 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-73\">deterministic filler row 73 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-74\">deterministic filler row 74 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-75\">deterministic filler row 75 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-76\">deterministic filler row 76 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-77\">deterministic filler row 77 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-78\">deterministic filler row 78 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-79\">deterministic filler row 79 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-80\">deterministic filler row 80 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-81\">deterministic filler row 81 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-82\">deterministic filler row 82 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-83\">deterministic filler row 83 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-84\">deterministic filler row 84 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-85\">deterministic filler row 85 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-86\">deterministic filler row 86 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-87\">deterministic filler row 87 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-88\">deterministic filler row 88 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-89\">deterministic filler row 89 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-90\">deterministic filler row 90 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-91\">deterministic filler row 91 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-92\">deterministic filler row 92 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-93\">deterministic filler row 93 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-94\">deterministic filler row 94 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-95\">deterministic filler row 95 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-96\">deterministic filler row 96 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-97\">deterministic filler row 97 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-98\">deterministic filler row 98 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-99\">deterministic filler row 99 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-100\">deterministic filler row 100 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-101\">deterministic filler row 101 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-102\">deterministic filler row 102 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-103\">deterministic filler row 103 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-104\">deterministic filler row 104 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-105\">deterministic filler row 105 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-106\">deterministic filler row 106 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-107\">deterministic filler row 107 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-108\">deterministic filler row 108 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-109\">deterministic filler row 109 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-110\">deterministic filler row 110 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-111\">deterministic filler row 111 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-112\">deterministic filler row 112 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-113\">deterministic filler row 113 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-114\">deterministic filler row 114 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-115\">deterministic filler row 115 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-116\">deterministic filler row 116 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-117\">deterministic filler row 117 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-118\">deterministic filler row 118 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-119\">deterministic filler row 119 with enough text to make a bounded observation genuinely lossy</p>\n  <p class=\"filler\" id=\"row-120\">deterministic filler row 120 with enough text to make a bounded observation genuinely lossy</p>\n</main>\n</body></html>",
+      "sha256": "ac2e2f4d94c905c5b729085e7dab4a761e563639659cdf6f13b3225b1d80c5f1"
+    },
+    "raw-events": [
+      {
+        "causes": [],
+        "kind": "adapter.ready",
+        "monotonic_ms": 0,
+        "ordinal": 1,
+        "page_id": null,
+        "payload": {
+          "adapter": "browser-workbench-webkitgtk-worker",
+          "adapter_version": "0.2.0",
+          "display_backend": "GdkWaylandDisplay",
+          "engine": "2.52.6",
+          "engine_api": "webkitgtk-6.0",
+          "gtk": "4.22.4",
+          "transport_version": 1
+        },
+        "raw_id": "raw-000001",
+        "source": "webkitgtk"
+      },
+      {
+        "causes": [],
+        "kind": "load-changed",
+        "monotonic_ms": 392,
+        "ordinal": 2,
+        "page_id": "page-1",
+        "payload": {
+          "is_loading": true,
+          "phase": "started",
+          "title": null,
+          "url": "http://127.0.0.1:37185/large.html"
+        },
+        "raw_id": "raw-000002",
+        "source": "webkitgtk"
+      },
+      {
+        "causes": [],
+        "kind": "resource-load-started",
+        "monotonic_ms": 392,
+        "ordinal": 3,
+        "page_id": "page-1",
+        "payload": {
+          "url": "http://127.0.0.1:37185/large.html"
+        },
+        "raw_id": "raw-000003",
+        "source": "webkitgtk"
+      },
+      {
+        "causes": [],
+        "kind": "resource-response",
+        "monotonic_ms": 393,
+        "ordinal": 4,
+        "page_id": "page-1",
+        "payload": {
+          "mime_type": "text/html",
+          "status": 200,
+          "url": "http://127.0.0.1:37185/large.html"
+        },
+        "raw_id": "raw-000004",
+        "source": "webkitgtk"
+      },
+      {
+        "causes": [],
+        "kind": "load-changed",
+        "monotonic_ms": 393,
+        "ordinal": 5,
+        "page_id": "page-1",
+        "payload": {
+          "is_loading": true,
+          "phase": "committed",
+          "title": null,
+          "url": "http://127.0.0.1:37185/large.html"
+        },
+        "raw_id": "raw-000005",
+        "source": "webkitgtk"
+      },
+      {
+        "causes": [],
+        "kind": "load-changed",
+        "monotonic_ms": 399,
+        "ordinal": 6,
+        "page_id": "page-1",
+        "payload": {
+          "is_loading": false,
+          "phase": "finished",
+          "title": null,
+          "url": "http://127.0.0.1:37185/large.html"
+        },
+        "raw_id": "raw-000006",
+        "source": "webkitgtk"
+      },
+      {
+        "causes": [],
+        "kind": "title-changed",
+        "monotonic_ms": 399,
+        "ordinal": 7,
+        "page_id": "page-1",
+        "payload": {
+          "title": "Workbench Fixture Large",
+          "url": "http://127.0.0.1:37185/large.html"
+        },
+        "raw_id": "raw-000007",
+        "source": "webkitgtk"
+      }
+    ],
+    "state": {
+      "engine": {
+        "can_go_back": false,
+        "can_go_forward": false,
+        "estimated_load_progress": 1.0,
+        "is_loading": false,
+        "page_id": "page-1",
+        "title": "Workbench Fixture Large",
+        "url": "http://127.0.0.1:37185/large.html"
+      },
+      "generation": 2,
+      "last_navigation_outcome": "success",
+      "lifecycle": "open",
+      "load_state": "idle",
+      "page_id": "page-1",
+      "title": "Workbench Fixture Large",
+      "url": "http://127.0.0.1:37185/large.html"
+    }
+  },
+  "generation": 2,
+  "lossy": false,
+  "max_bytes": 1024,
+  "next_event": 8,
+  "omitted": {},
+  "page_id": "page-1",
+  "provider": "engine",
+  "raw_ref": null,
+  "returned_projections": [
+    "state",
+    "dom",
+    "raw-events"
+  ],
+  "since_event": 0
+}

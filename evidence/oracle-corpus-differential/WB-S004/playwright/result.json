@@ -1,0 +1,81 @@
+{
+  "schema_version": "browser-workbench.result/v1",
+  "run_id": "oracle-corpus-WB-S004-playwright",
+  "status": "failed",
+  "backend": {
+    "kind": "playwright",
+    "variant": "webkit"
+  },
+  "steps": [
+    {
+      "step_id": "create",
+      "method": "session.create",
+      "status": "passed",
+      "result": {
+        "session_id": "oracle-session",
+        "page_id": "oracle-page-1",
+        "profile": {
+          "mode": "ephemeral",
+          "name": "oracle-corpus"
+        },
+        "backend": {
+          "kind": "playwright",
+          "variant": "webkit"
+        }
+      },
+      "error": null
+    },
+    {
+      "step_id": "navigate",
+      "method": "page.navigate",
+      "status": "passed",
+      "result": {
+        "accepted": true,
+        "url": "http://127.0.0.1:39835/await.html",
+        "provider": "oracle"
+      },
+      "error": null
+    },
+    {
+      "step_id": "await",
+      "method": "page.await",
+      "status": "passed",
+      "result": {
+        "satisfied": true,
+        "conditions": [
+          {
+            "equals": "idle",
+            "kind": "load_state"
+          },
+          {
+            "equals": "Workbench Fixture Await",
+            "kind": "title"
+          }
+        ],
+        "event_cursor": 4
+      },
+      "error": null
+    },
+    {
+      "step_id": "await-never",
+      "method": "page.await",
+      "status": "failed",
+      "result": null,
+      "error": {
+        "code": "deadline_exceeded",
+        "message": "page.waitForFunction: Timeout 7ms exceeded.",
+        "data": {}
+      }
+    }
+  ],
+  "terminal_reason": {
+    "code": "deadline_exceeded",
+    "message": "page.waitForFunction: Timeout 7ms exceeded.",
+    "data": {}
+  },
+  "retry_count": 0,
+  "oracle": {
+    "playwright": "1.62.1",
+    "engine": "26.5"
+  }
+}

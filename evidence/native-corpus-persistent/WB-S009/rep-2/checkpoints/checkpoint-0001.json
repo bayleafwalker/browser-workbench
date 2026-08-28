@@ -4,7 +4,7 @@
     "identity": {
       "adapter": "browser-workbench-webkitgtk-worker",
       "adapter_version": "0.2.0",
-      "display_backend": "GdkX11Display",
+      "display_backend": "GdkWaylandDisplay",
       "engine": "2.52.6",
       "engine_api": "webkitgtk-6.0",
       "gtk": "4.22.4",

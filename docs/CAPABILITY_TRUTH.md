@@ -6,7 +6,7 @@ Capability reporting has three independent dimensions:
 - provider: `engine`, `adapter`, `host`, `injected`, `oracle`, or `mock`;
 - semantics: `exact`, `normalized`, `partial`, or `none`.
 
-Verification is also explicit: `runtime`, `source-audit`, `declared`, or `none`. A source audit never upgrades to runtime evidence. Missing prerequisites convert otherwise supported target-host expectations to `blocked`. `partial` never satisfies a required exact capability gate.
+Verification is also explicit: `runtime`, `source-audit`, `declared`, or `none`. A source audit never upgrades to runtime evidence by declaration; `runtime` is earned per capability, on every backend including the mock, by an operation that completed in a passed run or scenario (`RuntimeLedger`, ADR-S6-01). A run's pre-admission report and its post-run report are both retained. Runtime verification never changes availability: a `partial` capability that ran is runtime-verified as partial. Missing prerequisites convert otherwise supported target-host expectations to `blocked`. `partial` never satisfies a required exact capability gate.
 
 ## Backend policy
 

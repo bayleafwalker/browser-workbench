@@ -1,0 +1,34 @@
+{
+  "capabilities": {
+    "capabilities": {
+      "page.observe.state": {
+        "availability": "supported"
+      }
+    }
+  },
+  "gates": [
+    {
+      "kind": "execution",
+      "required": true,
+      "status": "passed"
+    }
+  ],
+  "status": "failed",
+  "steps": [
+    {
+      "method": "session.create",
+      "status": "passed",
+      "step_id": "a",
+      "wall_time_ms": 1
+    },
+    {
+      "method": "page.observe",
+      "status": "passed",
+      "step_id": "b",
+      "wall_time_ms": 1
+    }
+  ],
+  "terminal_reason": {
+    "code": "completed"
+  }
+}

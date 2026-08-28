@@ -51,9 +51,14 @@ def oracle_command(runner: str, spec: Path, output: Path, mount_root: Path) -> l
         if runner in {"auto", engine} and shutil.which(engine):
             # The pinned image is the "enabled oracle host" the lane's README
             # means. Host networking is required to reach the loopback fixture.
+            # The spec and output paths are passed as host-absolute paths, so
+            # the repo is mounted at its own path as well as at /work. Without
+            # the self-mount an evidence root inside the repo is invisible to
+            # the container, and the oracle fails before it starts.
             command = [
                 engine, "run", "--rm", "--network=host",
                 "-v", f"{ROOT}:/work",
+                "-v", f"{ROOT}:{ROOT}",
             ]
             # The evidence root may live outside the repo, and the container
             # cannot write to a path it cannot see.

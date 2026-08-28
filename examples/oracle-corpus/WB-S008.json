@@ -1,0 +1,206 @@
+{
+  "schema_version": "browser-workbench.run/v1",
+  "required_capabilities": [
+    "session.create",
+    "page.navigate",
+    "page.await",
+    "page.observe.state"
+  ],
+  "allowed_providers": [
+    "engine",
+    "host",
+    "injected"
+  ],
+  "workflow": [
+    {
+      "step_id": "create",
+      "method": "session.create",
+      "deadline_ms": 60000,
+      "params": {
+        "client": {
+          "id": "oracle-client",
+          "kind": "agent"
+        },
+        "profile": {
+          "mode": "ephemeral",
+          "name": "oracle-corpus"
+        },
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        }
+      }
+    },
+    {
+      "step_id": "navigate",
+      "method": "page.navigate",
+      "deadline_ms": 60000,
+      "params": {
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        },
+        "client_id": "oracle-client",
+        "url": "${FIXTURE_BASE_URL}upload.html"
+      }
+    },
+    {
+      "step_id": "await",
+      "method": "page.await",
+      "deadline_ms": 60000,
+      "params": {
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        },
+        "conditions": [
+          {
+            "kind": "load_state",
+            "equals": "idle"
+          },
+          {
+            "kind": "title",
+            "equals": "Workbench Fixture Upload"
+          }
+        ],
+        "deadline_ms": 30000
+      }
+    },
+    {
+      "step_id": "targets",
+      "method": "page.observe",
+      "deadline_ms": 60000,
+      "params": {
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        },
+        "projection": [
+          "targets"
+        ],
+        "since_event": 0,
+        "max_bytes": 262144
+      },
+      "expect": {
+        "path": "data.targets.0.role",
+        "equals": "file"
+      }
+    },
+    {
+      "step_id": "upload",
+      "method": "page.act",
+      "deadline_ms": 60000,
+      "params": {
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        },
+        "client_id": "oracle-client",
+        "intent": {
+          "kind": "upload",
+          "path": "${REPO_ROOT}/examples/fixtures/upload.txt"
+        },
+        "target": {
+          "$step": "targets",
+          "path": "data.targets.0"
+        }
+      },
+      "expect": {
+        "path": "effects.0.kind",
+        "equals": "upload"
+      }
+    },
+    {
+      "step_id": "click-download",
+      "method": "page.act",
+      "deadline_ms": 60000,
+      "params": {
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        },
+        "client_id": "oracle-client",
+        "intent": {
+          "kind": "click"
+        },
+        "target": {
+          "$step": "targets",
+          "path": "data.targets.1"
+        }
+      }
+    },
+    {
+      "step_id": "await-download",
+      "method": "page.await",
+      "deadline_ms": 60000,
+      "params": {
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        },
+        "conditions": [
+          {
+            "kind": "event_kind",
+            "equals": "download.finished"
+          }
+        ],
+        "deadline_ms": 30000
+      }
+    },
+    {
+      "step_id": "downloads",
+      "method": "page.observe",
+      "deadline_ms": 60000,
+      "params": {
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        },
+        "projection": [
+          "downloads"
+        ],
+        "since_event": 0,
+        "max_bytes": 32768
+      },
+      "expect": {
+        "path": "data.downloads.0.download_id",
+        "truthy": true
+      }
+    },
+    {
+      "step_id": "accept",
+      "method": "page.act",
+      "deadline_ms": 60000,
+      "params": {
+        "page_id": {
+          "$step": "create",
+          "path": "page_id"
+        },
+        "client_id": "oracle-client",
+        "intent": {
+          "kind": "download.accept",
+          "download_id": {
+            "$step": "downloads",
+            "path": "data.downloads.0.download_id"
+          }
+        }
+      },
+      "expect": {
+        "path": "effects.0.status",
+        "equals": "quarantined"
+      }
+    }
+  ],
+  "policy": {
+    "mutation": "forbid",
+    "profile": "ephemeral",
+    "redaction_profile": "default",
+    "single_writer": true
+  },
+  "evidence": {
+    "raw": true,
+    "normalized": true,
+    "max_artifact_bytes": 1048576,
+    "redaction_profile": "default"
+  }
+}

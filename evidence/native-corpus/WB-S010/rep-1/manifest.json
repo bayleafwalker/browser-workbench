@@ -3,59 +3,51 @@
     {
       "media_type": "application/json",
       "path": "checkpoints/checkpoint-0001.json",
-      "sha256": "291321c7d45bf0fd3ff50e79af64148d032345bb9794b4faf48766b79f84837b",
-      "size_bytes": 924,
+      "sha256": "afc6847544c6453347df6fbef4b56c5c6d9813ca42ed00857450c17ab39c5777",
+      "size_bytes": 928,
       "source_refs": [],
       "surface": "normalized"
     },
     {
       "media_type": "application/json",
       "path": "exports/export-0001.json",
-      "sha256": "a91f65c141cc47d2304db5ed6980f3ad2f3d11889bbd9c752295d488a6b1b153",
-      "size_bytes": 2468,
+      "sha256": "f46a2cd609889e30f458cfa927f02ededec88a2b612e4ff6fc3c93470df7c10c",
+      "size_bytes": 2480,
       "source_refs": [],
       "surface": "redacted"
     },
     {
       "media_type": "application/json",
       "path": "result.json",
-      "sha256": "7df12443004c1c3f1e7a59b950b3b880a13a9a7949459b0db041d94fb61212a0",
-      "size_bytes": 749,
+      "sha256": "d596dd90ad28a6d55462a1f21400035cd08e1f079ab07b6210b42ead2ab41361",
+      "size_bytes": 972,
       "source_refs": [],
       "surface": "contract"
     },
     {
-      "media_type": "text/plain",
-      "path": "traces/adapter-stderr.log",
-      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4",
-      "size_bytes": 140,
-      "source_refs": [],
-      "surface": "raw"
-    },
-    {
       "media_type": "application/x-ndjson",
       "path": "traces/normalized.ndjson",
-      "sha256": "08ab4f0d43bbd67d7a42cf88f5e009dccd7e814b408c1454d8c322769ecc61e7",
-      "size_bytes": 4282,
+      "sha256": "386a834ce9042cbbcd69268017ec6fe3bdf5f1cc16e9ceb425e1ca14601abf3f",
+      "size_bytes": 4290,
       "source_refs": [],
       "surface": "normalized"
     },
     {
       "media_type": "application/x-ndjson",
       "path": "traces/raw.ndjson",
-      "sha256": "057191298a6d11c5bc290506ec4b199d1feee647790d9d14e242e0b14b760ad0",
-      "size_bytes": 2228,
+      "sha256": "9c75f357169c55ea7f95e1e193615e34a20df3b0d5a9d5f3bf54a1594dfea967",
+      "size_bytes": 2232,
       "source_refs": [],
       "surface": "raw"
     }
   ],
   "complete": true,
-  "created_at": "2026-08-24T19:04:50+00:00",
+  "created_at": "2026-08-28T10:01:48+00:00",
   "redaction": {
     "count": 0,
     "rule_ids": []
   },
-  "root_digest": "624a72a47e12163a4e4bcc652c41a586e05725fc203d3f2953a9eb4d3e4a6615",
+  "root_digest": "dab70e1853ab226b99b781610970f9691b76f2355a04897052c739bfc13c53b7",
   "run_id": "WB-S010-r1",
   "schema_version": "browser-workbench.evidence-manifest/v1"
 }

@@ -1,0 +1,48 @@
+[
+  {
+    "schema_version": "browser-workbench.event/v1",
+    "event_id": "oracle-000001",
+    "event_seq": 1,
+    "kind": "network.request",
+    "source": "oracle",
+    "generation": 1,
+    "payload": {
+      "url": "http://127.0.0.1:38775/index.html",
+      "method": "GET"
+    }
+  },
+  {
+    "schema_version": "browser-workbench.event/v1",
+    "event_id": "oracle-000002",
+    "event_seq": 2,
+    "kind": "network.response",
+    "source": "oracle",
+    "generation": 1,
+    "payload": {
+      "url": "http://127.0.0.1:38775/index.html",
+      "status": 200
+    }
+  },
+  {
+    "schema_version": "browser-workbench.event/v1",
+    "event_id": "oracle-000003",
+    "event_seq": 3,
+    "kind": "navigation.committed",
+    "source": "oracle",
+    "generation": 2,
+    "payload": {
+      "url": "http://127.0.0.1:38775/index.html"
+    }
+  },
+  {
+    "schema_version": "browser-workbench.event/v1",
+    "event_id": "oracle-000004",
+    "event_seq": 4,
+    "kind": "navigation.finished",
+    "source": "oracle",
+    "generation": 2,
+    "payload": {
+      "url": "http://127.0.0.1:38775/index.html"
+    }
+  }
+]

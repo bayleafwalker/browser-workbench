@@ -18,29 +18,62 @@
           "--version"
         ],
         "exit_code": 0,
-        "output": "v24.19.0",
+        "output": "v24.15.0",
         "present": true
       },
       "playwright": {
         "argv": [
-          "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
-          "/workspace/scratch/205f7104b972/browser-workbench-resume/work/browser-workbench/oracle/playwright/probe.mjs"
+          "/home/bayleaf/.local/share/mise/shims/node",
+          "/projects/dev/browser-workbench/oracle/playwright/probe.mjs"
         ],
-        "exit_code": 1,
-        "output": "node:internal/modules/package_json_reader:301\n  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);\n        ^\n\nError [ERR_MODULE_NOT_FOUND]: Cannot find package '@playwright/test' imported from /workspace/scratch/205f7104b972/browser-workbench-resume/work/browser-workbench/oracle/playwright/probe.mjs\n    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:301:9)\n    at packageResolve (node:internal/modules/esm/resolve:768:81)\n    at moduleResolve (node:internal/modules/esm/resolve:859:18)\n    at defaultResolve (node:internal/modules/esm/resolve:992:11)\n    at #cachedDefaultResolve (node:internal/modules/esm/loader:701:20)\n    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:721:38)\n    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:759:56)\n    at #resolve (node:internal/modules/esm/loader:683:17)\n    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:35)\n    at ModuleJob.syncLink (node:internal/modules/esm/module_job:163:33) {\n  code: 'ERR_MODULE_NOT_FOUND'\n}\n\nNode.js v24.19.0",
-        "present": false
+        "exit_code": 0,
+        "output": "{\"package\":\"@playwright/test\",\"version\":\"1.62.1\",\"matches_pin\":true,\"browser_launch\":false}",
+        "present": true
+      },
+      "playwright_browser": {
+        "checked_binaries": [
+          "/home/bayleaf/.cache/ms-playwright/webkit-2336/minibrowser-gtk/bin/MiniBrowser",
+          "/home/bayleaf/.cache/ms-playwright/webkit-2336/minibrowser-wpe/bin/MiniBrowser"
+        ],
+        "executable": "/home/bayleaf/.cache/ms-playwright/webkit-2336/pw_run.sh",
+        "missing_libraries": [
+          "libWPEBackend-fdo-1.0.so.1",
+          "libWPEWebKit-2.0.so.1",
+          "libbacktrace.so.0",
+          "libflite.so.1",
+          "libflite_cmu_grapheme_lang.so.1",
+          "libflite_cmu_grapheme_lex.so.1",
+          "libflite_cmu_indic_lang.so.1",
+          "libflite_cmu_indic_lex.so.1",
+          "libflite_cmu_time_awb.so.1",
+          "libflite_cmu_us_awb.so.1",
+          "libflite_cmu_us_kal.so.1",
+          "libflite_cmu_us_kal16.so.1",
+          "libflite_cmu_us_rms.so.1",
+          "libflite_cmu_us_slt.so.1",
+          "libflite_cmulex.so.1",
+          "libflite_usenglish.so.1",
+          "libicudata.so.74",
+          "libicui18n.so.74",
+          "libicuuc.so.74",
+          "libjxl.so.0.8",
+          "libwpe-1.0.so.1",
+          "libxml2.so.2"
+        ],
+        "present": false,
+        "reason": "the Playwright WebKit browser cannot load: libWPEBackend-fdo-1.0.so.1, libWPEWebKit-2.0.so.1, libbacktrace.so.0, libflite.so.1, libflite_cmu_grapheme_lang.so.1, libflite_cmu_grapheme_lex.so.1"
       }
     },
     "display": {
-      "wayland": false,
-      "x11": false
+      "wayland": true,
+      "x11": true
     },
     "machine": "x86_64",
-    "os": "Linux-6.18.35-x86_64-with-glibc2.39",
-    "python": "3.12.13",
+    "os": "Linux-7.1.9-arch1-2-x86_64-with-glibc2.44",
+    "python": "3.14.7",
     "ready": false,
     "reasons": [
-      "@playwright/test missing"
+      "the Playwright WebKit browser cannot load: libWPEBackend-fdo-1.0.so.1, libWPEWebKit-2.0.so.1, libbacktrace.so.0, libflite.so.1, libflite_cmu_grapheme_lang.so.1, libflite_cmu_grapheme_lex.so.1"
     ]
   },
   "runtime_conformance_claim": false,

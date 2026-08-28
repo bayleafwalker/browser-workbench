@@ -1,0 +1,128 @@
+{
+  "schema_version": "browser-workbench.result/v1",
+  "run_id": "oracle-corpus-WB-S007-playwright",
+  "status": "failed",
+  "backend": {
+    "kind": "playwright",
+    "variant": "webkit"
+  },
+  "steps": [
+    {
+      "step_id": "create",
+      "method": "session.create",
+      "status": "passed",
+      "result": {
+        "session_id": "oracle-session",
+        "page_id": "oracle-page-1",
+        "profile": {
+          "mode": "ephemeral",
+          "name": "oracle-corpus"
+        },
+        "backend": {
+          "kind": "playwright",
+          "variant": "webkit"
+        }
+      },
+      "error": null
+    },
+    {
+      "step_id": "navigate",
+      "method": "page.navigate",
+      "status": "passed",
+      "result": {
+        "accepted": true,
+        "url": "http://127.0.0.1:39835/prompts.html",
+        "provider": "oracle"
+      },
+      "error": null
+    },
+    {
+      "step_id": "await-dialog",
+      "method": "page.await",
+      "status": "passed",
+      "result": {
+        "satisfied": true,
+        "conditions": [
+          {
+            "equals": "dialog.opened",
+            "kind": "event_kind"
+          }
+        ],
+        "event_cursor": 5
+      },
+      "error": null
+    },
+    {
+      "step_id": "dialogs",
+      "method": "page.observe",
+      "status": "passed",
+      "result": {
+        "page_id": "oracle-page-1",
+        "generation": 2,
+        "since_event": 0,
+        "next_event": 5,
+        "returned_projections": [
+          "dialogs"
+        ],
+        "provider": "oracle",
+        "data": {
+          "dialogs": [
+            {
+              "token": "oracle-dialog-0001",
+              "kind": "dialog",
+              "dialog_type": "alert",
+              "message": "fixture dialog",
+              "status": "pending",
+              "default": "deny"
+            }
+          ]
+        }
+      },
+      "error": null
+    },
+    {
+      "step_id": "dismiss",
+      "method": "page.act",
+      "status": "passed",
+      "result": {
+        "attempted": true,
+        "accepted": true,
+        "executed": true,
+        "provider": "oracle",
+        "effects": [
+          {
+            "kind": "dialog.decision",
+            "decision": "dismiss",
+            "token": "oracle-dialog-0001"
+          }
+        ]
+      },
+      "error": null
+    },
+    {
+      "step_id": "duplicate",
+      "method": "page.act",
+      "status": "failed",
+      "result": null,
+      "error": {
+        "code": "precondition_failed",
+        "message": "decision token is unknown or already resolved",
+        "data": {
+          "decision_token": "oracle-dialog-0001"
+        }
+      }
+    }
+  ],
+  "terminal_reason": {
+    "code": "precondition_failed",
+    "message": "decision token is unknown or already resolved",
+    "data": {
+      "decision_token": "oracle-dialog-0001"
+    }
+  },
+  "retry_count": 0,
+  "oracle": {
+    "playwright": "1.62.1",
+    "engine": "26.5"
+  }
+}

@@ -1,0 +1,984 @@
+{
+  "baseline": {
+    "backend": {
+      "kind": "mock",
+      "variant": "denominator"
+    },
+    "deterministic": true,
+    "failed": 0,
+    "passed": 36,
+    "run_count": 36,
+    "semantic_digest": "a8d0c478fcdca32bc9167425744d3a9c54969c7d9e497fc6a48f388399b8a74f",
+    "status": "passed"
+  },
+  "candidate": {
+    "backend": {
+      "kind": "webkitgtk",
+      "variant": "stable-ephemeral"
+    },
+    "deterministic": true,
+    "failed": 0,
+    "passed": 36,
+    "run_count": 36,
+    "semantic_digest": "a8d0c478fcdca32bc9167425744d3a9c54969c7d9e497fc6a48f388399b8a74f",
+    "status": "passed"
+  },
+  "candidate_source": {
+    "path": "evidence/native-corpus/corpus-summary.json",
+    "sha256": "7488056261ac98e3eea7262fd00da9a55d736f674cb4d16e5f35902493b18045"
+  },
+  "corpus": {
+    "id": "browser-workbench-denominator",
+    "version": "1.0.0"
+  },
+  "declared_semantic_divergences": [
+    {
+      "baseline": null,
+      "candidate": "targets are discovered by injected script because the engine exposes no host-side target API",
+      "scenario_id": "WB-S003",
+      "text": "fresh target executes"
+    },
+    {
+      "baseline": null,
+      "candidate": "no virtual clock on a real engine; asserted as event-driven satisfaction with an advanced event cursor",
+      "scenario_id": "WB-S004",
+      "text": "virtual clock is deterministic"
+    },
+    {
+      "baseline": null,
+      "candidate": "javascript runs through the engine API, so the provider is engine rather than the mock's injected",
+      "scenario_id": "WB-S005",
+      "text": "provider class is recorded"
+    },
+    {
+      "baseline": null,
+      "candidate": "WebKitGTK identifies a resource by URI; correlation is by URI, not request_id",
+      "scenario_id": "WB-S006",
+      "text": "network request and response correlate"
+    },
+    {
+      "baseline": null,
+      "candidate": "a real web process is started and then terminated; a page that never loaded has no process to kill",
+      "scenario_id": "WB-S010",
+      "text": "crash is visible"
+    }
+  ],
+  "differences": [],
+  "different_scenarios": 0,
+  "equivalent_scenarios": 12,
+  "scenario_count": 12,
+  "scenarios": [
+    {
+      "assertions": [
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "lease epoch is one"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "one page is active"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "profile is ephemeral"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "second writer is rejected"
+        }
+      ],
+      "scenario_id": "WB-S001",
+      "status": "equivalent",
+      "structural": {
+        "baseline": {
+          "deviation_kinds": [],
+          "errors": [],
+          "manifests_complete": true,
+          "runtime_verification": [
+            "session.create",
+            "session.profile.ephemeral"
+          ],
+          "statuses": [
+            "passed"
+          ]
+        },
+        "candidate": {
+          "deviation_kinds": [],
+          "errors": [],
+          "manifests_complete": true,
+          "runtime_verification": [
+            "session.create",
+            "session.profile.ephemeral"
+          ],
+          "statuses": [
+            "passed"
+          ]
+        }
+      }
+    },
+    {
+      "assertions": [
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "event cursor advances"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "loss is explicit"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "raw artifact is content-addressed"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "response is within max_bytes"
+        }
+      ],
+      "scenario_id": "WB-S002",
+      "status": "equivalent",
+      "structural": {
+        "baseline": {
+          "deviation_kinds": [],
+          "errors": [],
+          "manifests_complete": true,
+          "runtime_verification": [
+            "page.await",
+            "page.navigate",
+            "page.observe.dom",
+            "page.observe.state",
+            "session.create",
+            "session.profile.ephemeral"
+          ],
+          "statuses": [
+            "passed"
+          ]
+        },
+        "candidate": {
+          "deviation_kinds": [],
+          "errors": [],
+          "manifests_complete": true,
+          "runtime_verification": [
+            "page.await",
+            "page.navigate",
+            "page.observe.dom",
+            "page.observe.state",
+            "session.create",
+            "session.profile.ephemeral"
+          ],
+          "statuses": [
+            "passed"
+          ]
+        }
+      }
+    },
+    {
+      "assertions": [
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "declared_semantics": {
+            "baseline": null,
+            "candidate": "targets are discovered by injected script because the engine exposes no host-side target API"
+          },
+          "text": "fresh target executes"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "navigation increments generation"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "receipt names causal events"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "stale target fails before backend invocation"
+        }
+      ],
+      "scenario_id": "WB-S003",
+      "status": "equivalent",
+      "structural": {
+        "baseline": {
+          "deviation_kinds": [],
+          "errors": [],
+          "manifests_complete": true,
+          "runtime_verification": [
+            "page.act.pointer",
+            "page.navigate",
+            "session.create",
+            "session.profile.ephemeral"
+          ],
+          "statuses": [
+            "passed"
+          ]
+        },
+        "candidate": {
+          "deviation_kinds": [],
+          "errors": [],
+          "manifests_complete": true,
+          "runtime_verification": [
+            "page.act.pointer",
+            "page.await",
+            "page.navigate",
+            "session.create",
+            "session.profile.ephemeral"
+          ],
+          "statuses": [
+            "passed"
+          ]
+        }
+      }
+    },
+    {
+      "assertions": [
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "deadline reports unsatisfied predicates"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "scheduled event satisfies condition"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "declared_semantics": {
+            "baseline": null,
+            "candidate": "no virtual clock on a real engine; asserted as event-driven satisfaction with an advanced event cursor"
+          },
+          "text": "virtual clock is deterministic"
+        }
+      ],
+      "scenario_id": "WB-S004",
+      "status": "equivalent",
+      "structural": {
+        "baseline": {
+          "deviation_kinds": [],
+          "errors": [],
+          "manifests_complete": true,
+          "runtime_verification": [
+            "page.await",
+            "page.navigate",
+            "session.create",
+            "session.profile.ephemeral"
+          ],
+          "statuses": [
+            "passed"
+          ]
+        },
+        "candidate": {
+          "deviation_kinds": [],
+          "errors": [],
+          "manifests_complete": true,
+          "runtime_verification": [
+            "page.await",
+            "page.navigate",
+            "session.create",
+            "session.profile.ephemeral"
+          ],
+          "statuses": [
+            "passed"
+          ]
+        }
+      }
+    },
+    {
+      "assertions": [
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "declared_semantics": {
+            "baseline": null,
+            "candidate": "javascript runs through the engine API, so the provider is engine rather than the mock's injected"
+          },
+          "text": "provider class is recorded"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "screenshot is an artifact"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "script result is bounded"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "state digest changes only when declared"
+        }
+      ],
+      "scenario_id": "WB-S005",
+      "status": "equivalent",
+      "structural": {
+        "baseline": {
+          "deviation_kinds": [],
+          "errors": [],
+          "manifests_complete": true,
+          "runtime_verification": [
+            "page.act.javascript",
+            "page.observe.screenshot",
+            "session.create",
+            "session.profile.ephemeral"
+          ],
+          "statuses": [
+            "passed"
+          ]
+        },
+        "candidate": {
+          "deviation_kinds": [],
+          "errors": [],
+          "manifests_complete": true,
+          "runtime_verification": [
+            "page.act.javascript",
+            "page.await",
+            "page.navigate",
+            "page.observe.screenshot",
+            "session.create",
+            "session.profile.ephemeral"
+          ],
+          "statuses": [
+            "passed"
+          ]
+        }
+      }
+    },
+    {
+      "assertions": [
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "console record has event identity"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "declared_semantics": {
+            "baseline": null,
+            "candidate": "WebKitGTK identifies a resource by URI; correlation is by URI, not request_id"
+          },
+          "text": "network request and response correlate"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "raw and normalized records are linked"
+        }
+      ],
+      "scenario_id": "WB-S006",
+      "status": "equivalent",
+      "structural": {
+        "baseline": {
+          "deviation_kinds": [],
+          "errors": [],
+          "manifests_complete": true,
+          "runtime_verification": [
+            "page.await",
+            "page.navigate",
+            "page.observe.console",
+            "page.observe.network",
+            "session.create",
+            "session.profile.ephemeral"
+          ],
+          "statuses": [
+            "passed"
+          ]
+        },
+        "candidate": {
+          "deviation_kinds": [],
+          "errors": [],
+          "manifests_complete": true,
+          "runtime_verification": [
+            "page.await",
+            "page.navigate",
+            "page.observe.console",
+            "page.observe.network",
+            "session.create",
+            "session.profile.ephemeral"
+          ],
+          "statuses": [
+            "passed"
+          ]
+        }
+      }
+    },
+    {
+      "assertions": [
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "decision token is required"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "default is deny"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "duplicate decision is rejected"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "receipt records applied decision"
+        }
+      ],
+      "scenario_id": "WB-S007",
+      "status": "equivalent",
+      "structural": {
+        "baseline": {
+          "deviation_kinds": [],
+          "errors": [],
+          "manifests_complete": true,
+          "runtime_verification": [
+            "page.await",
+            "page.dialog",
+            "page.navigate",
+            "page.permission",
+            "session.create",
+            "session.profile.ephemeral"
+          ],
+          "statuses": [
+            "passed"
+          ]
+        },
+        "candidate": {
+          "deviation_kinds": [],
+          "errors": [],
+          "manifests_complete": true,
+          "runtime_verification": [
+            "page.await",
+            "page.dialog",
+            "page.navigate",
+            "page.permission",
+            "session.create",
+            "session.profile.ephemeral"
+          ],
+          "statuses": [
+            "passed"
+          ]
+        }
+      }
+    },
+    {
+      "assertions": [
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "artifact hash is recorded"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "download remains quarantined"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "undeclared path is rejected"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "upload uses an allowed fixture"
+        }
+      ],
+      "scenario_id": "WB-S008",
+      "status": "equivalent",
+      "structural": {
+        "baseline": {
+          "deviation_kinds": [],
+          "errors": [],
+          "manifests_complete": true,
+          "runtime_verification": [
+            "page.download",
+            "page.upload",
+            "session.create",
+            "session.profile.ephemeral"
+          ],
+          "statuses": [
+            "passed"
+          ]
+        },
+        "candidate": {
+          "deviation_kinds": [],
+          "errors": [],
+          "manifests_complete": true,
+          "runtime_verification": [
+            "page.act.pointer",
+            "page.await",
+            "page.download",
+            "page.navigate",
+            "page.upload",
+            "session.create",
+            "session.profile.ephemeral"
+          ],
+          "statuses": [
+            "passed"
+          ]
+        }
+      }
+    },
+    {
+      "assertions": [
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "checkpoint is content-addressed"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "handover does not grant approval"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "old lease becomes read-only"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "successor lease epoch increments"
+        }
+      ],
+      "scenario_id": "WB-S009",
+      "status": "equivalent",
+      "structural": {
+        "baseline": {
+          "deviation_kinds": [],
+          "errors": [],
+          "manifests_complete": true,
+          "runtime_verification": [
+            "session.checkpoint",
+            "session.create",
+            "session.profile.ephemeral"
+          ],
+          "statuses": [
+            "passed"
+          ]
+        },
+        "candidate": {
+          "deviation_kinds": [],
+          "errors": [],
+          "manifests_complete": true,
+          "runtime_verification": [
+            "session.checkpoint",
+            "session.create",
+            "session.profile.ephemeral"
+          ],
+          "statuses": [
+            "passed"
+          ]
+        }
+      }
+    },
+    {
+      "assertions": [
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "checkpoint restores canonical state"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "declared_semantics": {
+            "baseline": null,
+            "candidate": "a real web process is started and then terminated; a page that never loaded has no process to kill"
+          },
+          "text": "crash is visible"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "partial evidence is retained"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "sensitive fields are redacted before export"
+        }
+      ],
+      "scenario_id": "WB-S010",
+      "status": "equivalent",
+      "structural": {
+        "baseline": {
+          "deviation_kinds": [],
+          "errors": [],
+          "manifests_complete": true,
+          "runtime_verification": [
+            "page.observe.state",
+            "page.termination",
+            "session.checkpoint",
+            "session.create",
+            "session.profile.ephemeral"
+          ],
+          "statuses": [
+            "passed"
+          ]
+        },
+        "candidate": {
+          "deviation_kinds": [],
+          "errors": [],
+          "manifests_complete": true,
+          "runtime_verification": [
+            "page.await",
+            "page.navigate",
+            "page.observe.state",
+            "page.termination",
+            "session.checkpoint",
+            "session.create",
+            "session.profile.ephemeral"
+          ],
+          "statuses": [
+            "passed"
+          ]
+        }
+      }
+    },
+    {
+      "assertions": [
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "capability difference is visible"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "partial order is accepted"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "semantic mismatch fails"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "wall time is ignored only when declared"
+        }
+      ],
+      "scenario_id": "WB-S011",
+      "status": "equivalent",
+      "structural": {
+        "baseline": {
+          "deviation_kinds": [],
+          "errors": [],
+          "manifests_complete": true,
+          "runtime_verification": [],
+          "statuses": [
+            "passed"
+          ]
+        },
+        "candidate": {
+          "deviation_kinds": [],
+          "errors": [],
+          "manifests_complete": true,
+          "runtime_verification": [],
+          "statuses": [
+            "passed"
+          ]
+        }
+      }
+    },
+    {
+      "assertions": [
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "baseline remains unchanged"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "input digest is checked before and after"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "mutation produces candidate_mutated"
+        },
+        {
+          "agrees": true,
+          "baseline": [
+            true
+          ],
+          "candidate": [
+            true
+          ],
+          "text": "no green report is emitted"
+        }
+      ],
+      "scenario_id": "WB-S012",
+      "status": "equivalent",
+      "structural": {
+        "baseline": {
+          "deviation_kinds": [],
+          "errors": [],
+          "manifests_complete": true,
+          "runtime_verification": [],
+          "statuses": [
+            "passed"
+          ]
+        },
+        "candidate": {
+          "deviation_kinds": [],
+          "errors": [],
+          "manifests_complete": true,
+          "runtime_verification": [],
+          "statuses": [
+            "passed"
+          ]
+        }
+      }
+    }
+  ],
+  "schema_version": "browser-workbench.corpus-differential/v1",
+  "semantic_digests_match": true,
+  "status": "equivalent",
+  "what_this_means": "equivalent: every frozen assertion resolved identically on both lanes and both were deterministic. It does not mean the lanes produced identical evidence; the structural section shows where they differ in how."
+}

@@ -258,3 +258,86 @@ called for reports to compare "declared suppressions"; this implements that.
 comparing. It is bounded here by being declarative, per-run, and always echoed
 into the report: no suppression can take effect without appearing in the
 evidence that the comparison passed.
+
+## ADR-S6-01: runtime verification is earned per capability, on every backend
+
+**Context.** `capabilities.py` granted `verification: runtime` wholesale to the
+mock and `source-audit` wholesale to everything else. After slices 3 and 4 the
+WebKitGTK lane had executed seventeen matrix capabilities across 72 corpus
+runs and still reported every one of them as a source audit. The mock,
+conversely, was "runtime verified" for capabilities no run had touched.
+
+**Decision.** No backend starts with `runtime`. A `RuntimeLedger` counts
+successful executions, mapped from the executed operation and its parameters
+to matrix capability names by one function, `exercised_capabilities`. The
+runner records every passed step; the corpus records every operation a passed
+scenario completed, through a forwarding proxy, because the drivers call the
+backend directly. `with_runtime_verification` upgrades a declaration to
+`runtime` only where the ledger shows execution, never changes availability,
+and refuses to upgrade anything `blocked` or `unsupported`, reporting such a
+ledger entry as `runtime_unexplained` instead.
+
+Each run now writes `diagnostics/capabilities-runtime.json` beside the pre-run
+report, and each corpus writes `runtime-verification.json`. The CLI can apply a
+ledger to a fresh report with `capabilities --runtime-ledger`, and refuses a
+ledger from a different backend.
+
+**Consequence.** The mock corpus earns 17 capabilities per run; the native
+corpus earns the same 17 on `stable-ephemeral`, and `session.profile.persistent`
+in place of `.ephemeral` on `stable-persistent`. `page.observe.network` is
+runtime-verified *as partial*: execution verified the declared semantics, it
+did not widen them.
+
+**Guard.** A failed scenario contributes nothing to the ledger even if it
+executed operations: it did not verify them. Successor backends created inside
+a driver (checkpoint handover, crash recovery) are not wrapped and so earn
+nothing; their operations are already counted on the primary backend.
+
+## ADR-S6-02: every scenario is classified against the oracle, none is dropped
+
+**Context.** Slice 5 compared one five-step workflow. Widening to the corpus
+meets a structural fact: the corpus drivers are Python that calls the backend
+directly, while the oracle executes declared workflows; and half the scenarios
+test host mechanisms — leases, byte bounds, checkpoints, comparison, input
+integrity — that an external oracle does not have and must not grow.
+
+**Decision.** `spec/ORACLE_CORPUS_V1.json` classifies all twelve scenarios.
+An *applicable* scenario has a declared workflow in `examples/oracle-corpus/`
+that both lanes execute, a `covers` list naming the frozen assertions it
+reaches, an `omitted` map naming each assertion it cannot reach and why, and
+where the scenario is supposed to end in an error, an `expected_terminal_code`.
+An *inapplicable* scenario names the host mechanism the oracle lacks.
+`scripts/oracle_corpus_differential.py` emits one of `equivalent`, `different`,
+`blocked`, `inapplicable` per scenario and always lists twelve.
+
+The oracle runner mirrors the workbench result shape just far enough that the
+same `$step` references and `expect` clauses resolve on both lanes, uses the
+same target enumeration script so `data.targets.N` names the same element,
+and then acts through Playwright's own pointer, file chooser, and download
+APIs. It maps error codes through the same status table as the host.
+
+**Consequence.** Six scenarios are applicable and all six are equivalent,
+including two that end in a declared error on both lanes (`deadline_exceeded`,
+`precondition_failed`) and one where the quarantined download bytes hash
+identically. Six are inapplicable, each with a stated reason. The release gate
+accepts `equivalent` or `blocked`; `different` is a finding to review.
+
+**Guard.** Two lanes that agree with each other but end somewhere other than
+the declared terminal are reported `different`. A workflow whose steps all
+pass on both lanes is not evidence if the scenario was supposed to fail.
+
+## ADR-S6-03: the oracle container sees the repo at its own path
+
+**Context.** `oracle_command` mounted the repository only at `/work` while
+passing host-absolute spec and output paths. The slice 5 differential's
+evidence root was inside the repository, and the oracle run for it produced no
+result at all: the run was reported `blocked`, not `equivalent`. The
+corpus-wide differential hit the same wall on all six applicable scenarios.
+
+**Decision.** The repository is additionally mounted at its own absolute path,
+so paths mean the same thing on both sides of the container boundary.
+
+**Consequence.** The slice 5 differential now actually runs in-repo and is
+equivalent. The blocked classification did its job — it did not pretend — but
+this is a reminder that "blocked" is also where an infrastructure defect hides
+if nobody reads the reason.
